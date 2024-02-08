@@ -6,16 +6,16 @@ import {
   BrowserRouter,
   Routes,
 } from "react-router-dom";
-import patientDashboard from "./components/patientDashboard";
-import login from "./components/login";
+import PatientDashboard from "./components/PatientDashboard";
+import Login from "./components/Login";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<patientDashboard/>}/>
-        <Route path="/login" element={<login/>}/>
+        <Route path="/patient" element={<PatientDashboard/>}/>
+        <Route path="/Login" element={<Login/>}/>
         </Routes>
       </BrowserRouter>
     </div>

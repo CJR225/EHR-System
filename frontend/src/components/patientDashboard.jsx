@@ -1,26 +1,32 @@
-import React, { Component } from "react";
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 
-class patientDashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const PatienDashboard = () => {
+  const [patient,getPatient] = useState([])
 
-  render() {
-    return (
-      <body style={{ backgroundColor: "#26394e", minHeight: "100" }}>
-        <header>
-          <div className="container p-4">
-            <div className="row-cols-auto">
-              <div>
-                <h3>Courses</h3>
-              </div>
-            </div>
-          </div>
-        </header>
-      </body>
-    );
-  }
+  useEffect (()=>{
+    const fetchPatient = async ()=>{
+      try{
+        const res = await axios.get("http://localhost:3000/patient")
+        getPatient(res.data);
+      }catch(err){
+        console.log(err)
+      }
+    }
+    fetchPatient()
+  },[])
+  return <div>
+    <h1>Patient Dashboard</h1>
+    <div className="patients">
+      {patient.map(patient=>(
+        <div className="patient">
+          <h2>{patient.Fname}</h2>
+        </div>
+      ))}
+    </div>
+  </div>
 }
 
-export default patientDashboard;
+export default PatienDashboard;
