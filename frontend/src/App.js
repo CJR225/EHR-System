@@ -17,6 +17,7 @@ import FileUploadFormProfessor from "./components/AssignmentProfessor";
 import AssignmentListProfessor from "./components/assignmentListProfessor";
 import AssignmentForm from "./components/createAssignment";
 import CourseHomeProfessor from "./components/courseHomeProfessor";
+import Test from "./components/test";
 
 function App() {
   const [user, setUser] = useState("");
@@ -33,6 +34,7 @@ function App() {
       
         <Routes>
           <Route path="/" element={<LoginForm />} />
+          <Route path="/test" element={<Test />} />
           <Route path="/register" element={<RegisterForm />} />       
           <Route path="/logout" element={<Logout />} />
           <Route path="/not-found" element={<NotFound />} />
