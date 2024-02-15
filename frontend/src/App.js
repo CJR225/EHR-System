@@ -38,14 +38,7 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />       
           <Route path="/logout" element={<Logout />} />
           <Route path="/not-found" element={<NotFound />} />
-          <Route path="/student/courseHome" element={<CourseHome />} />
-          <Route path="/student/assignmentList" element={<AssignmentList />} />
-          <Route path="/student/assignment" element={<FileUploadForm />} />
-          <Route path="/professor/addCourse" element={<AddCourse />} />
-          <Route path="/professor/courseHome" element={<CourseHomeProfessor />} />
-          <Route path="/professor/assignmentList" element={<AssignmentListProfessor />} />
-          <Route path="/professor/createAssignment" element={<AssignmentForm />} />
-          <Route path = "/professor/assignment" element={<FileUploadFormProfessor/>}/>
+          
          
         </Routes>
       </BrowserRouter>
