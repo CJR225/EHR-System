@@ -9,7 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 import Logout from "./components/logout";
-import Test from "./components/test";
+import PatientDash from "./components/patientDashboard";
 
 function App() {
 
@@ -19,7 +19,7 @@ function App() {
       
         <Routes>
           <Route path="/" element={<LoginForm />} />
-          <Route path="/test" element={<Test />} />
+          <Route path="/test" element={<PatientDash />} />
           <Route path="/register" element={<RegisterForm />} />       
           <Route path="/logout" element={<Logout />} />
           <Route path="/not-found" element={<NotFound />} />
