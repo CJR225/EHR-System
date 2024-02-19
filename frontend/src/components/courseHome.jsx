@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { getCourses } from "../services/testService";
 import CourseHomeBody from "./courseHomeBody";
 import BasicModal from "./modal";
 

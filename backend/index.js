@@ -19,8 +19,8 @@ app.get("/select", (req, res) => {
 
 app.get("/insert", (req, res) => {
   Student.create({
-    username: "test",
-    password: "test",
+    username: "test3",
+    password: "test3",
   }).catch((err) => {
     if (err) {
       console.log(err);
