@@ -42,14 +42,12 @@ function initModels(sequelize) {
 
   Allergies.belongsToMany(Patient, { as: 'patient_id_Patients', through: Patient_Allergy, foreignKey: "allergy_id", otherKey: "patient_id" });
   Immunizations.belongsToMany(Patient, { as: 'patient_id_Patient_Patient_Immunizations', through: Patient_Immunization, foreignKey: "immunzation_id", otherKey: "patient_id" });
-  Instructor.belongsToMany(Student, { as: 'student_id_Students', through: Sections, foreignKey: "instructor_id", otherKey: "student_id" });
   Medicine.belongsToMany(Patient, { as: 'patient_id_Patient_medicine_patients', through: medicine_patient, foreignKey: "med_id", otherKey: "patient_id" });
   Notes.belongsToMany(Patient, { as: 'patient_id_Patient_notes_patients', through: notes_patient, foreignKey: "notes_id", otherKey: "patient_id" });
   Patient.belongsToMany(Allergies, { as: 'allergy_id_Allergies', through: Patient_Allergy, foreignKey: "patient_id", otherKey: "allergy_id" });
   Patient.belongsToMany(Immunizations, { as: 'immunzation_id_Immunizations', through: Patient_Immunization, foreignKey: "patient_id", otherKey: "immunzation_id" });
   Patient.belongsToMany(Medicine, { as: 'med_id_Medicines', through: medicine_patient, foreignKey: "patient_id", otherKey: "med_id" });
   Patient.belongsToMany(Notes, { as: 'notes_id_Notes', through: notes_patient, foreignKey: "patient_id", otherKey: "notes_id" });
-  Student.belongsToMany(Instructor, { as: 'instructor_id_Instructors', through: Sections, foreignKey: "student_id", otherKey: "instructor_id" });
   Patient_Allergy.belongsTo(Allergies, { as: "allergy", foreignKey: "allergy_id"});
   Allergies.hasMany(Patient_Allergy, { as: "Patient_Allergies", foreignKey: "allergy_id"});
   Patient_Immunization.belongsTo(Immunizations, { as: "immunzation", foreignKey: "immunzation_id"});
@@ -73,7 +71,7 @@ function initModels(sequelize) {
   Patient_Immunization.belongsTo(Patient, { as: "patient", foreignKey: "patient_id"});
   Patient.hasMany(Patient_Immunization, { as: "Patient_Immunizations", foreignKey: "patient_id"});
   PlanofCare.belongsTo(Patient, { as: "patient", foreignKey: "patient_id"});
-  Patient.hasMany(PlanofCare, { as: "Plan of Cares", foreignKey: "patient_id"});
+  Patient.hasMany(PlanofCare, { as: "PlanofCares", foreignKey: "patient_id"});
   medicine_patient.belongsTo(Patient, { as: "patient", foreignKey: "patient_id"});
   Patient.hasMany(medicine_patient, { as: "medicine_patients", foreignKey: "patient_id"});
   notes_patient.belongsTo(Patient, { as: "patient", foreignKey: "patient_id"});
@@ -82,8 +80,8 @@ function initModels(sequelize) {
   Patient.hasMany(wounds, { as: "wounds", foreignKey: "patient_id"});
   Patient.belongsTo(Sections, { as: "section", foreignKey: "section_id"});
   Sections.hasMany(Patient, { as: "Patients", foreignKey: "section_id"});
-  Sections.belongsTo(Student, { as: "student", foreignKey: "student_id"});
-  Student.hasMany(Sections, { as: "Sections", foreignKey: "student_id"});
+  Student.belongsTo(Sections, { as: "section", foreignKey: "section_id"});
+  Sections.hasMany(Student, { as: "Students", foreignKey: "section_id"});
 
   return {
     Allergies,
