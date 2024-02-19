@@ -80,7 +80,7 @@ class LoginForm extends Form {
                     <div class="card-body p-5 text-center">
                       <div class="mb-md-5 mt-md-2">
                         <h2 class="fw-bold mb-2 pb-2" id="loginTitle">
-                          Welcome to Auto Grader
+                          Quinnipiac University Nursing EHR
                         </h2>
 
                         <p class="pb-4" id="loginDesc">Please Sign In!</p>
@@ -95,16 +95,6 @@ class LoginForm extends Form {
                             )}
                             <div className="mt-5">{this.renderButton("Sign In")}</div>
                           </form>
-
-                          
-                        </div>
-
-                        <div>
-                          <p class="mb-0">
-                            Don't have an account?{" "}
-                            <Link to="/register" className="btn btn-dark" >Sign up</Link>
-                          </p>
-                          
                         </div>
                       </div>
                     </div>
@@ -113,12 +103,6 @@ class LoginForm extends Form {
               </div>
             </div>
           </main>
-
-          <footer>
-            <div class="text-center fixed-bottom pb-3" id="loginFooter">
-              Footer placeholder
-            </div>
-          </footer>
         </div>
       </body>
     );
