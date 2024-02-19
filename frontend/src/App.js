@@ -19,7 +19,7 @@ function App() {
       
         <Routes>
           <Route path="/" element={<LoginForm />} />
-          <Route path="/test" element={<PatientDash />} />
+          <Route path="/patient-dashboard" element={<PatientDash />} />
           <Route path="/register" element={<RegisterForm />} />       
           <Route path="/logout" element={<Logout />} />
           <Route path="/not-found" element={<NotFound />} />
