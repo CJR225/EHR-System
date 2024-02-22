@@ -12,7 +12,7 @@ fs
         return (file.indexOf(".") !== 0) && (file !== "index.js");
     })
     .forEach(function (file) {
-        var model = import(path.join(__dirname, file));
+        var model =  import(path.join(__dirname, file));
         db[model.name] = model;
     });
 Object.keys(db).forEach(function (modelName) {
@@ -22,4 +22,4 @@ Object.keys(db).forEach(function (modelName) {
 });
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-module.exports = db
+module.exports = db;
