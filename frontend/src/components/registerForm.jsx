@@ -6,24 +6,20 @@ import auth from "../services/authService";
 
 class RegisterForm extends Form {
   state = {
-    data: { username: "", password: "", firstname: "", lastname: "" },
+    data: { username: "", password: "" },
     errors: {},
   };
 
   schema = {
     username: Joi.string().required().label("Username"),
     password: Joi.string().required().min(5).label("Password"),
-    firstname: Joi.string().required().label("Firstname"),
-    lastname: Joi.string().required().label("Lastname"),
   };
 
   doSubmit = async () => {
-
     try {
-      //console.log(this.state.data);
-      const response = await userService.signup(this.state.data);
+      const response = await userService.register(this.state.data);
       auth.loginWithJwt(response.headers["x-access-token"]);
-      window.location = "/student/courseHome";
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
@@ -70,11 +66,16 @@ class RegisterForm extends Form {
           <span></span>
 
           <main>
-            <div className="container py-4 h-100">
+            <div
+              className="container py-4 h-100"
+              style={{
+                
+              }}>
               <div className="row d-flex justify-content-center align-items-center h-100">
                 <div className="col-12 col-md-8 col-lg-6 col-xl-5">
                   <div
-                    className="card text-white" id="cardlogin"
+                    className="card text-white"
+                    id="cardlogin"
                     styles="border-radius: 1rem;"
                   >
                     <div className="card-body p-5 pb-2 pt-3 text-center">
@@ -90,10 +91,14 @@ class RegisterForm extends Form {
                         <div className="form-outline form-white mb-4">
                           <form styles="{{}}" onSubmit={this.handleSubmit}>
                             {this.renderInput("username", "Username")}
-                            {this.renderInput("password","Password","password")}
-                            {this.renderInput("firstname", "First Name")}
-                            {this.renderInput("lastname", "Last Name")}
-                            <div className="mt-3">{this.renderButton("Sign Up")}</div>
+                            {this.renderInput(
+                              "password",
+                              "Password",
+                              "password"
+                            )}
+                            <div className="mt-3">
+                              {this.renderButton("Sign Up")}
+                            </div>
                           </form>
                         </div>
                       </div>
