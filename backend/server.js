@@ -33,7 +33,7 @@ var models = require("./models");
 //Routes 
 var authRoute = require('./routes/auth.js')(app,passport);
 //load passport strategies 
-require('./config/passport/passport.js')(passport, models.Student);
+require('./config/passport/passport.js')(passport, models.student);
 //Sync Database 
 models.sequelize.sync().then(function() {
     console.log('Nice! Database looks fine');
