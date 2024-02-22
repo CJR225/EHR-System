@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   var Student = sequelize.define('student', {
     user_id: {
@@ -44,5 +45,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-  return Student
+  return Student;
 };
