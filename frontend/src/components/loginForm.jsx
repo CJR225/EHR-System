@@ -21,11 +21,8 @@ class LoginForm extends Form {
       console.log("made it to dosumbit");
       const { data } = this.state;
        await auth.login(data.username, data.password);
-      //console.log(response);
-     // auth.loginWithJwt(response.body);
-      
-      // const { state } = this.props.location;
-      window.location = "/student/courseHome"; // state ? state.from.pathname : "/";
+     const { state } = this.props.location;
+      window.location = state ? state.from.pathname : "/test";
     } catch (ex) {
       console.log(ex);
       if (ex.response && ex.response.status === 400) {

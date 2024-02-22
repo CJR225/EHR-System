@@ -12,7 +12,7 @@ import Logout from "./components/logout";
 import PatientDash from "./components/patientDashboard";
 
 function App() {
-
+  
   return (
     <div>
       <BrowserRouter>
