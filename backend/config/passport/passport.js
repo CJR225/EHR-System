@@ -1,6 +1,6 @@
 var bCrypt = require('bcryptjs');
 module.exports = function(passport, student) {
-    var Student = student;
+    Student = student;
     var LocalStrategy = require('passport-local').Strategy;
     passport.serializeUser(function(student, done) {
         done(null, student.user_id);
@@ -24,6 +24,9 @@ module.exports = function(passport, student) {
             var generateHash = function(password) {
                 return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
             };
+            if (Student == null) {
+                console.log("is null");
+            }
             Student.findOne({
                 where: {
                    username : username
@@ -63,7 +66,7 @@ module.exports = function(passport, student) {
         },
         function(req, username, password, done) {
             var Student = student;
-            var isValidPassword = function(studentpass, password) {
+            var isValidPassword = function(userpass, password) {
                 return bCrypt.compareSync(password, userpass);
             }
             Student.findOne({

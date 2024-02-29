@@ -20,6 +20,7 @@ var _notes_patient = require("./notes_patient");
 var _wounds = require("./wounds");
 
 function initModels(sequelize) {
+  
   var Allergies = _Allergies(sequelize, DataTypes);
   var IOandADL = _IOandADL(sequelize, DataTypes);
   var IVandLines = _IVandLines(sequelize, DataTypes);
@@ -85,6 +86,7 @@ function initModels(sequelize) {
 
   return {
     Allergies,
+    
     IOandADL,
     IVandLines,
     Immunizations,
