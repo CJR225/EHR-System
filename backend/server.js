@@ -5,7 +5,9 @@ const session = require('express-session');
 const cors = require('cors');
 const path = require("path");
 //const Sequelize = require("sequelize");
+const { Sequelize } = require("sequelize-cockroachdb");
 const config = require("./config/config.json");
+require('dotenv').config()
 
 /*
 const sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
@@ -13,9 +15,7 @@ const sequelize = new Sequelize(config.development.database, config.development.
 });
 */
 
-const { Sequelize } = require("sequelize-cockroachdb");
-
-const sequelize = new Sequelize("postgresql://chris:rK1Mf1yjFs6lU9gj_XqHTw@pure-spaniel-13637.7tt.aws-us-east-1.cockroachlabs.cloud:26257/EHR?sslmode=verify-full");
+const sequelize = new Sequelize(process.env.DATABASE_URL);
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -33,11 +33,9 @@ const AuthRouter = require('./routes/auth.js');
 app.use('/auth', AuthRouter);
 
 var initModels = require("./models/init-models.js");
+const { env } = require('process');
 var models = initModels(sequelize);
-//var models = require("./models");
-//Routes 
-//var authRoute = require('./routes/auth.js')(app,passport);
-//load passport strategies 
+
 require('./config/passport/passport.js')(passport, models.Student);
 
 console.log(models.sequelize);
