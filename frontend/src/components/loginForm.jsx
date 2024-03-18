@@ -1,31 +1,41 @@
 import React, { useState } from "react";
-import Joi from "joi-browser";
-import Form from "../common/form";
-import auth from "../services/authService";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
+function LoginForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
-class LoginForm extends Form {
-  
-  state = {
-    data: {
-      username: "",
-      password: "",
-    },
-    errors: {},
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:3001/auth/signin", {
+        username,
+        password,
+      });
+
+      console.log("Login Successful:", response.data);
+
+      if (
+        response.status === 200 &&
+        response.data.message === "Login successful"
+      ) {
+        // Handle successful registration, e.g., redirect to dashboard
+        navigate("/dashboard");
+      } else {
+          setErrorMessage(response.data.message); // Set error message
+        
+      }
+    } catch (error) {
+      console.error("Registration Error:", error.response.data);
+      setErrorMessage(error.response.data.message);
+      // Handle registration error, e.g., display error message to user
+    }
   };
 
-  schema = {
-    username: Joi.string().required().label("Username"),
-    password: Joi.string().required().min(5).label("Password"),
-  };
- 
-  
-  
-
-  render() {
-     //console.log("this is the login form");
     return (
       <body id="loginBody" >
       <div class="background">
@@ -77,14 +87,38 @@ class LoginForm extends Form {
                       <p class="pb-2" id="loginDesc">Please Sign In!</p>
 
                       <div class="form-outline form-white mb-0">
-                        <form>
-                          {this.renderInput("username", "Username")}
-                          {this.renderInput(
-                            "password",
-                            "Password",
-                            "password"
+                      <form onSubmit={handleSubmit}>
+                          <div>
+                            <label>Username</label>
+                            <input
+                              className="form-control mb-2 mt-1"
+                              type="text"
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                            />
+                          </div>
+                          {errorMessage && (
+                            <div className="alert alert-danger mt-2" role="alert">
+                              {errorMessage}
+                            </div>
                           )}
-                          <div className="mt-5">{this.renderButton("Sign In")}</div>
+                          <div>
+                            <label>Password</label>
+                            <input
+                              className="form-control mb-2 mt-1"
+                              type="password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                            />
+                          </div>
+                          <div className="mt-5">
+                            <button
+                              type="submit"
+                              className="btn btn-outline-light btn-lg px-5"
+                            >
+                              Sign In
+                            </button>
+                          </div>
                         </form>
 
                         
@@ -107,7 +141,6 @@ class LoginForm extends Form {
       </div>
     </body>
     );
-  }
 }
 
 export default LoginForm;
