@@ -13,7 +13,8 @@ module.exports = function(sequelize, DataTypes) {
     section_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      unique: true
     }
   }, {
     sequelize,
