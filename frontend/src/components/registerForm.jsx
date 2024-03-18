@@ -1,12 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Joi from "joi-browser";
 
 function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isValidForm, setIsValidForm] = useState(false);
   const navigate = useNavigate();
+
+  const schema = {
+    username: Joi.string()
+      .required()
+      .regex(/^(?=.*[A-Z])(?=.*[0-9])/)
+      .label("Username")
+      .error(() => "Username must contain a number & capital letter"),
+    password: Joi.string()
+      .required()
+      .min(5)
+      .regex(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/)
+      .label("Password")
+      .error(
+        () =>
+        "Password must have length of 8, capital letter, and a number"
+      ),
+  };
+
+  const isFormValid = () => {
+    const { error } = Joi.validate({ username, password }, schema);
+    return !error;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,24 +43,43 @@ function RegisterForm() {
 
       console.log("Login Successful:", response.data);
 
-      if (
+      if (response.data.message === "That username is already taken") {
+        setErrorMessage(response.data.message);
+      } else if (
         response.status === 200 &&
         response.data.message === "User created successfully"
       ) {
-        // Handle successful registration, e.g., redirect to dashboard
         navigate("/patient-dashboard");
-      } else {
-        // Handle other successful responses or errors
-        // Display a message or perform other actions as needed
-        if (response.data.message === "That username is already taken") {
-          setErrorMessage(response.data.message); // Set error message
-        }
       }
     } catch (error) {
       console.error("Registration Error:", error.response.data);
       setErrorMessage(error.response.data.message);
-      // Handle registration error, e.g., display error message to user
     }
+  };
+
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [errorMessage]);
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "username") {
+      setUsername(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+
+    const validationResult = Joi.validate({ username, password }, schema);
+    setIsValidForm(!validationResult.error);
   };
 
   return (
@@ -82,7 +125,7 @@ function RegisterForm() {
                   id="cardlogin"
                   styles="border-radius: 1rem;"
                 >
-                  <div className="card-body p-5 text-center">
+                  <div className="card-body p-5 pb-2 text-center">
                     <div className="mb-md-5 mt-md-2">
                       <h2 class="fw-bold mb-2 pb-2" id="loginTitle">
                         Quinnipiac Nursing
@@ -103,27 +146,49 @@ function RegisterForm() {
                               className="form-control mb-2 mt-1"
                               type="text"
                               value={username}
+                              label="Username"
                               onChange={(e) => setUsername(e.target.value)}
                             />
+                            {schema.username.validate(username).error && (
+                              <div
+                                className="alert alert-danger mt-2 p-2"
+                                role="alert"
+                              >
+                                {
+                                  schema.username.validate(username).error
+                                    .message
+                                }
+                              </div>
+                            )}
                           </div>
-                          {errorMessage && (
-                            <div className="alert alert-danger mt-2" role="alert">
-                              {errorMessage}
-                            </div>
-                          )}
                           <div>
                             <label>Password</label>
                             <input
                               className="form-control mb-2 mt-1"
                               type="password"
                               value={password}
+                              label="Password"
                               onChange={(e) => setPassword(e.target.value)}
                             />
+                            {schema.password.validate(password).error && (
+              <div className="alert alert-danger mt-2 p-2" role="alert">
+                {schema.password.validate(password).error.message}
+              </div>
+            )}
+                            {errorMessage && (
+                              <div
+                                className="alert alert-danger mt-2 p-2"
+                                role="alert"
+                              >
+                                {errorMessage}
+                              </div>
+                            )}
                           </div>
                           <div className="mt-5">
                             <button
                               type="submit"
                               className="btn btn-outline-light btn-lg px-5"
+                              disabled={!isFormValid()}
                             >
                               Sign Up
                             </button>
@@ -139,8 +204,8 @@ function RegisterForm() {
         </main>
 
         <footer>
-        <div class="text-center fixed-bottom pb-3" id="loginFooter">
-            Chris Rocco - 
+          <div class="text-center fixed-bottom pb-2" id="loginFooter">
+            Chris Rocco - Matthew Nova - William Siri &copy; Quinnipiac 2024
           </div>
         </footer>
       </div>
