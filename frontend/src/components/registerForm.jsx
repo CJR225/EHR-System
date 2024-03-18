@@ -24,7 +24,7 @@ function RegisterForm() {
         response.data.message === "User created successfully"
       ) {
         // Handle successful registration, e.g., redirect to dashboard
-        navigate("/dashboard");
+        navigate("/patient-dashboard");
       } else {
         // Handle other successful responses or errors
         // Display a message or perform other actions as needed

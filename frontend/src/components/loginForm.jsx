@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -24,7 +24,7 @@ function LoginForm() {
         response.data.message === "Login successful"
       ) {
         // Handle successful registration, e.g., redirect to dashboard
-        navigate("/dashboard");
+        navigate("/patient-dashboard");
       } else {
           setErrorMessage(response.data.message); // Set error message
         
@@ -76,7 +76,7 @@ function LoginForm() {
               <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card text-white" styles="border-radius: 1rem;" id="cardlogin">
                   <div class="card-body p-5 text-center">
-                    <div class="mb-md-5 mt-md-2">
+                    <div class="mb-md-4 mt-md-2">
                       <h2 class="fw-bold mb-2 pb-2" id="loginTitle">
                         Quinnipiac Nursing
                       </h2>
@@ -123,7 +123,11 @@ function LoginForm() {
 
                         
                       </div>
-
+                      <div className="mt-5">
+                        <button className="btn btn-outline-light btn-md px-3" onClick={() => navigate('/register')}>
+                          Don't have an account? Sign up
+                        </button>
+                      </div>
                 
                     </div>
                   </div>
