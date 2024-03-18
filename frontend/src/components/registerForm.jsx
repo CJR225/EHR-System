@@ -3,121 +3,131 @@ import Joi from "joi-browser";
 import Form from "../common/form";
 import * as userService from "../services/userService";
 import auth from "../services/authService";
+import axios from "axios";
 
-class RegisterForm extends Form {
-  state = {
-    data: { username: "", password: "" },
-    errors: {},
+const RegisterForm = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  schema = {
-    username: Joi.string().required().label("Username"),
-    password: Joi.string().required().min(5).label("Password"),
-  };
-
-  doSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await userService.register(this.state.data);
-      auth.loginWithJwt(response.headers["x-access-token"]);
-      window.location = "/";
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.username = ex.response.data;
-        this.setState({ errors });
-      }
+      await axios.post("http://localhost:3001/signup", formData);
+      console.log("Data sent successfully");
+    } catch (error) {
+      console.error("Error sending data:", error);
     }
   };
 
-  render() {
-    console.log("this is the registration form");
-    return (
-      <body id="loginBody" onSubmit={this.handleSubmit}>
-        <div className="background">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+  return (
+    <body id="loginBody">
+      <div className="background">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
 
-          <main>
-            <div
-              className="container py-4 h-100"
-              style={{
-                
-              }}>
-              <div className="row d-flex justify-content-center align-items-center h-100">
-                <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-                  <div
-                    className="card text-white"
-                    id="cardlogin"
-                    styles="border-radius: 1rem;"
-                  >
-                    <div className="card-body p-5 pb-2 pt-3 text-center">
-                      <div className="mb-md-1 mt-md-1">
-                        <h2 className="fw-bold mb-2 pb-2" id="loginTitle">
-                          Welcome to Auto Grader
-                        </h2>
+        <main>
+          <div className="container py-4 h-100" style={{}}>
+            <div className="row d-flex justify-content-center align-items-center h-100">
+              <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div
+                  className="card text-white"
+                  id="cardlogin"
+                  styles="border-radius: 1rem;"
+                >
+                  <div className="card-body p-5 pb-2 pt-3 text-center">
+                    <div className="mb-md-1 mt-md-1">
+                      <h2 class="fw-bold mb-2 pb-2" id="loginTitle">
+                        Quinnipiac Nursing
+                      </h2>
+                      <h5 class="fw-light mb-2 pb-2" id="loginLowerTitle">
+                        Electronic Healthcare System
+                      </h5>
 
-                        <p className="pb-1" id="loginDesc">
-                          Please fill in the following to Sign Up!
-                        </p>
+                      <p className="pb-1" id="loginDesc">
+                        Please fill in the following to Sign Up!
+                      </p>
 
-                        <div className="form-outline form-white mb-4">
-                          <form styles="{{}}" onSubmit={this.handleSubmit}>
-                            {this.renderInput("username", "Username")}
-                            {this.renderInput(
-                              "password",
-                              "Password",
-                              "password"
-                            )}
-                            <div className="mt-3">
-                              {this.renderButton("Sign Up")}
-                            </div>
-                          </form>
-                        </div>
+                      <div className="form-outline form-white mb-4">
+                        <form onSubmit={handleSubmit}>
+                          <div>
+                            <input
+                              type="text"
+                              name="username"
+                              value={formData.username}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                          <div>
+                            <input
+                              type="password"
+                              name="password"
+                              value={formData.password}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                          <div className="mt-3">
+                            <button
+                              type="submit"
+                              className="btn btn-outline-light btn-lg px-5"
+                            >
+                              Sign Up
+                            </button>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </main>
+          </div>
+        </main>
 
-          <footer>
-            <div className="text-center fixed-bottom pb-2" id="loginFooter">
-              footer placeholder
-            </div>
-          </footer>
-        </div>
-      </body>
-    );
-  }
-}
+        <footer>
+          <div className="text-center fixed-bottom pb-2" id="loginFooter">
+            footer placeholder
+          </div>
+        </footer>
+      </div>
+    </body>
+  );
+};
 
 export default RegisterForm;
