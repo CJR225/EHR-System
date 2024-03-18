@@ -32,6 +32,8 @@ app.use(passport.session());
 const AuthRouter = require('./routes/auth.js');
 app.use('/auth', AuthRouter);
 
+
+
 var initModels = require("./models/init-models.js");
 const { env } = require('process');
 var models = initModels(sequelize);
