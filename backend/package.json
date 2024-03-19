@@ -2,27 +2,40 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.7",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.18.0",
     "fs": "^0.0.1-security",
     "joi-browser": "^13.4.0",
+    "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.9.1",
     "nodemon": "^3.0.3",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "sequelize": "^6.37.0",
     "sequelize-auto": "^0.8.8",
     "sequelize-automate": "^1.2.2",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "sequelize-cockroachdb": "^6.0.5",
+    "sqlite3": "^5.1.7"
   }
 }

@@ -1,15 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Sections', {
-    student_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'Student',
-        key: 'user_id'
-      }
-    },
     instructor_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -22,7 +13,8 @@ module.exports = function(sequelize, DataTypes) {
     section_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      unique: true
     }
   }, {
     sequelize,
@@ -36,7 +28,6 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "section_id" },
           { name: "instructor_id" },
-          { name: "student_id" },
         ]
       },
       {
@@ -44,13 +35,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "instructor_id" },
-        ]
-      },
-      {
-        name: "section_fk1",
-        using: "BTREE",
-        fields: [
-          { name: "student_id" },
         ]
       },
     ]
