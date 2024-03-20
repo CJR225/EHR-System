@@ -7,6 +7,9 @@ const path = require("path");
 //const Sequelize = require("sequelize");
 const { Sequelize } = require("sequelize-cockroachdb");
 const config = require("./config/config.json");
+
+
+
 require('dotenv').config()
 
 /*
@@ -16,7 +19,7 @@ const sequelize = new Sequelize(config.development.database, config.development.
 */
 
 const sequelize = new Sequelize(process.env.DATABASE_URL);
-
+console.log(process.env.DATABASE_URL);
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -32,11 +35,13 @@ app.use(passport.session());
 const AuthRouter = require('./routes/auth.js');
 app.use('/auth', AuthRouter);
 
-
+const PatientRouter = require('./routes/patientRouters.js');
+app.use('/patients', PatientRouter);
 
 var initModels = require("./models/init-models.js");
 const { env } = require('process');
 var models = initModels(sequelize);
+const Patient = models.Patient;
 
 require('./config/passport/passport.js')(passport, models.Student);
 

@@ -38,6 +38,10 @@ module.exports = function(sequelize, DataTypes) {
     time_taken: {
       type: DataTypes.DATE,
       allowNull: true
+    },
+    administered_at: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,
