@@ -4,20 +4,16 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const path = require("path");
-//const Sequelize = require("sequelize");
-const { Sequelize } = require("sequelize-cockroachdb");
 const config = require("./config/config.json");
-
-
-
 require('dotenv').config()
 
+//const Sequelize = require("sequelize");
 /*
 const sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
     dialect: 'mysql',
 });
 */
-
+const { Sequelize } = require("sequelize-cockroachdb");
 const sequelize = new Sequelize(process.env.DATABASE_URL);
 console.log(process.env.DATABASE_URL);
 app.use(cors());
