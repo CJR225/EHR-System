@@ -21,6 +21,7 @@ var _wounds = require("./wounds");
 
 function initModels(sequelize) {
   
+
   var Allergies = _Allergies(sequelize, DataTypes);
   var IOandADL = _IOandADL(sequelize, DataTypes);
   var IVandLines = _IVandLines(sequelize, DataTypes);
@@ -106,6 +107,8 @@ function initModels(sequelize) {
     notes_patient,
     wounds,
   };
+
+  
 }
 module.exports = initModels;
 module.exports.initModels = initModels;

@@ -14,27 +14,27 @@ module.exports = function(sequelize, DataTypes) {
         key: 'section_id'
       }
     },
-    Fname: {
+    fname: {
       type: DataTypes.STRING(100),
-      allowNull: true
+      allowNull: true,
     },
-    Lname: {
+    lname: {
       type: DataTypes.STRING(45),
       allowNull: true
     },
-    DOB: {
+    dob: {
       type: DataTypes.DATEONLY,
       allowNull: true
     },
-    Religion: {
+    religion: {
       type: DataTypes.STRING(100),
       allowNull: true
     },
-    Height: {
+    height: {
       type: DataTypes.DECIMAL(10,0),
       allowNull: true
     },
-    Weight: {
+    weight: {
       type: DataTypes.DECIMAL(10,0),
       allowNull: true
     },
@@ -46,15 +46,15 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    prev_medHistory: {
+    prev_medhistory: {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    social_History: {
+    social_history: {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    Temperature: {
+    temperature: {
       type: DataTypes.DECIMAL(10,0),
       allowNull: true
     },
@@ -62,11 +62,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    BPS: {
+    bps: {
       type: DataTypes.STRING(45),
       allowNull: true
     },
-    BPD: {
+    bpd: {
       type: DataTypes.STRING(45),
       allowNull: true
     },

@@ -17,145 +17,147 @@ function PatientDash() {
 
 
   // Fetches medications for the selected patient when the active tab is 'MR'
-useEffect(() => {
-  if (selectedPatient && activeTab === 'MR') {
-    axios.get(`http://localhost:5000/patients/${selectedPatient.id}/medications`)
-      .then(response => {
-        setMedications(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching medications for patient:', error);
-      });
-  }
-}, [selectedPatient, activeTab]);
+  useEffect(() => {
+    if (selectedPatient && activeTab === 'MR') {
+      axios.get(`http://localhost:3001/patients/${selectedPatient.id}/medications`)
+        .then(response => {
+          console.log(response.data); // Log to see the structure and data
+          setMedications(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching medications for patient:', error);
+        });
+    }
+  }, [selectedPatient, activeTab]);
 
-// Fetches all patients when the component mounts
-useEffect(() => {
-  axios.get('http://localhost:5000/patients')
-    .then(response => {
-      // Formats patient data (e.g., date of birth) before setting state
-      const formattedPatients = response.data.map(patient => ({
-        ...patient,
-        dob: formatDate(patient.dob)
-      }));
-      setPatients(formattedPatients);
-    })
-    .catch(error => {
-      console.error('There was an error fetching the patients:', error);
-    });
-}, []);
-
-// Fetches patient allergies when the selected patient changes
-useEffect(() => {
-  if (selectedPatient) {
-    axios.get(`http://localhost:5000/patients/${selectedPatient.id}/allergies`)
+  // Fetches all patients when the component mounts
+  useEffect(() => {
+    axios.get('http://localhost:3001/patients')
       .then(response => {
-        setAllergies(response.data);
+        // Formats patient data (e.g., date of birth) before setting state
+        const formattedPatients = response.data.map(patient => ({
+          ...patient,
+          dob: formatDate(patient.dob)
+        }));
+        setPatients(formattedPatients);
       })
       .catch(error => {
         console.error('There was an error fetching the patients:', error);
       });
+  }, []);
+
+  // Fetches patient allergies when the selected patient changes
+  useEffect(() => {
+    if (selectedPatient) {
+      axios.get(`http://localhost:3001/patients/${selectedPatient.id}/allergies`)
+        .then(response => {
+          setAllergies(response.data);
+
+        })
+        .catch(error => {
+          console.error('There was an error fetching the patients:', error);
+        });
+    }
+  }, [selectedPatient]);
+
+  // Fetches patient demographics when the selected patient or active tab changes
+  useEffect(() => {
+    if (selectedPatient && activeTab === 'Demographics') {
+      axios.get(`http://localhost:3001/patients/${selectedPatient.id}/demographics`)
+        .then(response => {
+          setDemographics(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching patient demographics:', error);
+        });
+    }
+  }, [selectedPatient, activeTab]);
+
+
+
+
+
+
+  // Function to format date string to a specified format
+  function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   }
-}, [selectedPatient]);
-
-// Fetches patient demographics when the selected patient or active tab changes
-useEffect(() => {
-  if (selectedPatient && activeTab === 'Demographics') {
-    axios.get(`http://localhost:5000/patients/${selectedPatient.id}/demographics`)
-      .then(response => {
-        setDemographics(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching patient demographics:', error);
-      });
-  }
-}, [selectedPatient, activeTab]);
-
-
-
-
-
-
-// Function to format date string to a specified format
-function formatDate(dateString) {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  return new Date(dateString).toLocaleDateString(undefined, options);
-}
 
   // Handles the selection of a patient from the dropdown menu
-const handleSelectPatient = (event) => {
-  const patientId = event.target.value;
-  const patient = patients.find(p => p.id.toString() === patientId);
+  const handleSelectPatient = (event) => {
+    const patientId = event.target.value;
+    const patient = patients.find(p => p.id.toString() === patientId);
 
-  // Format the DOB of the selected patient before updating the state
-  const formattedPatient = {
-    ...patient,
-    dob: patient ? formatDate(patient.dob) : ''
+    // Format the DOB of the selected patient before updating the state
+    const formattedPatient = {
+      ...patient,
+      dob: patient ? formatDate(patient.dob) : ''
+    };
+    setSelectedPatient(patient);
   };
-  setSelectedPatient(patient);
-};
 
-// Handles the click event on tabs to switch between different views
-const handleTabClick = (tabName) => {
-  setActiveTab(tabName);
-};
+  // Handles the click event on tabs to switch between different views
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
 
-// Deletes all medication entries for the selected patient
-const deleteAllMedications = async () => {
-  const isConfirmed = window.confirm("Are you sure you want to delete ALL medication entries? This action cannot be undone.");
-  if (isConfirmed) {
-    try {
-      await axios.delete('http://localhost:5000/medicine-patient/all');
-      toast.success('All medication entries deleted successfully');
-      setMedications([]); // Clear medications from state
-    } catch (error) {
-      console.error('Error deleting all medications:', error);
-      toast.error('Failed to delete medication entries.');
+  // Deletes all medication entries for the selected patient
+  const deleteAllMedications = async () => {
+    const isConfirmed = window.confirm("Are you sure you want to delete ALL medication entries? This action cannot be undone.");
+    if (isConfirmed) {
+      try {
+        await axios.delete('http://localhost:3001/patients/medicine-patient/all');
+        toast.success('All medication entries deleted successfully');
+        setMedications([]); // Clear medications from state
+      } catch (error) {
+        console.error('Error deleting all medications:', error);
+        toast.error('Failed to delete medication entries.');
+      }
     }
-  }
-};
+  };
 
-// Handles the submission of a new medication entry form
-const handleAddMedication = async (event) => {
-  event.preventDefault();
+  // Handles the submission of a new medication entry form
+  const handleAddMedication = async (event) => {
+    event.preventDefault();
 
-  const formData = new FormData(event.target);
-  const data = Object.fromEntries(formData.entries());
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
 
-  // Add the selectedPatient.id to the data
-  data.patient_id = selectedPatient.id;
+    // Add the selectedPatient.id to the data
+    data.patient_id = selectedPatient.id;
 
-  try {
-    const response = await axios.post('http://localhost:5000/medicine-patient', data);
-    toast.success('Medication added successfully!');
-    console.log('Medication added', response.data);
+    try {
+      const response = await axios.post('http://localhost:3001/patients/medicine-patient', data);
+      toast.success('Medication added successfully!');
+      console.log('Medication added', response.data);
 
-    // Re-fetch medications for the current patient
+      // Re-fetch medications for the current patient
+      fetchMedications();
+
+      // fetch and update the medication list for the patient
+    } catch (error) {
+      console.error('Error adding medication:', error);
+      toast.error('Failed to add medication.');
+    }
+  };
+
+  // Fetches medications for the selected patient
+  const fetchMedications = async () => {
+    if (selectedPatient && selectedPatient.id) {
+      try {
+        const response = await axios.get(`http://localhost:3001/patients/${selectedPatient.id}/medications`);
+        setMedications(response.data);
+      } catch (error) {
+        console.error('Error fetching medications for patient:', error);
+      }
+    }
+  };
+
+  // Calls fetchMedications inside useEffect when selectedPatient or activeTab changes
+  useEffect(() => {
     fetchMedications();
-
-    // fetch and update the medication list for the patient
-  } catch (error) {
-    console.error('Error adding medication:', error);
-    toast.error('Failed to add medication.'); 
-  }
-};
-
-// Fetches medications for the selected patient
-const fetchMedications = async () => {
-  if (selectedPatient && selectedPatient.id) {
-    try {
-      const response = await axios.get(`http://localhost:5000/patients/${selectedPatient.id}/medications`);
-      setMedications(response.data);
-    } catch (error) {
-      console.error('Error fetching medications for patient:', error);
-    }
-  }
-};
-
-// Calls fetchMedications inside useEffect when selectedPatient or activeTab changes
-useEffect(() => {
-  fetchMedications();
-}, [selectedPatient, activeTab]);
+  }, [selectedPatient, activeTab]);
 
   return (
     <header className="mb-10">
@@ -165,7 +167,7 @@ useEffect(() => {
           <div className="row">
             <div className="col-lg-1 vh-100" style={{ backgroundColor: '#9dbbc4' }}>
               <nav className="nav nav-underline flex-column" style={{ padding: 20, alignContent: "center" }}>
-              
+
                 <div className="nav-link" onClick={() => setShowSubTabs(!showSubTabs)}>Home</div>
                 {showSubTabs && (
                   <div style={{ paddingLeft: 20 }}>
@@ -201,9 +203,14 @@ useEffect(() => {
                     <span>Height: {selectedPatient.height} cm</span>
                     <span>Weight: {selectedPatient.weight} kg</span>
                     <span>Allergies:
-                    {allergies.map(allergy => (
-                      <span key={allergy.allergy_id}>{allergy.name}</span>
-                    ))}</span>
+                      {allergies.length > 0 ? (
+                        allergies.map((allergyItem, index) => ( // Ensure parameters are defined here
+                          <span key={allergyItem.allergy_id || index}>{allergyItem.allergy.name}</span>
+                        ))
+                      ) : (
+                        <span>No allergies</span>
+                      )}
+                    </span>
                   </div>
                 )}
 
@@ -238,14 +245,15 @@ useEffect(() => {
                     Delete All Medications
                   </button>
 
-                 
+
                   {medications.length > 0 && (
                     <div>
                       <h4>Previous Medications</h4>
                       <table style={{ width: '100%', marginTop: '20px' }}>
                         <thead>
                           <tr>
-                            <th>Medication id</th>
+                            <th>Medication ID</th>
+                            <th>Name</th>
                             <th>Dosage</th>
                             <th>Route</th>
                             <th>Frequency</th>
@@ -256,12 +264,13 @@ useEffect(() => {
                         <tbody>
                           {medications.map((med, index) => (
                             <tr key={index}>
-                              <td>{med.med_id}</td>
-                              <td>{med.dosage}</td>
-                              <td>{med.route}</td>
-                              <td>{med.frequency}</td>
-                              <td>{new Date(med.taken_last).toLocaleString()}</td>
-                              <td>{new Date(med.administered_at).toLocaleString()}</td>
+                              <td>{med.id}</td>
+                              <td>{med.name}</td>
+                              <td>{med.medicine_patient.dosage}</td>
+                              <td>{med.medicine_patient.route}</td>
+                              <td>{med.medicine_patient.frequency}</td>
+                              <td>{med.medicine_patient.taken_last ? new Date(med.medicine_patient.taken_last).toLocaleString() : 'N/A'}</td>
+                              <td>{med.medicine_patient.administered_at ? new Date(med.medicine_patient.administered_at).toLocaleString() : 'N/A'}</td>
                             </tr>
                           ))}
                         </tbody>
