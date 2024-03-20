@@ -205,7 +205,7 @@ function RegisterForm() {
 
         <footer>
           <div class="text-center fixed-bottom pb-2" id="loginFooter">
-            Chris Rocco - Matthew Nova - William Siri &copy; Quinnipiac 2024
+            &copy; Quinnipiac 2024
           </div>
         </footer>
       </div>
