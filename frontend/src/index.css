@@ -579,3 +579,91 @@ h1 {
 .due-date {
   font-weight: bold;
 }
+
+.sidebar {
+  background: #000;
+  color: #fff;
+  height: 100vh;
+  width: 8.3vw;
+  position: fixed;
+}
+.sidebarContainer {
+  display: flex;
+}
+.sidebarIcon {
+  font-size: 4vw;
+  margin-bottom: 1vh;
+  margin-top: -1vh;
+  text-align: center;
+}
+.sidebarIcon.open {
+  transform: rotate(180deg);
+}
+.sidebarMain {
+  position: fixed;
+  display: flex;
+}
+.sidebarLink {
+  color: #fff;
+  transition: 0.3s;
+}
+.sidebarLink:hover, .sidebarLink:active {
+  color: lightcoral;
+  transition: all 0.3;
+}
+
+.homeSidebar {
+  background: #000;
+  color: #fff;
+  height: 10vh;
+  margin-top: 1.5vh;
+  position: fixed;
+  border-radius: 15px;
+}
+.homeContainer {
+  display: flex;
+}
+.homeLink{
+  color: #fff;
+  transition: 0.3s;
+  text-decoration: none;
+}
+.homeLink:hover, .homeLink:active {
+  color: lightcoral;
+  transition: all 0.3s;
+}
+.homeLink_text{
+  font-family: sans-serif;
+  align-self: left;
+  font-size: 1.2vw;
+}
+
+.PCSidebar {
+  background: #000;
+  color: #fff;
+  height: 13vh;
+  margin-top: 42.2vh;
+  position: fixed;
+  border-radius: 15px;
+}
+.PCContainer {
+  display: flex;
+}
+.PCLink{
+  color: #fff;
+  transition: 0.3s;
+  text-decoration: none;
+}
+.PCLink:hover, .PCLink:active {
+  color: lightcoral;
+  transition: all 0.3s;
+}
+.PCLink_text{
+  font-family: sans-serif;
+  align-self: left;
+  font-size: 1.2vw;
+}
+.MRLabels {
+  margin-right: 5vw;
+  margin-bottom: 3vh;
+}
