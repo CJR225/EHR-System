@@ -31,7 +31,7 @@ function PatientDash() {
   // Fetches medications for the selected patient when the active tab is 'Med Rec'
 useEffect(() => {
   if (selectedPatient && activeTab === 'Med Rec') {
-    axios.get(`http://localhost:5000/patients/${selectedPatient.id}/medications`)
+    axios.get(`http://localhost:3001/patients/${selectedPatient.id}/medications`)
       .then(response => {
         setMedications(response.data);
       })
@@ -43,7 +43,7 @@ useEffect(() => {
 
 // Fetches all patients when the component mounts
 useEffect(() => {
-  axios.get('http://localhost:5000/patients')
+  axios.get('http://localhost:3001/patients')
     .then(response => {
       // Formats patient data (e.g., date of birth) before setting state
       const formattedPatients = response.data.map(patient => ({
@@ -60,7 +60,7 @@ useEffect(() => {
 // Fetches patient allergies when the selected patient changes
 useEffect(() => {
   if (selectedPatient) {
-    axios.get(`http://localhost:5000/patients/${selectedPatient.id}/allergies`)
+    axios.get(`http://localhost:3001/patients/${selectedPatient.id}/allergies`)
       .then(response => {
         setAllergies(response.data);
       })
@@ -73,7 +73,7 @@ useEffect(() => {
 // Fetches patient demographics when the selected patient or active tab changes
 useEffect(() => {
   if (selectedPatient && activeTab === 'Demographics') {
-    axios.get(`http://localhost:5000/patients/${selectedPatient.id}/demographics`)
+    axios.get(`http://localhost:3001/patients/${selectedPatient.id}/demographics`)
       .then(response => {
         setDemographics(response.data);
       })
@@ -112,7 +112,7 @@ const deleteAllMedications = async () => {
   const isConfirmed = window.confirm("Are you sure you want to delete ALL medication entries? This action cannot be undone.");
   if (isConfirmed) {
     try {
-      await axios.delete('http://localhost:5000/medicine-patient/all');
+      await axios.delete('http://localhost:3001/medicine-patient/all');
       toast.success('All medication entries deleted successfully');
       setMedications([]); // Clear medications from state
     } catch (error) {
@@ -133,7 +133,7 @@ const handleAddMedication = async (event) => {
   data.patient_id = selectedPatient.id;
 
   try {
-    const response = await axios.post('http://localhost:5000/medicine-patient', data);
+    const response = await axios.post('http://localhost:3001/medicine-patient', data);
     toast.success('Medication added successfully!');
     console.log('Medication added', response.data);
 
@@ -151,7 +151,7 @@ const handleAddMedication = async (event) => {
 const fetchMedications = async () => {
   if (selectedPatient && selectedPatient.id) {
     try {
-      const response = await axios.get(`http://localhost:5000/patients/${selectedPatient.id}/medications`);
+      const response = await axios.get(`http://localhost:3001/patients/${selectedPatient.id}/medications`);
       setMedications(response.data);
     } catch (error) {
       console.error('Error fetching medications for patient:', error);
