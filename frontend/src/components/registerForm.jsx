@@ -6,6 +6,8 @@ import Joi from "joi-browser";
 function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isValidForm, setIsValidForm] = useState(false);
   const navigate = useNavigate();
@@ -22,14 +24,30 @@ function RegisterForm() {
       .regex(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/)
       .label("Password")
       .error(
-        () =>
-        "Password must have length of 8, capital letter, and a number"
+        () => "Password must have length of 8, capital letter, and a number"
       ),
+    fname: Joi.string()
+      .required()
+      .label("First Name")
+      .error(() => "First Name is required"),
+    lname: Joi.string()
+      .required()
+      .label("Last Name")
+      .error(() => "Last Name is required"),
   };
 
   const isFormValid = () => {
-    const { error } = Joi.validate({ username, password }, schema);
-    return !error;
+    const { error } = Joi.validate(
+      { username, password, fname, lname },
+      schema
+    );
+    return (
+      !error &&
+      username.trim() !== "" &&
+      password.trim() !== "" &&
+      fname.trim() !== "" &&
+      lname.trim() !== ""
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -39,6 +57,8 @@ function RegisterForm() {
       const response = await axios.post("http://localhost:3001/auth/signup", {
         username,
         password,
+        fname,
+        lname,
       });
 
       console.log("Login Successful:", response.data);
@@ -69,16 +89,22 @@ function RegisterForm() {
     }
   }, [errorMessage]);
 
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "username") {
       setUsername(value);
     } else if (name === "password") {
       setPassword(value);
+    } else if (name === "fname") {
+      setFname(value);
+    } else if (name === "lname") {
+      setLname(value);
     }
 
-    const validationResult = Joi.validate({ username, password }, schema);
+    const validationResult = Joi.validate(
+      { username, password, fname, lname },
+      schema
+    );
     setIsValidForm(!validationResult.error);
   };
 
@@ -135,7 +161,7 @@ function RegisterForm() {
                       </h5>
 
                       <p className="pb-1" id="loginDesc">
-                        Please fill in the following to Sign Up!
+                        Please sign up for student account
                       </p>
 
                       <div className="form-outline form-white mb-4">
@@ -171,10 +197,16 @@ function RegisterForm() {
                               onChange={(e) => setPassword(e.target.value)}
                             />
                             {schema.password.validate(password).error && (
-              <div className="alert alert-danger mt-2 p-2" role="alert">
-                {schema.password.validate(password).error.message}
-              </div>
-            )}
+                              <div
+                                className="alert alert-danger mt-2 p-2"
+                                role="alert"
+                              >
+                                {
+                                  schema.password.validate(password).error
+                                    .message
+                                }
+                              </div>
+                            )}
                             {errorMessage && (
                               <div
                                 className="alert alert-danger mt-2 p-2"
@@ -183,6 +215,26 @@ function RegisterForm() {
                                 {errorMessage}
                               </div>
                             )}
+                          </div>
+                          <div>
+                            <label>First Name</label>
+                            <input
+                              className="form-control mb-2 mt-1"
+                              type="text"
+                              value={fname}
+                              label="Fname"
+                              onChange={(e) => setFname(e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <label>Last Name</label>
+                            <input
+                              className="form-control mb-2 mt-1"
+                              type="text"
+                              value={lname}
+                              label="Lname"
+                              onChange={(e) => setLname(e.target.value)}
+                            />
                           </div>
                           <div className="mt-5">
                             <button

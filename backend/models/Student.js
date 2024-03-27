@@ -15,6 +15,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(100),
       allowNull: false
     },
+    fname: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    lname: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
     section_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
