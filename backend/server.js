@@ -39,7 +39,7 @@ const { env } = require('process');
 var models = initModels(sequelize);
 const Patient = models.Patient;
 
-require('./config/passport/passport.js')(passport, models.Student);
+require('./config/passport/passport.js')(passport, models.Student, models.Instructor);
 
 console.log(models.sequelize);
 sequelize.sync().then(() => {

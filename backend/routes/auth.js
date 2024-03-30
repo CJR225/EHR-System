@@ -36,6 +36,23 @@ router.post('/signin', (req, res, next) => {
     })(req, res, next);
 });
 
+router.post('/signin-instructor', (req, res, next) => {
+    passport.authenticate('signin-instructor', (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(401).json({ message: info.message }); // Username does not exist or Incorrect password
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.status(200).json({ message: 'Login successful' });
+        });
+    })(req, res, next);
+});
+
 router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/');

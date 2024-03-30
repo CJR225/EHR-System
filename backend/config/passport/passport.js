@@ -1,17 +1,17 @@
 const bCrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function(passport, Student) {
-    passport.serializeUser(function(student, done) {
-        done(null, student.user_id);
+module.exports = function(passport, Student, Instructor) {
+    passport.serializeUser(function(instructor, done) {
+        done(null, instructor.user_id);
     });
 
     passport.deserializeUser(function (user_id, done) {
-        Student.findByPk(user_id).then(function (student) {
-            if (student) {
-                done(null, student.get());
+        Student.findByPk(user_id).then(function (instructor) {
+            if (instructor) {
+                done(null, instructor.get());
             } else {
-                done(student.errors, null);
+                done(instructor.errors, null);
             }
         });
     });
@@ -29,8 +29,8 @@ module.exports = function(passport, Student) {
             
             Student.findOne({
                 where: { username: username }
-            }).then(function(student) {
-                if (student) {
+            }).then(function(instructor) {
+                if (instructor) {
                     return done(null, false, { message: 'That username is already taken' });
                 } else {
                     var studentPassword = generateHash(password);
@@ -66,15 +66,44 @@ module.exports = function(passport, Student) {
 
             Student.findOne({
                 where: { username: username }
-            }).then(function(student) {
-                if (!student) {
+            }).then(function(instructor) {
+                if (!instructor) {
                     return done(null, false, { message: 'Username does not exist' });
                 }
-                if (!isValidPassword(student.password, password)) {
+                if (!isValidPassword(instructor.password, password)) {
                     return done(null, false, { message: 'Incorrect password.' });
                 }
-                var studentinfo = student.get();
-                return done(null, studentinfo);
+                var instructorinfo = instructor.get();
+                return done(null, instructorinfo);
+            }).catch(function(err) {
+                console.log("Error:", err);
+                return done(null, false, { message: 'Something went wrong with your Signin' });
+            });
+        }
+    ));
+
+    passport.use('signin-instructor', new LocalStrategy(
+        {
+            usernameField: 'username',
+            passwordField: 'password',
+            passReqToCallback: true
+        },
+        function(req, username, password, done) {
+            var isValidPassword = function(userpass, password) {
+                return bCrypt.compareSync(password, userpass);
+            };
+
+            Instructor.findOne({
+                where: { username: username }
+            }).then(function(instructor) {
+                if (!instructor) {
+                    return done(null, false, { message: 'Username does not exist' });
+                }
+                if (!isValidPassword(instructor.password, password)) {
+                    return done(null, false, { message: 'Incorrect password.' });
+                }
+                var instructorinfo = instructor.get();
+                return done(null, instructorinfo);
             }).catch(function(err) {
                 console.log("Error:", err);
                 return done(null, false, { message: 'Something went wrong with your Signin' });

@@ -112,7 +112,7 @@ const deleteAllMedications = async () => {
   const isConfirmed = window.confirm("Are you sure you want to delete ALL medication entries? This action cannot be undone.");
   if (isConfirmed) {
     try {
-      await axios.delete('http://localhost:3001/medicine-patient/all');
+      await axios.delete('http://localhost:3001/patients/medicine-patient/all');
       toast.success('All medication entries deleted successfully');
       setMedications([]); // Clear medications from state
     } catch (error) {
@@ -133,7 +133,7 @@ const handleAddMedication = async (event) => {
   data.patient_id = selectedPatient.id;
 
   try {
-    const response = await axios.post('http://localhost:3001/medicine-patient', data);
+    const response = await axios.post('http://localhost:3001/patients/medicine-patient', data);
     toast.success('Medication added successfully!');
     console.log('Medication added', response.data);
 
