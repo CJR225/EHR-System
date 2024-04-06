@@ -14,6 +14,26 @@ module.exports = function(sequelize, DataTypes) {
         key: 'section_id'
       }
     },
+    emergency_contact_name: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    emergency_contact_number: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
+    insurance: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    gender: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
+    gender_at_birth: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
     fname: {
       type: DataTypes.STRING(100),
       allowNull: true,

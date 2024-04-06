@@ -34,6 +34,24 @@ app.use('/auth', AuthRouter);
 const PatientRouter = require('./routes/patientRouters.js');
 app.use('/patients', PatientRouter);
 
+const medRecRouter = require('./routes/medRecRouter.js');
+app.use('/patients', medRecRouter);
+
+const demographicsRouter = require('./routes/demographicsRouter.js');
+app.use('/patients', demographicsRouter);
+
+const historyRouter = require('./routes/historyRouter.js');
+app.use('/patients', historyRouter);
+
+const orderRouter = require('./routes/ordersRouter.js');
+app.use('/patients', orderRouter);
+
+const MAR_Router = require('./routes/MAR-Router.js');
+app.use('/patients', MAR_Router);
+
+const sectionRouter = require('./routes/sectionRouter.js');
+app.use('/patients', sectionRouter);
+
 var initModels = require("./models/init-models.js");
 const { env } = require('process');
 var models = initModels(sequelize);

@@ -1,0 +1,119 @@
+.orderItem {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #1223e29b;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.orderItem h4 {
+  margin-bottom: 5px;
+}
+
+.orderItem p {
+  margin-bottom: 2px;
+}
+
+.tabContent {
+background-color: #f5f5f5;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabHeading {
+color: #333;
+margin-bottom: 20px;
+border-bottom: 2px solid #418FDE;
+padding-bottom: 10px;
+}
+
+.formInput,
+.formSelect,
+.formButton {
+display: block;
+width: 100%;
+padding: 10px;
+margin-bottom: 15px;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+
+.formButton {
+background-color: #418FDE;
+color: white;
+cursor: pointer;
+}
+
+.formButton:hover {
+background-color: #3079b4;
+}
+
+.table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+}
+
+.table th,
+.table td {
+text-align: left;
+padding: 12px;
+border-bottom: 1px solid #ddd;
+}
+
+.table tr:nth-child(even) {
+background-color: #f9f9f9;
+}
+
+.table tr:hover {
+background-color: #ddf;
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.formInput, .formButton {
+  flex: 1;
+  min-width: 140px;
+}
+
+.formButton {
+  flex: none;
+  padding: 10px 20px;
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.inputWrapper {
+  flex-basis: calc(33.333% - 20px);
+  display: flex;
+  flex-direction: column;
+}
+
+.formInput {
+  width: 100%;
+}
+
+label {
+  margin-bottom: 5px;
+}
+@media (max-width: 768px) {
+  .inputWrapper {
+    flex-basis: 100%;
+  }
+}
+
+.formButton.delete {
+background-color: white;
+color:red;
+}
