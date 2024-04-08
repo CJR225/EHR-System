@@ -11,7 +11,7 @@ router.get('/:id/medications', async (req, res) => {
     const patientWithMedications = await Patient.findByPk(id, {
       include: [{
         model: Medicine,
-        as: 'med_id_Medicines', // Correct alias as defined in your association
+        as: 'med_id_Medicines', 
         required: true
       }]
     });
