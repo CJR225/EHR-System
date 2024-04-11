@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
+import { CgProfile } from "react-icons/cg";
 
 
 function PatientDash() {
@@ -317,9 +318,10 @@ function PatientDash() {
               </div>
               <div id="patientDash" className="col-lg-11 vh-100" style={{ margin: 0, padding: 0, backgroundColor: '#d7dfe0' }}>
 
-                <nav className="flex-column" style={{ background: "#818589", color: "black", height: "10vh" }}>
+                <nav className="flex-column" style={{ background: "#a3c2c2", color: "black", height: "13.5vh" }}>
                   <div style={{ flex: 1 }}>
-                    <select style={{ marginTop: '1.8vh', marginLeft: '4vh' }} onChange={handleSelectPatient} value={selectedPatient?.id || ""}>
+                  <CgProfile style={{fontSize: '4vw', marginLeft: '3vw'}}/>
+                    <select style={{ marginTop: '3vh', marginLeft: '4vh' }} onChange={handleSelectPatient} value={selectedPatient?.id || ""}>
                       <option value="">Select a patient</option>
                       {patients.map(patient => (
                         <option key={patient.id} value={patient.id}>
@@ -329,12 +331,12 @@ function PatientDash() {
                     </select>
                   </div>
                   {selectedPatient && (
-                    <div style={{ flex: 8, display: 'flex', justifyContent: 'space-around', marginTop: '1vh' }}>
-                      <span>Medical Record #: {selectedPatient.id}</span>
-                      <span>Patient Name: {selectedPatient.fname} {selectedPatient.lname}</span>
-                      <span>Date of Birth: {selectedPatient.dob}</span>
-                      <span>Height: {selectedPatient.height} cm</span>
-                      <span>Weight: {selectedPatient.weight} kg</span>
+                    <div style={{ flex: 10, display: 'flex', justifyContent: 'space-around', marginTop: '1vh' }}>
+                      <span>Medical Record #: {selectedPatient.id}</span><span>|</span>
+                      <span>Patient Name: {selectedPatient.fname} {selectedPatient.lname}</span><span>|</span>
+                      <span>Date of Birth: {selectedPatient.dob}</span><span>|</span>
+                      <span>Height: {selectedPatient.height} cm</span><span>|</span>
+                      <span>Weight: {selectedPatient.weight} kg</span><span>|</span>
                       <span>Allergies:
                         {allergies.map(allergy => (
                           <span key={allergy.allergy_id}>{allergy.name}</span>

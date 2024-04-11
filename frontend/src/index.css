@@ -581,7 +581,7 @@ h1 {
 }
 
 .sidebar {
-  background: #000;
+  background: #669797;
   color: #fff;
   height: 100vh;
   width: 8.3vw;
@@ -608,12 +608,12 @@ h1 {
   transition: 0.3s;
 }
 .sidebarLink:hover, .sidebarLink:active {
-  color: lightcoral;
+  color: rgb(51, 86, 138);
   transition: all 0.3;
 }
 
 .homeSidebar {
-  background: #000;
+  background: #669797;
   color: #fff;
   height: 10vh;
   margin-top: 1.5vh;
@@ -629,7 +629,7 @@ h1 {
   text-decoration: none;
 }
 .homeLink:hover, .homeLink:active {
-  color: lightcoral;
+  color: rgb(51, 86, 138);
   transition: all 0.3s;
 }
 .homeLink_text{
@@ -639,7 +639,7 @@ h1 {
 }
 
 .PCSidebar {
-  background: #000;
+  background: #669797;
   color: #fff;
   height: 13vh;
   margin-top: 42.2vh;
@@ -655,7 +655,7 @@ h1 {
   text-decoration: none;
 }
 .PCLink:hover, .PCLink:active {
-  color: lightcoral;
+  color: rgb(51, 86, 138);
   transition: all 0.3s;
 }
 .PCLink_text{
