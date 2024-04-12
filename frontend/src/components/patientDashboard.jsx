@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { NavLink } from 'react-router-dom';
 import styles from '../PatientDash.module.css';
 
+//react icons
 import {
   FaHome,
   FaPaperPlane,
@@ -16,6 +17,7 @@ import {
 import { IoIosArrowForward } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
+
 
 
 function PatientDash() {
@@ -31,7 +33,7 @@ function PatientDash() {
 
 
 
-
+//get orders by patient 
   useEffect(() => {
     if (activeTab === 'Orders' && selectedPatient) {
       axios.get(`http://localhost:3001/patients/${selectedPatient.id}/orders`)
@@ -44,6 +46,7 @@ function PatientDash() {
     }
   }, [activeTab, selectedPatient]);
 
+//fetches patient history
   useEffect(() => {
     const fetchHistoryInfo = async () => {
       // Check if we have a selected patient and the active tab is 'History'
@@ -125,6 +128,7 @@ function PatientDash() {
   }, [selectedPatient, activeTab]); // This useEffect depends on selectedPatient and activeTab
 
 
+  //function for adding medication to patient
   const handleAddMedication = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -144,7 +148,7 @@ function PatientDash() {
     }
   };
 
-
+//function to delete medications from patient
   const handleDeleteMedication = async (medicationId) => {
     try {
       await axios.delete(`http://localhost:3001/patients/${selectedPatient.id}/medicines/${medicationId}`);
