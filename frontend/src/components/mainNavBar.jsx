@@ -1,30 +1,29 @@
 import React, { Component } from "react";
-import { NavLink } from 'react-router-dom';
 import { FaHome, FaPaperPlane, FaBook, FaFlask, FaMedkit, FaPencilAlt } from "react-icons/fa";
-import { IoIosArrowForward } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
-import { CgProfile } from "react-icons/cg";
+import HomeSideBar from "./homeSideBar";
 
 class MainNavBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            homeOpen: false,
-            PCOpen: false
+            activeMenuItem: "Dashboard",
+            isDashboardExpanded: false
         };
     }
 
-    handleToggleHomeOpen = () => {
-        this.setState({ homeOpen: !this.state.homeOpen });
-    }
-
-    handleTogglePCOpen = () => {
-        this.setState({ PCOpen: !this.state.PCOpen });
+    handleMenuItemClick = (name) => {
+        this.setState({ activeMenuItem: name });
+        if (name === "Dashboard") {
+            this.setState({ isDashboardExpanded: !this.state.isDashboardExpanded });
+        } else {
+            this.setState({ isDashboardExpanded: false });
+        }
     }
 
     render() {
         const menuItem = [
-            { name: "Dashboard", icon: <FaHome /> },
+            { name: "Dashboard", icon: <FaHome />, component: <HomeSideBar /> },
             { name: "Orders", icon: <FaPaperPlane /> },
             { name: "MAR", icon: <FaBook /> },
             { name: "Labs", icon: <FaFlask /> },
@@ -33,17 +32,19 @@ class MainNavBar extends Component {
             { name: "Logout", path: "/", icon: <TbLogout2 /> }
         ];
 
+        const { activeMenuItem, isDashboardExpanded } = this.state;
+
         return (
             <div className="sidebarContainer">
                 <div className="sidebar">
                     {menuItem.map((item, index) => (
-                        <NavLink to={item.path || "#"} key={index} className="sidebarLink">
-                            <div onClick={item.name === "Dashboard" ? this.handleToggleHomeOpen : this.handleTogglePCOpen} className="sidebarIcon active">{item.icon}</div>
-                        </NavLink>
+                        <div key={index} className="sidebarLink" onClick={() => this.handleMenuItemClick(item.name)}>
+                            <div className={`sidebarIcon ${activeMenuItem === item.name ? "active" : ""}`}>{item.icon}</div>
+                        </div>
                     ))}
                 </div>
                 <div className="sidebarMain">
-                    {/* Render children here */}
+                    {activeMenuItem === "Dashboard" && isDashboardExpanded && <HomeSideBar />}
                 </div>
             </div>
         );

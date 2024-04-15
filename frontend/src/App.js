@@ -13,7 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginForm />} />
-          <Route path="/patient-dashboard" element={<TempPatientDash />} />
+          <Route path="/patient-dashboard" element={<PatientDash />} />
           <Route path="/register" element={<RegisterForm />} />
 
           <Route path="/not-found" element={<NotFound />} />
