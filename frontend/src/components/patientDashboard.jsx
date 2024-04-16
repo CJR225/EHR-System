@@ -7,10 +7,11 @@ import styles from "../PatientDash.module.css";
 
 import PatientDemographics from './PatientDemographics';
 import PatientMedRec from './PatientMedRec';
-import PatientHistory from './PatientHistory'; 
-import PatientOrders from './PatientOrders'; 
-import PatientMAR from './PatientMAR'; 
-import PatientWaldo from './PatientWaldo'; 
+import PatientHistory from './PatientHistory';
+import PatientOrders from './PatientOrders';
+import PatientMAR from './PatientMAR';
+import PatientWaldo from './PatientWaldo';
+import PatientVitals from "./PatientVitals";
 
 //react icons
 import {
@@ -24,6 +25,7 @@ import {
 import { IoIosArrowForward } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
+
 
 function PatientDash() {
   // State variables to manage patient data
@@ -378,7 +380,10 @@ function PatientDash() {
 
                   )}
 
+                  {activeTab === "Vital Signs" && selectedPatient && (
+                    <PatientVitals selectedPatient={selectedPatient} activeTab={activeTab} />
 
+                  )}
 
 
                 </div>
