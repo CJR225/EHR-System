@@ -52,6 +52,9 @@ app.use('/patients', MAR_Router);
 const sectionRouter = require('./routes/sectionRouter.js');
 app.use('/patients', sectionRouter);
 
+const IVandLinesRouter = require('./routes/IVandLinesRouter.js');
+app.use('/patients', IVandLinesRouter);
+
 var initModels = require("./models/init-models.js");
 const { env } = require('process');
 var models = initModels(sequelize);
