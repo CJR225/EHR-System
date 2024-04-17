@@ -306,9 +306,12 @@ function PatientDash() {
                 <nav
                   className="flex-column"
                   style={{
-                    background: "#a3c2c2",
-                    color: "black",
-                    height: "13.5vh",
+                    background: "#0973E4",
+                    color: "white",
+                    fontSize: "12pt",
+                    height: "15vh",
+                    outline: "5px solid #184a7e",
+                    boxShadow: "0px 15px 10px white"
                   }}
                 >
                   <div style={{ flex: 1 }}>
