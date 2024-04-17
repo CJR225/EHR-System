@@ -12,6 +12,7 @@ import PatientOrders from './PatientOrders';
 import PatientMAR from './PatientMAR';
 import PatientWaldo from './PatientWaldo';
 import PatientVitals from "./PatientVitals";
+import PatientIOandADL from "./PatientIOandADL";
 
 //react icons
 import {
@@ -241,7 +242,7 @@ function PatientDash() {
     const menuItem = [
       { name: "WALDO" },
       { name: "Vital Signs" },
-      { name: "Input & Output" },
+      { name: "Intake & Output" },
       { name: "Blood Admin" },
     ];
     return (
@@ -382,6 +383,11 @@ function PatientDash() {
 
                   {activeTab === "Vital Signs" && selectedPatient && (
                     <PatientVitals selectedPatient={selectedPatient} activeTab={activeTab} />
+
+                  )}
+
+                  {activeTab === "Intake & Output" && selectedPatient && (
+                    <PatientIOandADL selectedPatient={selectedPatient} activeTab={activeTab} />
 
                   )}
 
