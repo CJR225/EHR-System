@@ -13,8 +13,10 @@ module.exports = function(sequelize, DataTypes) {
     IOandADL_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
-    },
+      primaryKey: true,
+      autoIncrement: true // This is the line to add if you want auto-increment
+    }
+    ,
     time: {
       type: DataTypes.DATE,
       allowNull: false,

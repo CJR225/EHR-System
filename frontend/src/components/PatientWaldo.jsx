@@ -230,52 +230,57 @@ function PatientWaldo({ selectedPatient, activeTab }) {
             </h2>
             {/* Form for adding wound and drain information */}
             <form onSubmit={handleAddWoundDrain} className={styles.marForm}>
-                <div className={styles.formRow}>
-                    <div className={styles.inputWrapper}>
-                        <label htmlFor="surgicalWound">Surgical Wound</label>
-                        <textarea
-                            className={styles.formTextarea}
-                            name="surgicalWound"
-                            id="surgicalWound"
-                            value={woundDrainData.surgicalWound}
-                            onChange={handleWoundDrainChange}
-                        />
-                    </div>
-                    <div className={styles.inputWrapper}>
-                        <label htmlFor="pressureSore">Pressure Sore</label>
-                        <textarea
-                            className={styles.formTextarea}
-                            name="pressureSore"
-                            id="pressureSore"
-                            value={woundDrainData.pressureSore}
-                            onChange={handleWoundDrainChange}
-                        />
-                    </div>
-                    <div className={styles.inputWrapper}>
-                        <label htmlFor="traumaWound">Trauma Wound</label>
-                        <textarea
-                            className={styles.formTextarea}
-                            name="traumaWound"
-                            id="traumaWound"
-                            value={woundDrainData.traumaWound}
-                            onChange={handleWoundDrainChange}
-                        />
-                    </div>
-                    <div className={styles.inputWrapper}>
-                        <label htmlFor="drainNotes">Drain Notes</label>
-                        <textarea
-                            className={styles.formTextarea}
-                            name="drainNotes"
-                            id="drainNotes"
-                            value={woundDrainData.drainNotes}
-                            onChange={handleWoundDrainChange}
-                        />
-                    </div>
-                </div>
-                <button className={styles.formButton} type="submit">
-                    Add Wound/Drain
-                </button>
-            </form>
+    <div className={styles.formRow}>
+        <div className={styles.inputWrapper}>
+            <label htmlFor="surgicalWound">Surgical Wound</label>
+            <input
+                type="text"
+                className={styles.formInput}
+                name="surgicalWound"
+                id="surgicalWound"
+                value={woundDrainData.surgicalWound}
+                onChange={handleWoundDrainChange}
+            />
+        </div>
+        <div className={styles.inputWrapper}>
+            <label htmlFor="pressureSore">Pressure Sore</label>
+            <input
+                type="text"
+                className={styles.formInput}
+                name="pressureSore"
+                id="pressureSore"
+                value={woundDrainData.pressureSore}
+                onChange={handleWoundDrainChange}
+            />
+        </div>
+        <div className={styles.inputWrapper}>
+            <label htmlFor="traumaWound">Trauma Wound</label>
+            <input
+                type="text"
+                className={styles.formInput}
+                name="traumaWound"
+                id="traumaWound"
+                value={woundDrainData.traumaWound}
+                onChange={handleWoundDrainChange}
+            />
+        </div>
+        <div className={styles.inputWrapper}>
+            <label htmlFor="drainNotes">Drain Notes</label>
+            <input
+                type="text"
+                className={styles.formInput}
+                name="drainNotes"
+                id="drainNotes"
+                value={woundDrainData.drainNotes}
+                onChange={handleWoundDrainChange}
+            />
+        </div>
+    </div>
+    <button className={styles.formButton} type="submit">
+        Add Wound/Drain
+    </button>
+</form>
+
 
             {/* Displaying current IV lines in a table */}
             <div>
@@ -291,19 +296,22 @@ function PatientWaldo({ selectedPatient, activeTab }) {
                         </tr>
                     </thead>
                     <tbody>
-                    {woundsDrains.map((item, index) => (
-    <tr key={index}>  {/* Not recommended unless no mutations occur */}
-        <td>{item.surgical_wound}</td>
-        <td>{item.pressure_sore}</td>
-        <td>{item.trauma_wound}</td>
-        <td>{item.drain_notes}</td>
-        <td>
-            <button onClick={() => handleDeleteWoundDrain(item.wound_id)} className={styles.deleteButton}>
-                Delete
-            </button>
-        </td>
-    </tr>
-))}
+                        {woundsDrains.map((item, index) => (
+                            <tr key={index}>  {/* Not recommended unless no mutations occur */}
+                                <td>{item.surgical_wound}</td>
+                                <td>{item.pressure_sore}</td>
+                                <td>{item.trauma_wound}</td>
+                                <td>{item.drain_notes}</td>
+                                <td>
+                                    <button
+                                        onClick={() => handleDeleteWoundDrain(item.wound_id)}
+                                        className={`${styles.formButton} ${styles.delete}`}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
 
                     </tbody>
 
@@ -414,9 +422,13 @@ function PatientWaldo({ selectedPatient, activeTab }) {
                                 <td>{line.rate}</td>
                                 <td>{line.patent}</td>
                                 <td>
-                                    <button onClick={() => handleDeleteIvLine(line.iv_id)} className={styles.deleteButton}>
+                                    <button
+                                        onClick={() => handleDeleteIvLine(line.iv_id)}
+                                        className={`${styles.formButton} ${styles.delete}`}
+                                    >
                                         Delete
                                     </button>
+
 
                                 </td>
                             </tr>

@@ -55,9 +55,11 @@ app.use('/patients', sectionRouter);
 const IVandLinesRouter = require('./routes/IVandLinesRouter.js');
 app.use('/patients', IVandLinesRouter);
 
-
 const vitalSignsRouter = require('./routes/vitalSignsRouter.js');
 app.use('/patients', vitalSignsRouter);
+
+const IOandADLRouter = require('./routes/IOandADL.js');
+app.use('/patients', IOandADLRouter);
 
 var initModels = require("./models/init-models.js");
 const { env } = require('process');
