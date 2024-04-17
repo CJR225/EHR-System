@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import styles from '../PatientDash.module.css';
+import { IoIosArrowForward } from "react-icons/io";
 
 function PatientWaldo({ selectedPatient, activeTab }) {
     const [woundsDrains, setWoundsDrains] = useState([]);
@@ -221,14 +222,23 @@ function PatientWaldo({ selectedPatient, activeTab }) {
 
 
 
-
+    const [WDOpen, setWDOpen] = useState(false);
+    const [ILOpen, setILOpen] = useState(false);
 
     return (
-        <div className={styles.tabContent}>
+      <div>
+        {/* Wounds & Drains */}
+        <div className={styles.outerContainer}>
+            <view onClick={() => setWDOpen(!WDOpen)} style={{cursor:'pointer'}}>
             <h2 className={styles.tabHeading}>
                 Wounds and Drains
+                <IoIosArrowForward
+                    className={WDOpen ? styles.condenseIcon : styles.condenseIconOpen}
+                ></IoIosArrowForward>
             </h2>
-            {/* Form for adding wound and drain information */}
+            </view>
+            <div style={{ display: WDOpen ? 'contents' : 'none'}}>
+                    {/* Form for adding wound and drain information */}
             <form onSubmit={handleAddWoundDrain} className={styles.marForm}>
     <div className={styles.formRow}>
         <div className={styles.inputWrapper}>
@@ -279,10 +289,9 @@ function PatientWaldo({ selectedPatient, activeTab }) {
     <button className={styles.formButton} type="submit">
         Add Wound/Drain
     </button>
-</form>
+            </form>
 
-
-            {/* Displaying current IV lines in a table */}
+            {/* Displaying current wounds and drains in a table */}
             <div>
                 <h3>Current Wounds and Drains</h3>
                 <table className={styles.table}>
@@ -317,11 +326,21 @@ function PatientWaldo({ selectedPatient, activeTab }) {
 
                 </table>
             </div>
-
-            <h2 className={styles.tabHeading}>
-                IV's and Lines
-            </h2>
-            {/* Form for adding IV lines */}
+            </div>
+            
+        </div>
+        {/* IV's and Lines */}
+        <div className={styles.outerContainer}>
+            <view onClick={() => setILOpen(!ILOpen)} style={{cursor:'pointer'}}>
+                <h2 className={styles.tabHeading}>
+                    IV's and Lines
+                    <IoIosArrowForward
+                        className={ILOpen ? styles.condenseIcon : styles.condenseIconOpen}
+                    ></IoIosArrowForward>
+                </h2>
+            </view>
+            <div style={{ display: ILOpen ? 'contents' : 'none'}}>
+                {/* Form for adding IV lines */}
             <form onSubmit={handleAddIvLine} className={styles.marForm}>
                 <div className={styles.formRow}>
                     {/* Input fields for details about the IV lines */}
@@ -436,7 +455,9 @@ function PatientWaldo({ selectedPatient, activeTab }) {
                     </tbody>
                 </table>
             </div>
+            </div>
         </div>
+      </div>
     )
 }
 

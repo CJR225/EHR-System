@@ -76,7 +76,7 @@ function PatientVitals({ selectedPatient, activeTab }) {
     const vitalSignsToShow = ['temperature', 'heart_rate', 'bps', 'bpd', 'blood_oxygen', 'resting_respiratory', 'pain'];
 
     return (
-        <div className={styles.tabContent}>
+        <div className={styles.outerContainer}>
             <h2 className={styles.tabHeading}>Vital Signs</h2>
             <form onSubmit={handleSaveVitals}>
                 <table className={styles.table}>

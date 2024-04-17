@@ -300,7 +300,7 @@ function PatientDash() {
               </div>
               <div
                 id="patientDash"
-                className="col-lg-11 vh-100"
+                className="col-lg-11 vh-1000"
                 style={{ margin: 0, padding: 0, backgroundColor: "#d7dfe0" }}
               >
                 <nav

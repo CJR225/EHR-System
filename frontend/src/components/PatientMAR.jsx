@@ -3,6 +3,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import styles from '../PatientDash.module.css';
 
+import { IoIosArrowForward } from "react-icons/io";
+
 function PatientMAR({ selectedPatient }) {
   // State to hold the list of medications, initialized as an empty array
   const [medications, setMedications] = useState([]);
@@ -57,68 +59,147 @@ function PatientMAR({ selectedPatient }) {
     }
   };
 
+  const [MAROpen, setMAROpen] = useState(false);
+  const [PRNOpen, setPRNOpen] = useState(false);
+
   // Rendering the component
   return (
-    <div className={styles.tabContent}>
-      <div className={styles.tabContent}>
-        <h2 className={styles.tabHeading}>
-          Medication Administration Record (MAR)
-        </h2>
-        {/* Form for adding new medications */}
-        <form onSubmit={handleAddMedication} className={styles.marForm}>
-          <div className={styles.formRow}>
-            { // Input fields for medication details
-              ["med_id", "dosage", "route", "frequency", "taken_last", "time_taken", "administered_at"].map(field => (
-                <div className={styles.inputWrapper} key={field}>
-                  <label htmlFor={field}>{field.replace('_', ' ').charAt(0).toUpperCase() + field.slice(1)}</label>
-                  <input
-                    className={styles.formInput}
-                    type={field.includes('date') ? "datetime-local" : "text"}
-                    name={field}
-                    id={field}
-                    required={field === 'administered_at'}
-                  />
-                </div>
-              ))
-            }
-            <button className={styles.formButton} type="submit">
-              Add Medication
-            </button>
-          </div>
-        </form>
-        {/* Table displaying the list of medications */}
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              {/* Table headers for medication details */}
-              <th>Name</th><th>Dosage</th><th>Route</th><th>Frequency</th>
-              <th>Last Taken</th><th>Time Taken</th><th>Administered At</th><th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {medications.map((med) => (
-              <tr key={med.id}>
-                {/* Medication data rendered in table rows */}
-                <td>{med.name}</td>
-                <td>{med.medicine_patient.dosage}</td>
-                <td>{med.medicine_patient.route}</td>
-                <td>{med.medicine_patient.frequency}</td>
-                <td>{med.medicine_patient.taken_last ? new Date(med.medicine_patient.taken_last).toLocaleString() : "N/A"}</td>
-                <td>{med.medicine_patient.time_taken ? new Date(med.medicine_patient.time_taken).toLocaleString() : "N/A"}</td>
-                <td>{med.medicine_patient.administered_at ? new Date(med.medicine_patient.administered_at).toLocaleString() : "N/A"}</td>
-                {/* Delete button for each medication entry */}
-                <td>
-                  <button
-                    onClick={() => handleDeleteMedication(med.id)}
-                    className={`${styles.formButton} ${styles.delete}`}
-                  >
-                    Delete
-                  </button>
-                </td>
+    <div>
+      {/* MAR Content */}
+      <div className={styles.outerContainer}>
+        <view onClick={() => setMAROpen(!MAROpen)} style={{cursor:'pointer'}}>
+          <h2 className={styles.tabHeading}>
+            Medication Administration Record (MAR)
+            <IoIosArrowForward
+              className={MAROpen ? styles.condenseIcon : styles.condenseIconOpen}
+            ></IoIosArrowForward>
+          </h2>
+        </view>
+        <div style={{ display: MAROpen ? 'contents' : 'none'}}>
+          {/* Form for adding new medications */}
+          <form onSubmit={handleAddMedication} className={styles.marForm}>
+            <div className={styles.formRow}>
+              { // Input fields for medication details
+                ["med_id", "dosage", "route", "frequency", "taken_last", "time_taken", "administered_at"].map(field => (
+                  <div className={styles.inputWrapper} key={field}>
+                    <label htmlFor={field}>{field.replace('_', ' ').charAt(0).toUpperCase() + field.slice(1)}</label>
+                    <input
+                      className={styles.formInput}
+                      type={field.includes('date') ? "datetime-local" : "text"}
+                      name={field}
+                      id={field}
+                      required={field === 'administered_at'}
+                    />
+                  </div>
+                ))
+              }
+              <button className={styles.formButton} type="submit">
+                Add Medication
+              </button>
+            </div>
+          </form>
+          {/* Table displaying the list of medications */}
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                {/* Table headers for medication details */}
+                <th>Name</th><th>Dosage</th><th>Route</th><th>Frequency</th>
+                <th>Last Taken</th><th>Time Taken</th><th>Administered At</th><th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {medications.map((med) => (
+                <tr key={med.id}>
+                  {/* Medication data rendered in table rows */}
+                  <td>{med.name}</td>
+                  <td>{med.medicine_patient.dosage}</td>
+                  <td>{med.medicine_patient.route}</td>
+                  <td>{med.medicine_patient.frequency}</td>
+                  <td>{med.medicine_patient.taken_last ? new Date(med.medicine_patient.taken_last).toLocaleString() : "N/A"}</td>
+                  <td>{med.medicine_patient.time_taken ? new Date(med.medicine_patient.time_taken).toLocaleString() : "N/A"}</td>
+                  <td>{med.medicine_patient.administered_at ? new Date(med.medicine_patient.administered_at).toLocaleString() : "N/A"}</td>
+                  {/* Delete button for each medication entry */}
+                  <td>
+                    <button
+                      onClick={() => handleDeleteMedication(med.id)}
+                      className={`${styles.formButton} ${styles.delete}`}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {/* PRN Content */}
+      <div className={styles.outerContainer}>
+        <view onClick={() => setPRNOpen(!PRNOpen)} style={{cursor:'pointer'}}>
+          <h2 className={styles.tabHeading}>
+            Medication As Needed (PRN)
+            <IoIosArrowForward
+              className={PRNOpen ? styles.condenseIcon : styles.condenseIconOpen}
+            ></IoIosArrowForward>
+          </h2>
+        </view>
+        <div style={{ display: PRNOpen ? 'contents' : 'none'}}>
+          {/* Form for adding new medications */}
+          <form onSubmit={handleAddMedication} className={styles.marForm}>
+            <div className={styles.formRow}>
+              { // Input fields for medication details
+                ["med_id", "dosage", "route", "frequency", "taken_last", "time_taken", "administered_at"].map(field => (
+                  <div className={styles.inputWrapper} key={field}>
+                    <label htmlFor={field}>{field.replace('_', ' ').charAt(0).toUpperCase() + field.slice(1)}</label>
+                    <input
+                      className={styles.formInput}
+                      type={field.includes('date') ? "datetime-local" : "text"}
+                      name={field}
+                      id={field}
+                      required={field === 'administered_at'}
+                    />
+                  </div>
+                ))
+              }
+              <button className={styles.formButton} type="submit">
+                Add Medication
+              </button>
+            </div>
+          </form>
+          {/* Table displaying the list of medications */}
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                {/* Table headers for medication details */}
+                <th>Name</th><th>Dosage</th><th>Route</th><th>Frequency</th>
+                <th>Last Taken</th><th>Time Taken</th><th>Administered At</th><th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {medications.map((med) => (
+                <tr key={med.id}>
+                  {/* Medication data rendered in table rows */}
+                  <td>{med.name}</td>
+                  <td>{med.medicine_patient.dosage}</td>
+                  <td>{med.medicine_patient.route}</td>
+                  <td>{med.medicine_patient.frequency}</td>
+                  <td>{med.medicine_patient.taken_last ? new Date(med.medicine_patient.taken_last).toLocaleString() : "N/A"}</td>
+                  <td>{med.medicine_patient.time_taken ? new Date(med.medicine_patient.time_taken).toLocaleString() : "N/A"}</td>
+                  <td>{med.medicine_patient.administered_at ? new Date(med.medicine_patient.administered_at).toLocaleString() : "N/A"}</td>
+                  {/* Delete button for each medication entry */}
+                  <td>
+                    <button
+                      onClick={() => handleDeleteMedication(med.id)}
+                      className={`${styles.formButton} ${styles.delete}`}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

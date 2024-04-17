@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import styles from '../PatientDash.module.css';
 
 // The PatientDemographics component, using destructuring to get the selectedPatient prop directly
 const PatientDemographics = ({ selectedPatient }) => {
@@ -36,7 +37,15 @@ const PatientDemographics = ({ selectedPatient }) => {
 
   // Main return block rendering the demographic details of the selected patient
   return (
-    <div style={{ padding: "20px", backgroundColor: "#f5f5f5", boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}>
+    <div 
+      style={{
+        margin: "4vh",
+        backgroundColor: "#f5f5f5",
+        padding: "20px",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+      }}
+    >
       <h3 style={{ borderBottom: "2px solid #418FDE", color: "#333", paddingBottom: "10px", marginBottom: "20px" }}>
         Patient Demographics
       </h3>

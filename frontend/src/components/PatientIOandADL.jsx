@@ -58,7 +58,7 @@ function PatientIORecords({ selectedPatient, activeTab }) {
     };
 
     return (
-        <div className={styles.tabContent}>
+        <div className={styles.outerContainer}>
             <h2 className={styles.tabHeading}>Intake and Output Records</h2>
             <form onSubmit={handleAddRecord}>
                 {/* Form for new IO record */}
