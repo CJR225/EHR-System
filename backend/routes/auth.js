@@ -19,6 +19,7 @@ router.post('/signup', (req, res, next) => {
     })(req, res, next);
 });
 
+
 router.post('/signin', (req, res, next) => {
     passport.authenticate('local-signin', (err, user, info) => {
         if (err) {
@@ -53,10 +54,14 @@ router.post('/signin-instructor', (req, res, next) => {
     })(req, res, next);
 });
 
-router.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
-});
+router.get("/logout", (req, res) => {
+    req.logout(()=>{}); // This line should be present with a callback function if required
+    res.send({ message: "Logout successful" });
+  });
+  
+
+
+
 
 module.exports = router;
 

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../PatientDash.module.css";
-
 import PatientDemographics from './PatientDemographics';
 import PatientMedRec from './PatientMedRec';
 import PatientHistory from './PatientHistory';
@@ -36,9 +35,20 @@ function PatientDash() {
   const [wounds, setWounds] = useState([]);
   const [medications, setMedications] = useState([]); // Holds patient medications
   const [allergies, setAllergies] = useState([]); // Holds patient allergies
+  const navigate = useNavigate();
 
-
-
+  const handleLogout = async () => {
+    try {
+      // Make a GET request to the logout endpoint
+      await axios.get("http://localhost:3001/auth/logout");
+      // Redirect the user to the homepage ("/")
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout Error:", error);
+    }
+  };
+  
+  
 
   // Fetches all patients when the component mounts
   useEffect(() => {
@@ -175,17 +185,17 @@ function PatientDash() {
       { name: "Notes", icon: <FaPencilAlt /> },
       {
         name: "Logout",
-        path: "/",
         icon: (
           <TbLogout2
+            onClick={handleLogout} // Attach the onClick event handler here
             style={{
               marginTop: "25vh",
               position: "fixed",
               marginLeft: "-2.4vw",
-            }}
+            }} 
           ></TbLogout2>
         ),
-      },
+      },      
     ];
     return (
       <div className="sidebarContainer">

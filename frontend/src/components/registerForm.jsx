@@ -8,6 +8,7 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [sectionID, setSectionID] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isValidForm, setIsValidForm] = useState(false);
   const navigate = useNavigate();
@@ -23,9 +24,7 @@ function RegisterForm() {
       .min(5)
       .regex(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/)
       .label("Password")
-      .error(
-        () => "Password must have length of 8, capital letter, and a number"
-      ),
+      .error(() => "Must have length of 8, capital letter, and a number"),
     fname: Joi.string()
       .required()
       .label("First Name")
@@ -34,11 +33,15 @@ function RegisterForm() {
       .required()
       .label("Last Name")
       .error(() => "Last Name is required"),
+    sectionID: Joi.number()
+      .required()
+      .label("Section ID")
+      .error(() => "Section ID is required"),
   };
 
   const isFormValid = () => {
     const { error } = Joi.validate(
-      { username, password, fname, lname },
+      { username, password, fname, lname, sectionID },
       schema
     );
     return (
@@ -46,7 +49,8 @@ function RegisterForm() {
       username.trim() !== "" &&
       password.trim() !== "" &&
       fname.trim() !== "" &&
-      lname.trim() !== ""
+      lname.trim() !== "" &&
+      sectionID.trim() !== ""
     );
   };
 
@@ -59,6 +63,7 @@ function RegisterForm() {
         password,
         fname,
         lname,
+        sectionID,
       });
 
       console.log("Login Successful:", response.data);
@@ -99,6 +104,8 @@ function RegisterForm() {
       setFname(value);
     } else if (name === "lname") {
       setLname(value);
+    } else if (name === "sectionID") {
+      setSectionID(value);
     }
 
     const validationResult = Joi.validate(
@@ -154,15 +161,11 @@ function RegisterForm() {
                   <div className="card-body p-5 pb-2 text-center">
                     <div className="mb-md-5 mt-md-2">
                       <h2 class="fw-bold mb-2 pb-2" id="loginTitle">
-                        Quinnipiac Nursing
+                        QU Nursing
                       </h2>
                       <h5 class="fw-light mb-2 pb-2" id="loginLowerTitle">
                         Electronic Healthcare System
                       </h5>
-
-                      <p className="pb-1" id="loginDesc">
-                        Please sign up for student account
-                      </p>
 
                       <div className="form-outline form-white mb-4">
                         <form onSubmit={handleSubmit}>
@@ -216,27 +219,40 @@ function RegisterForm() {
                               </div>
                             )}
                           </div>
-                          <div>
-                            <label>First Name</label>
-                            <input
-                              className="form-control mb-2 mt-1"
-                              type="text"
-                              value={fname}
-                              label="Fname"
-                              onChange={(e) => setFname(e.target.value)}
-                            />
+
+                          <div className="row">
+                            <div className="col">
+                              <label>First Name</label>
+                              <input
+                                className="form-control mb-2 mt-1"
+                                type="text"
+                                value={fname}
+                                label="Fname"
+                                onChange={(e) => setFname(e.target.value)}
+                              />
+                            </div>
+
+                            <div className="col">
+                              <label>Last Name</label>
+                              <input
+                                className="form-control mb-2 mt-1"
+                                type="text"
+                                value={lname}
+                                label="Lname"
+                                onChange={(e) => setLname(e.target.value)}
+                              />
+                            </div>
                           </div>
                           <div>
-                            <label>Last Name</label>
+                            <label>Section ID</label>
                             <input
                               className="form-control mb-2 mt-1"
-                              type="text"
-                              value={lname}
-                              label="Lname"
-                              onChange={(e) => setLname(e.target.value)}
+                              type="number"
+                              value={sectionID}
+                              onChange={(e) => setSectionID(e.target.value)}
                             />
                           </div>
-                          <div className="mt-5">
+                          <div className="mt-3">
                             <button
                               type="submit"
                               className="btn btn-outline-light btn-lg px-5"
@@ -256,8 +272,8 @@ function RegisterForm() {
         </main>
 
         <footer>
-          <div class="text-center fixed-bottom pb-2" id="loginFooter">
-            &copy; Quinnipiac 2024
+          <div class="text-center fixed-bottom pb-3" id="loginFooter">
+            Chris Rocco, Matt Nova, Billy Siri &copy; Quinnipiac 2024
           </div>
         </footer>
       </div>

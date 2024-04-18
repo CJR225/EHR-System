@@ -37,8 +37,9 @@ module.exports = function(passport, Student, Instructor) {
                     var data = {
                         username: username,
                         password: studentPassword,
-                        fname: req.body.fname, // Extract fname from request body
-                        lname: req.body.lname, // Extract lname from request body
+                        fname: req.body.fname, 
+                        lname: req.body.lname,
+                        sectionID: req.body.sectionID,
                     };
                     Student.create(data).then(function(newStudent, created) {
                         if (!newStudent) {

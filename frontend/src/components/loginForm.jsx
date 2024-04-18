@@ -148,7 +148,7 @@ function LoginForm() {
 
         <footer>
           <div class="text-center fixed-bottom pb-3" id="loginFooter">
-          &copy; Quinnipiac 2024
+          Chris Rocco, Matt Nova, Billy Siri &copy; Quinnipiac 2024
           </div>
         </footer>
       </div>
