@@ -15,7 +15,7 @@ function App() {
           <Route path="/" element={<LoginForm />} />
           <Route path="/patient-dashboard" element={<PatientDash />} />
           <Route path="/register" element={<RegisterForm />} />
-
+          <Route path="/sectionDash" element={<TempPatientDash />} />
           <Route path="/not-found" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>

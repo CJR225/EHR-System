@@ -10,31 +10,44 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post("http://localhost:3001/auth/signin", {
         username,
         password,
       });
-
-      console.log("Login Successful:", response.data);
-      if (
-        response.status === 200 &&
-        response.data.message === "Login successful"
-      ) {
-        // Handle successful registration, e.g., redirect to dashboard
-        navigate("/patient-dashboard");
-      } else if ((response.data.message = "Username does not exist")) {
-        setErrorMessage(response.data.message);
-      } else if ((response.data.message = "Incorrect password.")) {
-        setErrorMessage(response.data.message);
+  
+      console.log("Login Response:", response.data);
+  
+      if (response.status === 200 && response.data.message === "Login successful") {
+        console.log("AFTER LOGIN SUCCESS");
+  
+        const user = response.data;
+        const role = user.role;
+        
+        console.log("Role:", role);
+  
+        if (role === "instructor") {
+          console.log("Navigating to /sectionDash");
+          navigate("/sectionDash");
+        } else if (role === "student") {
+          console.log("Navigating to /patient-dashboard");
+          navigate("/patient-dashboard");
+        } else {
+          console.error("Unknown role:", role);
+        }
       }
     } catch (error) {
-      console.error("Registration Error:", error.response.data);
+      console.error("Login Error:", error.response.data);
       setErrorMessage(error.response.data.message);
-      // Handle registration error, e.g., display error message to user
     }
   };
+  
+  
+  
+  
+
+
 
   return (
     <body id="loginBody">
@@ -82,7 +95,7 @@ function LoginForm() {
                   <div class="card-body p-5 text-center">
                     <div class="mb-md-4 mt-md-2">
                       <h2 class="fw-bold mb-2 pb-2" id="loginTitle">
-                        Quinnipiac Nursing
+                        QU Nursing
                       </h2>
                       <h5 class="fw-light mb-2 pb-2" id="loginLowerTitle">
                         Electronic Healthcare System
@@ -112,6 +125,7 @@ function LoginForm() {
                               onChange={(e) => setPassword(e.target.value)}
                             />
                           </div>
+                          
                           {errorMessage && (
                             <div
                               className="alert alert-danger mt-2 p-2"
