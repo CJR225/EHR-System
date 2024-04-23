@@ -84,11 +84,11 @@ function initModels(sequelize) {
   Patient.hasMany(wounds, { as: "wounds", foreignKey: "patient_id" });
   Patient.belongsTo(Sections, { as: "section", foreignKey: "section_id" });
   Sections.hasMany(Patient, { as: "Patients", foreignKey: "section_id" });
-  Student.belongsTo(Sections, { as: "section", foreignKey: "section_id" });
-  Sections.hasMany(Student, { as: "Students", foreignKey: "section_id" });
   Patient.hasMany(PatientHistory, { as: "Histories", foreignKey: "patient_id" });
   PatientHistory.belongsTo(Patient, { as: "Patient", foreignKey: "patient_id" });
-
+  Sections.hasMany(Student, { as: 'Students', foreignKey: 'section_id' });
+  Student.belongsTo(Sections, { as: 'section', foreignKey: 'section_id' });
+  
 
   return {
     Allergies,

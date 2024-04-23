@@ -100,11 +100,6 @@ function LoginForm() {
                       <h5 class="fw-light mb-2 pb-2" id="loginLowerTitle">
                         Electronic Healthcare System
                       </h5>
-
-                      <p class="pb-2" id="loginDesc">
-                        Please Sign In!
-                      </p>
-
                       <div class="form-outline form-white mb-0">
                         <form onSubmit={handleSubmit}>
                           <div>
