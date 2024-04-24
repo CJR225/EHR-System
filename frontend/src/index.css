@@ -668,3 +668,157 @@ h1 {
   margin-bottom: 3vh;
 }
 
+.tableContainer {
+  overflow-x: auto; /* Enables horizontal scrolling */
+  width: 100%; /* Adjust based on your layout needs */
+}
+
+.table {
+  width: 100%;
+  min-width: 2000px; /* Adjust this value based on the actual width needed */
+  border-collapse: collapse;
+}
+
+.scrollable-table-container {
+  overflow-x: auto; /* Enables horizontal scrolling */
+  transform: scaleY(-1); /* Flips the container vertically */
+}
+
+.inverted-table {
+  transform: scaleY(-1); /* Flips the table back to normal */
+}
+
+.dropdownActive {
+  background-color: #e3e3e3; /* Or any other color that indicates activity */
+}
+
+/* Rotate the icon when active */
+.condenseIconOpen {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+
+/* Set a max-height that is higher than your table's height when open */
+.scrollable-table-container.active {
+  max-height: 2000px; /* This should be more than the height of your table */
+}
+
+.notes-container {
+  max-width: 100%; /* Ensures the container does not overflow its parent */
+  padding: 20px; /* Optional, for some spacing around */
+  margin: 0 auto; /* Centers the container */
+  background: #f0f0f0;
+}
+
+.notes-title {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Creates three equal columns */
+  gap: 20px; /* Spacing between cards */
+  margin-bottom: 20px; /* Space below the grid */
+}
+
+@media (max-width: 1200px) { /* Adjust this value as needed */
+  .notes-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on smaller screens */
+  }
+}
+
+@media (max-width: 768px) { /* Adjust this value as needed */
+  .notes-grid {
+    grid-template-columns: 1fr; /* One column on even smaller screens */
+  }
+}
+
+.note-card {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden; /* Hide overflow */
+  display: flex; /* Stack children */
+  flex-direction: column; /* Stack vertically */
+  height: 300px; /* Fixed height for the card */
+}
+
+.note-content {
+  flex: 1; /* Takes up all available space not used by other children */
+  overflow-y: auto; /* Make this part scrollable */
+  padding-right: 10px; /* Give space for scrollbar */
+}
+
+.note-footer {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.delete-btn {
+  border: none;
+  background: #dc3545; /* Bootstrap danger color */
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background: #c82333; /* A slightly darker shade for hover effect */
+}
+
+textarea {
+  resize: vertical; /* Allows vertical resizing only */
+  max-width: 100%; /* Prevents the textarea from exceeding the width of its container */
+}
+
+
+
+
+
+.form {
+  display: flex;
+  flex-wrap: wrap; /* Allows form content to wrap onto the next line */
+  justify-content: space-around; /* Distributes space around items evenly */
+  align-items: center; /* Align items vertically in the center */
+  gap: 20px; /* Spacing between each form item */
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column; /* Stack label on top of input */
+  align-items: flex-start; /* Align items to start within the group */
+  flex-grow: 1; /* Each group should grow equally */
+  min-width: 180px; /* Minimum width of each group to avoid too much squish */
+}
+
+.formInput {
+  width: 100%; /* Full width of the group to utilize space */
+  margin-top: 5px; /* Space between label and input */
+}
+
+.formButton {
+  width: auto; /* Auto-width based on content inside */
+  padding: 10px 20px; /* Padding inside button */
+  margin-top: 10px; /* Margin above the button */
+  align-self: flex-start; /* Align button at the start of the flex container */
+}
+
+
+
+
+
+.delete {
+  background-color: red;
+}
+
+.label {
+  display: block; /* ensures the label is above the input field */
+}

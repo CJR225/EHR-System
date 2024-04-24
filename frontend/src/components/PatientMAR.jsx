@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import styles from '../PatientDash.module.css';
-
 import { IoIosArrowForward } from "react-icons/io";
 
 function PatientMAR({ selectedPatient }) {
@@ -80,7 +79,7 @@ function PatientMAR({ selectedPatient }) {
           <form onSubmit={handleAddMedication} className={styles.marForm}>
             <div className={styles.formRow}>
               { // Input fields for medication details
-                ["med_id", "dosage", "route", "frequency", "taken_last", "time_taken", "administered_at"].map(field => (
+                ["medication", "dosage", "route", "frequency", "taken last", "time taken", "administered at"].map(field => (
                   <div className={styles.inputWrapper} key={field}>
                     <label htmlFor={field}>{field.replace('_', ' ').charAt(0).toUpperCase() + field.slice(1)}</label>
                     <input
@@ -148,7 +147,7 @@ function PatientMAR({ selectedPatient }) {
           <form onSubmit={handleAddMedication} className={styles.marForm}>
             <div className={styles.formRow}>
               { // Input fields for medication details
-                ["med_id", "dosage", "route", "frequency", "taken_last", "time_taken", "administered_at"].map(field => (
+                ["medication", "dosage", "route", "frequency", "taken last", "time taken", "administered at"].map(field => (
                   <div className={styles.inputWrapper} key={field}>
                     <label htmlFor={field}>{field.replace('_', ' ').charAt(0).toUpperCase() + field.slice(1)}</label>
                     <input
