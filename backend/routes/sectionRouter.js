@@ -41,7 +41,15 @@ router.get('/section-list', async (req, res) => {
     }
 });
 
-
+router.post('/assign-patient', async (req, res) => {
+    const { sectionId, patientId } = req.body;
+    try {
+      const assigned = await assignPatientToSection(sectionId, patientId); // Logic to assign patient
+      res.status(200).json(assigned);
+    } catch (error) {
+      res.status(500).json({ message: "Error assigning patient", error: error.message });
+    }
+  });
   
   
 

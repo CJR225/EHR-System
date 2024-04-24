@@ -15,7 +15,7 @@ import PatientIOandADL from "./PatientIOandADL";
 import PatientLabValues from "./PatientLabValues";
 import PatientNotes from "./PatientNotes";
 import PatientADL from "./PatientADL";
-
+import { useLocation } from "react-router-dom"; 
 //react icons
 import {
   FaHome,
@@ -39,6 +39,7 @@ function PatientDash() {
   const [medications, setMedications] = useState([]); // Holds patient medications
   const [allergies, setAllergies] = useState([]); // Holds patient allergies
   const navigate = useNavigate();
+  const location = useLocation(); // Access navigation state
 
   const handleLogout = async () => {
     try {
@@ -51,66 +52,29 @@ function PatientDash() {
     }
   };
 
-
-
-  // Fetches all patients when the component mounts
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/patients")
-      .then((response) => {
-        // Formats patient data (e.g., date of birth) before setting state
-        const formattedPatients = response.data.map((patient) => ({
-          ...patient,
-          dob: formatDate(patient.dob),
-        }));
-        setPatients(formattedPatients);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the patients:", error);
-      });
-  }, []);
-
-  // Fetches patient allergies when the selected patient changes
-  useEffect(() => {
-    if (selectedPatient) {
-      axios
-        .get(`http://localhost:3001/patients/${selectedPatient.id}/allergies`)
-        .then((response) => {
-          setAllergies(response.data);
-        })
-        .catch((error) => {
-          console.error("There was an error fetching the patients:", error);
-        });
+    // When component mounts, check for passed state and set patient data
+    const patient = location.state?.patient; // Get patient from navigation state
+    if (patient) {
+      setSelectedPatient(patient);
+      fetchAllergies(patient.id);
     }
-  }, [selectedPatient]);
+  }, [location]);
 
-
-  // Handles the selection of a patient from the dropdown menu
-  const handleSelectPatient = (event) => {
-    const patientId = event.target.value;
-    const patient = patients.find((p) => p.id.toString() === patientId);
-
-
-
-    // Format the DOB of the selected patient before updating the state
-    const formattedPatient = {
-      ...patient,
-      dob: patient ? formatDate(patient.dob) : "",
-    };
-    setSelectedPatient(formattedPatient);
+  
+  const fetchAllergies = async (patientId) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/patients/${patientId}/allergies`);
+      setAllergies(response.data);
+    } catch (error) {
+      console.error("There was an error fetching the patients:", error);
+    }
   };
 
-  // Handles the click event on tabs to switch between different views
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
-
-
-  // Function to format date string to a specified format
-  function formatDate(dateString) {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  }
+ 
 
   //Sidebar creation
   const [homeOpen, setHomeOpen] = useState(false);
@@ -349,18 +313,7 @@ function PatientDash() {
                 >
                   <div style={{ flex: 1 }}>
                     <CgProfile style={{ fontSize: "4vw", marginLeft: "3vw" }} />
-                    <select
-                      style={{ marginTop: "3vh", marginLeft: "4vh" }}
-                      onChange={handleSelectPatient}
-                      value={selectedPatient?.id || ""}
-                    >
-                      <option value="">Select a patient</option>
-                      {patients.map((patient) => (
-                        <option key={patient.id} value={patient.id}>
-                          Name: {patient.fname} {patient.lname}
-                        </option>
-                      ))}
-                    </select>
+                    
                   </div>
                   {selectedPatient && (
                     <div

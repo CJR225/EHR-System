@@ -55,6 +55,19 @@ router.delete('/:id', async (req, res) => {
 });
 
 
+// GET route to retrieve a patient's details by ID
+router.get('/:patientId', async (req, res) => {
+  try {
+    const patient = await getPatientById(req.params.patientId);
+    if (!patient) {
+      res.status(404).json({ message: "Patient not found" });
+    } else {
+      res.json(patient);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to retrieve patient details", error: error.message });
+  }
+});
 
 
 

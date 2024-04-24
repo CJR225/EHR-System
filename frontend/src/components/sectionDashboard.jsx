@@ -1,69 +1,39 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { TbLogout2 } from "react-icons/tb";
 
 const SectionDashboard = () => {
   const [sections, setSections] = useState([]);
-  const [patients, setPatients] = useState([]); // Holds the list of patients
-  const [allergies, setAllergies] = useState([]); // Holds patient allergies
-  const [isAssigned, setIsAssigned] = useState({});
+  const [patients, setPatients] = useState([]);
   const [selectedPatients, setSelectedPatients] = useState({});
+  const [isAssigned, setIsAssigned] = useState({});
   const [alert, setAlert] = useState({ show: false, message: "" });
+  const navigate = useNavigate();
 
-  // Handles the selection of a patient from the dropdown menu specific to each section
   const handleSelectPatient = (sectionId) => (event) => {
     const patientId = event.target.value;
-    const patient = patients.find((p) => p.id.toString() === patientId);
-
-    // Set the selected patient for the specific section
-    setSelectedPatients((prev) => ({
-      ...prev,
-      [sectionId]: patient
-        ? {
-            ...patient,
-            dob: formatDate(patient.dob),
-          }
-        : null,
-    }));
+    const patient = patients.find(p => p.id.toString() === patientId);
+    setSelectedPatients(prev => ({ ...prev, [sectionId]: patient }));
   };
 
   const handleAssignPatient = (sectionId) => {
-    if (selectedPatients[sectionId]) {
-      // Assuming an API call or logic to assign the patient
-      console.log(
-        `Assigning patient ${selectedPatients[sectionId].id} to section ${sectionId}`
-      );
-
-      // Show alert
+    const patient = selectedPatients[sectionId];
+    if (patient) {
+      console.log(`Assigning patient ${patient.id} to section ${sectionId}`);
       setAlert({ show: true, message: "Patient assigned to section" });
-
-      // Set a timeout to hide the alert after 5 seconds
-      setTimeout(() => {
-        setAlert({ show: false, message: "" });
-      }, 5000); // 5000 milliseconds = 5 seconds
-
-      // Update the assignment status
-      setIsAssigned((prev) => ({
-        ...prev,
-        [sectionId]: true,
-      }));
+      setTimeout(() => setAlert({ show: false, message: "" }), 5000);
+      setIsAssigned(prev => ({ ...prev, [sectionId]: true }));
     }
   };
 
-  // useEffect for fetching allergies might need adjustment to fetch based on all selectedPatients
-  useEffect(() => {
-    Object.keys(selectedPatients).forEach((sectionId) => {
-      const patient = selectedPatients[sectionId];
-      if (patient && patient.id) {
-        axios
-          .get(`http://localhost:3001/patients/${patient.id}/allergies`)
-          .then((response) => {
-            setAllergies((prev) => ({ ...prev, [patient.id]: response.data }));
-          })
-          .catch((error) => console.error("Error fetching allergies:", error));
-      }
-    });
-  }, [selectedPatients]);
+  const handleGoToSection = (sectionId) => {
+    const patient = selectedPatients[sectionId];
+    if (patient && isAssigned[sectionId]) {
+      navigate('/patient-dashboard', { state: { patient } });
+    }
+  };
+
 
   useEffect(() => {
     // Fetch the section data when the component mounts
@@ -186,13 +156,7 @@ const SectionDashboard = () => {
                               <div className="row gap-2">
                                 <select
                                   className="col btn btn-outline-light btn-md-6 px-3"
-                                  onChange={handleSelectPatient(
-                                    section.section_id
-                                  )}
-                                  value={
-                                    selectedPatients[section.section_id]?.id ||
-                                    ""
-                                  }
+                                  onChange={handleSelectPatient(section.section_id)} value={selectedPatients[section.section_id]?.id || ""}
                                 >
                                   <option value="">Select a patient</option>
                                   {patients.map((patient) => (
@@ -215,6 +179,7 @@ const SectionDashboard = () => {
                                   id="go-section-btn"
                                   type="submit"
                                   className="col btn btn-outline-light btn-md px-4"
+                                  onClick={() => handleGoToSection(section.section_id)} 
                                   disabled={!isAssigned[section.section_id]} // Button is disabled unless patient is assigned
                                 >
                                   Go to section
