@@ -17,6 +17,14 @@ module.exports = function(sequelize, DataTypes) {
     role: {
       type: DataTypes.STRING(25),
       allowNull: true
+    },
+    first_name: { // Adding the first_name column
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    last_name: { // Adding the last_name column
+      type: DataTypes.STRING(100),
+      allowNull: true
     }
   }, {
     sequelize,

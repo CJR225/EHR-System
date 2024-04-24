@@ -2,54 +2,43 @@ const bCrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 
 module.exports = function (passport, Student, Instructor) {
-    passport.serializeUser(function (user, done) {
-        try {
-            if (user.role === 'instructor' && user.instructor_id) {
-                done(null, `instructor-${user.instructor_id}`);
-            } else if (user.role === 'student' && user.user_id) {
-                done(null, `student-${user.user_id}`);
-            } else {
-                throw new Error('Invalid user object');
-            }
-        } catch (err) {
-            console.error('Error serializing user:', err);
-            done(err);
-        }
-    });
-    
-    
-    
+  passport.serializeUser(function (user, done) {
+    console.log("Attempt to serialize:", user);
+    done(null, user);
+});
 
-    passport.deserializeUser(function (id, done) {
-        const userType = id.split('-')[0];
-        const actualId = id.split('-')[1];
+  passport.deserializeUser(function (id, done) {
+    const userType = id.split("-")[0];
+    const actualId = id.split("-")[1];
 
-        if (userType === 'student') {
-            Student.findByPk(actualId).then(function (student) {
-                if (student) {
-                    done(null, student.get());
-                } else {
-                    done(new Error('Student not found'));
-                }
-            }).catch(function (err) {
-                done(err);
-            });
-        } else if (userType === 'instructor') {
-            Instructor.findByPk(actualId).then(function (instructor) {
-                if (instructor) {
-                    done(null, instructor.get());
-                } else {
-                    done(new Error('Instructor not found'));
-                }
-            }).catch(function (err) {
-                done(err);
-            });
-        } else {
-            done(new Error('Invalid user type'));
-        }
-    });
-      
-      
+    if (userType === "student") {
+      Student.findByPk(actualId)
+        .then(function (student) {
+          if (student) {
+            done(null, student.get());
+          } else {
+            done(new Error("Student not found"));
+          }
+        })
+        .catch(function (err) {
+          done(err);
+        });
+    } else if (userType === "instructor") {
+      Instructor.findByPk(actualId)
+        .then(function (instructor) {
+          if (instructor) {
+            done(null, instructor.get());
+          } else {
+            done(new Error("Instructor not found"));
+          }
+        })
+        .catch(function (err) {
+          done(err);
+        });
+    } else {
+      done(new Error("Invalid user type"));
+    }
+  });
 
   passport.use(
     "local-signup",
@@ -78,7 +67,7 @@ module.exports = function (passport, Student, Instructor) {
               password: studentPassword,
               fname: req.body.fname,
               lname: req.body.lname,
-              sectionID: req.body.sectionID,
+              section_id: req.body.sectionID,
             };
             Student.create(data).then(function (newStudent, created) {
               if (!newStudent) {
@@ -106,10 +95,10 @@ module.exports = function (passport, Student, Instructor) {
         var generateHash = function (password) {
           return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
         };
-  
+
         // Access instructor ID from request body
         var instructorId = req.body.instructor_id;
-  
+
         // Check if the instructor already exists
         Instructor.findOne({
           where: { username: username },
@@ -141,7 +130,6 @@ module.exports = function (passport, Student, Instructor) {
       }
     )
   );
-  
 
   passport.use(
     "local-signin",

@@ -176,7 +176,7 @@ function RegisterForm() {
                               type="text"
                               value={username}
                               label="Username"
-                              onChange={(e) => setUsername(e.target.value)}
+                              onChange={(e) => setUsername(e.target.value)} placeholder="Username" required
                             />
                             {schema.username.validate(username).error && (
                               <div
@@ -197,7 +197,7 @@ function RegisterForm() {
                               type="password"
                               value={password}
                               label="Password"
-                              onChange={(e) => setPassword(e.target.value)}
+                              onChange={(e) => setPassword(e.target.value)} placeholder="Password" required
                             />
                             {schema.password.validate(password).error && (
                               <div
@@ -228,7 +228,7 @@ function RegisterForm() {
                                 type="text"
                                 value={fname}
                                 label="Fname"
-                                onChange={(e) => setFname(e.target.value)}
+                                onChange={(e) => setFname(e.target.value)} placeholder="First name" required
                               />
                             </div>
 
@@ -239,7 +239,7 @@ function RegisterForm() {
                                 type="text"
                                 value={lname}
                                 label="Lname"
-                                onChange={(e) => setLname(e.target.value)}
+                                onChange={(e) => setLname(e.target.value)} placeholder="Last name" required
                               />
                             </div>
                           </div>
@@ -249,7 +249,7 @@ function RegisterForm() {
                               className="form-control mb-2 mt-1"
                               type="number"
                               value={sectionID}
-                              onChange={(e) => setSectionID(e.target.value)}
+                              onChange={(e) => setSectionID(e.target.value)} placeholder="Section ID" required
                             />
                           </div>
                           <div className="mt-3">

@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
 import NotFound from "./components/notFound";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
-import TempPatientDash from "./components/patientDash";
+import SectionDash from "./components/sectionDashboard";
 import PatientDash from "./components/patientDashboard";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
           <Route path="/" element={<LoginForm />} />
           <Route path="/patient-dashboard" element={<PatientDash />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/sectionDash" element={<TempPatientDash />} />
+          <Route path="/sectionDash" element={<SectionDash />} />
           <Route path="/not-found" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>
