@@ -108,7 +108,7 @@ function LoginForm() {
                               className="form-control mb-2 mt-1"
                               type="text"
                               value={username}
-                              onChange={(e) => setUsername(e.target.value)}
+                              onChange={(e) => setUsername(e.target.value)} placeholder="Username" required
                             />
                           </div>
                           <div>
@@ -117,7 +117,7 @@ function LoginForm() {
                               className="form-control mb-2 mt-1"
                               type="password"
                               value={password}
-                              onChange={(e) => setPassword(e.target.value)}
+                              onChange={(e) => setPassword(e.target.value)} placeholder="Password" required
                             />
                           </div>
                           

@@ -345,7 +345,7 @@ function PatientDash() {
                         flex: 10,
                         display: "flex",
                         justifyContent: "space-around",
-                        marginTop: "1vh",
+                        marginTop: "2vh",
                       }}
                     >
                       <span>Medical Record #: {selectedPatient.id}</span>

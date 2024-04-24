@@ -24,7 +24,7 @@ router.get('/section-list', async (req, res) => {
                 {
                     model: Instructor,
                     as: 'instructor',  // Ensures this matches the alias in your model association
-                    attributes: ['username', 'role']
+                    attributes: ['first_name', 'last_name', 'role'] // Include first_name and last_name
                 },
                 {
                     model: Student,
@@ -40,6 +40,7 @@ router.get('/section-list', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
+
 
 
 
