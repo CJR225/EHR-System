@@ -668,3 +668,33 @@ h1 {
   margin-bottom: 3vh;
 }
 
+/* alertStyles.css */
+.alertStyles {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    background-color: #2ECC71;
+    color: #186A3B;
+    padding: 10px 40px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: auto;
+    max-width: 90%;
+    overflow: hidden;
+    animation: fadeInOutFromRight 5s ease-in-out;
+  }
+  
+  @keyframes fadeInOutFromRight {
+      0%, 100% {
+          opacity: 0;
+          transform: translateX(100%); /* Start and end off the right edge */
+      }
+      10%, 90% {
+          opacity: 1;
+          transform: translateX(0); /* Stay in original position */
+      }
+  }
+
+
+
