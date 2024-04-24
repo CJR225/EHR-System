@@ -12,6 +12,9 @@ import PatientMAR from './PatientMAR';
 import PatientWaldo from './PatientWaldo';
 import PatientVitals from "./PatientVitals";
 import PatientIOandADL from "./PatientIOandADL";
+import PatientLabValues from "./PatientLabValues";
+import PatientNotes from "./PatientNotes";
+import PatientADL from "./PatientADL";
 
 //react icons
 import {
@@ -47,8 +50,8 @@ function PatientDash() {
       console.error("Logout Error:", error);
     }
   };
-  
-  
+
+
 
   // Fetches all patients when the component mounts
   useEffect(() => {
@@ -160,7 +163,15 @@ function PatientDash() {
       },
       {
         name: "Labs",
-        icon: <FaFlask />,
+        icon: (
+          <div
+            title="Labs"
+            onClick={() => setActiveTab("Labs")}
+            style={{ cursor: "pointer" }}
+          >
+            <FaFlask />
+          </div>
+        ),
       },
       {
         name: "Patient Care",
@@ -182,7 +193,18 @@ function PatientDash() {
           </view>
         ),
       },
-      { name: "Notes", icon: <FaPencilAlt /> },
+      {
+        name: "Notes",
+        icon:
+          (
+            <div
+              title="Notes"
+              onClick={() => setActiveTab("Notes")}
+              style={{ cursor: "pointer" }}
+            ><FaPencilAlt />
+            </div>
+          ),
+      },
       {
         name: "Logout",
         icon: (
@@ -192,10 +214,10 @@ function PatientDash() {
               marginTop: "25vh",
               position: "fixed",
               marginLeft: "-2.4vw",
-            }} 
+            }}
           ></TbLogout2>
         ),
-      },      
+      },
     ];
     return (
       <div className="sidebarContainer">
@@ -250,10 +272,11 @@ function PatientDash() {
   };
   const PCSidebar = ({ children }) => {
     const menuItem = [
+      { name: "ADL" },
       { name: "WALDO" },
       { name: "Vital Signs" },
       { name: "Intake & Output" },
-      { name: "Blood Admin" },
+
     ];
     return (
       <div className="PCSidebarContainer">
@@ -389,6 +412,16 @@ function PatientDash() {
                     <PatientMAR selectedPatient={selectedPatient} />
                   )}
 
+                  {activeTab === "Labs" && selectedPatient && (
+                    <PatientLabValues selectedPatient={selectedPatient} />
+
+                  )}
+
+                  {activeTab === "ADL" && selectedPatient && (
+                    <PatientADL selectedPatient={selectedPatient} activeTab={activeTab} />
+
+                  )}
+
                   {activeTab === "WALDO" && selectedPatient && (
                     <PatientWaldo selectedPatient={selectedPatient} activeTab={activeTab} />
 
@@ -401,8 +434,12 @@ function PatientDash() {
 
                   {activeTab === "Intake & Output" && selectedPatient && (
                     <PatientIOandADL selectedPatient={selectedPatient} activeTab={activeTab} />
-
                   )}
+
+                  {activeTab === "Notes" && selectedPatient && (
+                    <PatientNotes selectedPatient={selectedPatient} />
+                  )}
+
 
 
                 </div>

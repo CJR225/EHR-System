@@ -61,6 +61,18 @@ app.use('/patients', vitalSignsRouter);
 const IOandADLRouter = require('./routes/IOandADL.js');
 app.use('/patients', IOandADLRouter);
 
+const labValuesRouter = require('./routes/labValuesRouter.js');
+app.use('/patients', labValuesRouter);
+
+const instructorRouter = require('./routes/instructorRouter.js');
+app.use('/patients', instructorRouter);
+
+const notesRouter = require('./routes/notesRouter.js');
+app.use('/patients', notesRouter);
+
+const adlRouter = require('./routes/ADL-Router.js');
+app.use('/patients', adlRouter);
+
 var initModels = require("./models/init-models.js");
 const { env } = require('process');
 var models = initModels(sequelize);
