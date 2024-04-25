@@ -51,15 +51,19 @@ function PatientDash() {
       console.error("Logout Error:", error);
     }
   };
-
+  
+  //This useEffect is when instructor comes from sectiondash and displays the patient info
   useEffect(() => {
-    // When component mounts, check for passed state and set patient data
-    const patient = location.state?.patient; // Get patient from navigation state
+    const { patient, sectionId } = location.state || {};
+  
     if (patient) {
-      setSelectedPatient(patient);
-      fetchAllergies(patient.id);
+      setSelectedPatient(patient); 
+      fetchAllergies(patient.id);  
+  
+      console.log(`Received section ID: ${sectionId}`); 
     }
   }, [location]);
+  
 
   
   const fetchAllergies = async (patientId) => {
@@ -75,6 +79,35 @@ function PatientDash() {
     setActiveTab(tabName);
   };
  
+  //This useEffect is when a student navigates to patientDash
+  useEffect(() => {
+    const isStudent = sessionStorage.getItem('role') === 'student';
+  
+    if (isStudent) {
+      const studentSectionId = sessionStorage.getItem('sectionId');
+      console.log("Fetched section ID from session storage:", studentSectionId);
+  
+      if (studentSectionId) {
+        axios.get(`http://localhost:3001/patients/section/${studentSectionId}/patients`)
+          .then(response => {
+            setPatients(response.data);
+            if (response.data.length > 0) {
+              setSelectedPatient(response.data[0]);  // Automatically select the first patient
+            } else {
+              console.log("No patients found for this section.");
+            }
+            console.log("Patients data:", response.data);
+          })
+          .catch(error => {
+            console.error("Failed to fetch assigned patients:", error);
+          });
+      } else {
+        console.log("No section ID found in session storage.");
+      }
+    }
+  }, []);
+  
+  
 
   //Sidebar creation
   const [homeOpen, setHomeOpen] = useState(false);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -10,31 +10,33 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post("http://localhost:3001/auth/signin", {
         username,
         password,
       });
-  
-      console.log("Login Response:", response.data);
-  
-      if (response.status === 200 && response.data.message === "Login successful") {
-        console.log("AFTER LOGIN SUCCESS");
-  
-        const user = response.data;
-        const role = user.role;
-        
-        console.log("Role:", role);
-  
-        if (role === "instructor") {
-          console.log("Navigating to /sectionDash");
+
+      console.log("Login Response:", response.data); // This should include the sectionId
+
+      if (
+        response.status === 200 &&
+        response.data.message === "Login successful"
+      ) {
+        if (response.data.role === "student") {
+          const sectionId = response.data.sectionId; // Extract sectionId from the response
+          console.log("Section ID:", sectionId); // Check if sectionId is logged correctly
+
+          // Save role and sectionId in session storage
+          sessionStorage.setItem("role", "student");
+          sessionStorage.setItem("sectionId", sectionId);
+
+          // Navigate to patient dashboard and pass sectionId as state
+          navigate("/patient-dashboard", {
+            state: { sectionId },
+          });
+        } else if (response.data.role === "instructor") {
           navigate("/sectionDash");
-        } else if (role === "student") {
-          console.log("Navigating to /patient-dashboard");
-          navigate("/patient-dashboard");
-        } else {
-          console.error("Unknown role:", role);
         }
       }
     } catch (error) {
@@ -42,12 +44,6 @@ function LoginForm() {
       setErrorMessage(error.response.data.message);
     }
   };
-  
-  
-  
-  
-
-
 
   return (
     <body id="loginBody">
@@ -108,7 +104,9 @@ function LoginForm() {
                               className="form-control mb-2 mt-1"
                               type="text"
                               value={username}
-                              onChange={(e) => setUsername(e.target.value)} placeholder="Username" required
+                              onChange={(e) => setUsername(e.target.value)}
+                              placeholder="Username"
+                              required
                             />
                           </div>
                           <div>
@@ -117,10 +115,12 @@ function LoginForm() {
                               className="form-control mb-2 mt-1"
                               type="password"
                               value={password}
-                              onChange={(e) => setPassword(e.target.value)} placeholder="Password" required
+                              onChange={(e) => setPassword(e.target.value)}
+                              placeholder="Password"
+                              required
                             />
                           </div>
-                          
+
                           {errorMessage && (
                             <div
                               className="alert alert-danger mt-2 p-2"
@@ -157,7 +157,7 @@ function LoginForm() {
 
         <footer>
           <div class="text-center fixed-bottom pb-3" id="loginFooter">
-          Chris Rocco, Matt Nova, Billy Siri &copy; Quinnipiac 2024
+            Chris Rocco, Matt Nova, Billy Siri &copy; Quinnipiac 2024
           </div>
         </footer>
       </div>

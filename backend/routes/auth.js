@@ -36,6 +36,7 @@ router.post('/signup-instructor', (req, res, next) => {
     })(req, res, next);
 });
 
+// Modify the authentication logic to include section_id in the response
 router.post('/signin', (req, res, next) => {
     passport.authenticate('local-signin', (err, user, info) => {
         if (err) {
@@ -48,10 +49,16 @@ router.post('/signin', (req, res, next) => {
             if (err) {
                 return next(err);
             }
-            return res.status(200).json({ message: 'Login successful', role: user.role }); // Include role in the response
+            // Include section_id in the response if user is a student
+            if (user.role === 'student') {
+                return res.status(200).json({ message: 'Login successful', role: user.role, sectionId: user.section_id });
+            } else {
+                return res.status(200).json({ message: 'Login successful', role: user.role });
+            }
         });
     })(req, res, next);
 });
+
 
 
 router.get("/logout", (req, res) => {

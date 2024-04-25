@@ -24,23 +24,57 @@ const SectionDashboard = () => {
       setAlert({ show: true, message: "Patient assigned to section" });
       setTimeout(() => setAlert({ show: false, message: "" }), 5000);
       setIsAssigned(prev => ({ ...prev, [sectionId]: true }));
+  
+      axios.post('http://localhost:3001/patients/assign-patient', {
+        patientId: patient.id,
+        sectionId: sectionId
+      }).then(response => {
+        console.log('Assignment successful:', response.data);
+      }).catch(error => {
+        console.error('Assignment failed:', error);
+      });
     }
   };
+  ;
 
-  const handleGoToSection = (sectionId) => {
-    const patient = selectedPatients[sectionId];
-    if (patient && isAssigned[sectionId]) {
-      navigate('/patient-dashboard', { state: { patient } });
-    }
-  };
+ const handleGoToSection = (sectionId) => {
+  const patient = selectedPatients[sectionId];
+  if (patient && isAssigned[sectionId]) {
+    navigate('/patient-dashboard', {
+      state: {
+        patient: patient,
+        sectionId: sectionId  // Pass the sectionId as part of the navigation state
+      }
+    });
+  }
+};
+
 
 
   useEffect(() => {
-    // Fetch the section data when the component mounts
-    axios
-      .get("http://localhost:3001/patients/section-list") // Update the URL based on your actual setup
+    axios.get("http://localhost:3001/patients/section-list")
       .then((response) => {
-        setSections(response.data); // Set the sections data to state
+        // Aggregate students under their respective sections
+        const sectionMap = new Map();
+        response.data.forEach(item => {
+          let section = sectionMap.get(item.section_id);
+          if (!section) {
+            section = {
+              section_id: item.section_id,
+              instructor_id: item.instructor_id,
+              instructor: item.instructor,
+              students: []
+            };
+            sectionMap.set(item.section_id, section);
+          }
+          section.students.push({
+            user_id: item.Students.user_id,
+            username: item.Students.username,
+            fname: item.Students.fname,
+            lname: item.Students.lname
+          });
+        });
+        setSections(Array.from(sectionMap.values()));
       })
       .catch((error) => {
         console.error("Error fetching sections:", error);
@@ -152,7 +186,13 @@ const SectionDashboard = () => {
                                 {section.instructor.first_name}{" "}
                                 {section.instructor.last_name || "Not assigned"}
                               </h3>
-
+                                <div><ul>
+                          {section.students.map(student => (
+                            <li key={student.user_id}>
+                              {student.fname} {student.lname}
+                            </li>
+                          ))}
+                        </ul></div>
                               <div className="row gap-2">
                                 <select
                                   className="col btn btn-outline-light btn-md-6 px-3"
