@@ -91,6 +91,13 @@ router.post('/assign-patient', async (req, res) => {
 
     console.log(`Attempting to assign patient ${patientId} to section ${sectionId}`);
     try {
+        // Step 1: Clear any existing patient assignments from this section
+        await Patient.update(
+            { section_id: null },
+            { where: { section_id: sectionId } }
+        );
+
+        // Step 2: Assign the new patient to the section
         const result = await Patient.update(
             { section_id: sectionId },
             { where: { id: patientId } }
@@ -109,6 +116,7 @@ router.post('/assign-patient', async (req, res) => {
         res.status(500).json({ message: "Error assigning patient", error: error.message });
     }
 });
+
 
 
 

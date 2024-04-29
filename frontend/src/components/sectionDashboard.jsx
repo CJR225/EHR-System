@@ -13,8 +13,8 @@ const SectionDashboard = () => {
 
   const handleSelectPatient = (sectionId) => (event) => {
     const patientId = event.target.value;
-    const patient = patients.find(p => p.id.toString() === patientId);
-    setSelectedPatients(prev => ({ ...prev, [sectionId]: patient }));
+    const patient = patients.find((p) => p.id.toString() === patientId);
+    setSelectedPatients((prev) => ({ ...prev, [sectionId]: patient }));
   };
 
   const handleAssignPatient = (sectionId) => {
@@ -23,47 +23,51 @@ const SectionDashboard = () => {
       console.log(`Assigning patient ${patient.id} to section ${sectionId}`);
       setAlert({ show: true, message: "Patient assigned to section" });
       setTimeout(() => setAlert({ show: false, message: "" }), 5000);
-      setIsAssigned(prev => ({ ...prev, [sectionId]: true }));
-  
-      axios.post('http://localhost:3001/patients/assign-patient', {
-        patientId: patient.id,
-        sectionId: sectionId
-      }).then(response => {
-        console.log('Assignment successful:', response.data);
-      }).catch(error => {
-        console.error('Assignment failed:', error);
+      setIsAssigned((prev) => ({ ...prev, [sectionId]: true }));
+
+      axios
+        .post("http://localhost:3001/patients/assign-patient", {
+          patientId: patient.id,
+          sectionId: sectionId,
+        })
+        .then((response) => {
+          console.log("Assignment successful:", response.data);
+        })
+        .catch((error) => {
+          console.error("Assignment failed:", error);
+        });
+    }
+  };
+  const handleGoToSection = (sectionId) => {
+    const patient = selectedPatients[sectionId];
+
+    if (patient && isAssigned[sectionId]) {
+      console.log(`Setting session storage for sectionId: ${sectionId}`);
+      sessionStorage.setItem("sectionId", sectionId);
+      console.log(`Session storage set, navigating to PatientDash`);
+      navigate("/patient-dashboard", {
+        state: {
+          patient: patient,
+          sectionId: sectionId, // Pass the sectionId as part of the navigation state
+        },
       });
     }
   };
-  ;
-
- const handleGoToSection = (sectionId) => {
-  const patient = selectedPatients[sectionId];
-  if (patient && isAssigned[sectionId]) {
-    navigate('/patient-dashboard', {
-      state: {
-        patient: patient,
-        sectionId: sectionId  // Pass the sectionId as part of the navigation state
-      }
-    });
-  }
-};
-
-
 
   useEffect(() => {
-    axios.get("http://localhost:3001/patients/section-list")
+    axios
+      .get("http://localhost:3001/patients/section-list")
       .then((response) => {
         // Aggregate students under their respective sections
         const sectionMap = new Map();
-        response.data.forEach(item => {
+        response.data.forEach((item) => {
           let section = sectionMap.get(item.section_id);
           if (!section) {
             section = {
               section_id: item.section_id,
               instructor_id: item.instructor_id,
               instructor: item.instructor,
-              students: []
+              students: [],
             };
             sectionMap.set(item.section_id, section);
           }
@@ -71,7 +75,7 @@ const SectionDashboard = () => {
             user_id: item.Students.user_id,
             username: item.Students.username,
             fname: item.Students.fname,
-            lname: item.Students.lname
+            lname: item.Students.lname,
           });
         });
         setSections(Array.from(sectionMap.values()));
@@ -186,22 +190,31 @@ const SectionDashboard = () => {
                                 {section.instructor.first_name}{" "}
                                 {section.instructor.last_name || "Not assigned"}
                               </h3>
-                                <div><ul>
-                          {section.students.map(student => (
-                            <li key={student.user_id}>
-                              {student.fname} {student.lname}
-                            </li>
-                          ))}
-                        </ul></div>
+                              <div>
+                                <ul>
+                                  {section.students.map((student) => (
+                                    <li key={student.user_id}>
+                                      {student.fname} {student.lname}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
                               <div className="row gap-2">
                                 <select
                                   className="col btn btn-outline-light btn-md-6 px-3"
-                                  onChange={handleSelectPatient(section.section_id)} value={selectedPatients[section.section_id]?.id || ""}
+                                  onChange={handleSelectPatient(
+                                    section.section_id
+                                  )}
+                                  value={
+                                    selectedPatients[section.section_id]?.id ||
+                                    ""
+                                  }
                                 >
                                   <option value="">Select a patient</option>
                                   {patients.map((patient) => (
                                     <option key={patient.id} value={patient.id}>
-                                      Name: {patient.fname} {patient.lname}
+                                      Name: {patient.fname} {patient.lname} ID:{" "}
+                                      {patient.id}
                                     </option>
                                   ))}
                                 </select>
@@ -219,7 +232,9 @@ const SectionDashboard = () => {
                                   id="go-section-btn"
                                   type="submit"
                                   className="col btn btn-outline-light btn-md px-4"
-                                  onClick={() => handleGoToSection(section.section_id)} 
+                                  onClick={() =>
+                                    handleGoToSection(section.section_id)
+                                  }
                                   disabled={!isAssigned[section.section_id]} // Button is disabled unless patient is assigned
                                 >
                                   Go to section

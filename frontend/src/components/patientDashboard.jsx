@@ -81,32 +81,36 @@ function PatientDash() {
  
   //This useEffect is when a student navigates to patientDash
   useEffect(() => {
-    const isStudent = sessionStorage.getItem('role') === 'student';
-  
-    if (isStudent) {
-      const studentSectionId = sessionStorage.getItem('sectionId');
-      console.log("Fetched section ID from session storage:", studentSectionId);
-  
-      if (studentSectionId) {
-        axios.get(`http://localhost:3001/patients/section/${studentSectionId}/patients`)
-          .then(response => {
-            setPatients(response.data);
-            if (response.data.length > 0) {
-              setSelectedPatient(response.data[0]);  // Automatically select the first patient
-            } else {
-              console.log("No patients found for this section.");
-            }
-            console.log("Patients data:", response.data);
-          })
-          .catch(error => {
-            console.error("Failed to fetch assigned patients:", error);
-          });
-      } else {
-        console.log("No section ID found in session storage.");
-      }
+  const isStudent = sessionStorage.getItem('role') === 'student';
+
+  if (isStudent) {
+    const studentSectionId = sessionStorage.getItem('sectionId');
+    console.log("Fetched section ID from session storage:", studentSectionId);
+    console.log(`[PatientDash] Mounted. Fetched sectionId from sessionStorage: ${studentSectionId}`);
+
+    if (studentSectionId) {
+      console.log(`[PatientDash] Fetching data for sectionId: ${studentSectionId}`);
+      axios.get(`http://localhost:3001/patients/section/${studentSectionId}/patients`)
+        .then(response => {
+          console.log(`[PatientDash] Data fetched for sectionId ${studentSectionId}:`, response.data);
+          setPatients(response.data);
+          if (response.data.length > 0) {
+            setSelectedPatient(response.data[0]);  // Automatically select the first patient
+          } else {
+            console.log("No patients found for this section.");
+          }
+          console.log("Patients data:", response.data);
+        })
+        .catch(error => {
+          console.error("Failed to fetch assigned patients:", error);
+          console.error(`[PatientDash] Error fetching data for sectionId ${studentSectionId}:`, error);
+        });
+    } else {
+      console.log("No section ID found in session storage.");
     }
-  }, []);
-  
+  }
+}, []);
+
   
 
   //Sidebar creation
