@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { models } = require('./database.js'); 
+const { models } = require('./database.js');
 const { Patient } = models;
 
 // Route: Get patient demographics by id
@@ -9,7 +9,7 @@ router.get('/:id/demographics', async (req, res) => {
 
   try {
     const patient = await Patient.findByPk(id, {
-      attributes: ['fname', 'lname', 'dob', 'religion', 'gender', 'insurance','gender_at_birth','emergency_contact_name','emergency_contact_number']
+      attributes: ['fname', 'lname', 'dob', 'height', 'weight', 'religion', 'gender', 'insurance', 'gender_at_birth', 'emergency_contact_name', 'emergency_contact_number', 'advanced_directives']
     });
 
     if (patient) {
@@ -26,7 +26,7 @@ router.get('/:id/demographics', async (req, res) => {
 // Route: Update patient information for gender, gender at birth, emergency contact name, and emergency contact number
 router.put('/:id/update-info', async (req, res) => {
   const { id } = req.params;
-  const { gender, gender_at_birth, emergency_contact_name, emergency_contact_number } = req.body;
+  const { gender, gender_at_birth, emergency_contact_name, emergency_contact_number, advanced_directives } = req.body;
 
   try {
     // Find the patient by ID
@@ -42,7 +42,8 @@ router.put('/:id/update-info', async (req, res) => {
       gender,
       gender_at_birth,
       emergency_contact_name,
-      emergency_contact_number
+      emergency_contact_number,
+      advanced_directives
     });
 
     // Respond with the updated patient information
@@ -52,7 +53,8 @@ router.put('/:id/update-info', async (req, res) => {
         gender: patient.gender,
         gender_at_birth: patient.gender_at_birth,
         emergency_contact_name: patient.emergency_contact_name,
-        emergency_contact_number: patient.emergency_contact_number
+        emergency_contact_number: patient.emergency_contact_number,
+        advanced_directives
       }
     });
   } catch (error) {

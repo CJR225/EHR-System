@@ -20,6 +20,25 @@ router.get('/patient-history/:patientId', async (req, res) => {
 });
 
 
+// Delete patient history by patient_id
+router.delete('/patient-history/:patientId', async (req, res) => {
+    try {
+        const patientId = req.params.patientId;
+        const deleteResult = await PatientHistory.destroy({
+            where: { patient_id: patientId }
+        });
+        if (deleteResult > 0) {
+            res.status(200).send('Patient history deleted successfully');
+        } else {
+            res.status(404).send('Patient history not found');
+        }
+    } catch (error) {
+        console.error('Error deleting patient history:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
 router.post('/patient-history', async (req, res) => {
     try {
         const newHistoryData = req.body;

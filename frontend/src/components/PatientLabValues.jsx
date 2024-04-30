@@ -1,37 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import styles from '../PatientDash.module.css'; // Ensure this path is correct
+import styles from '../PatientDash.module.css';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
+function formatTestName(name) {
+    return name
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
 
 function PatientLabValues({ selectedPatient }) {
     const [labValues, setLabValues] = useState([]);
     const [labValuesOpen, setLabValuesOpen] = useState(false);
 
     useEffect(() => {
-
         if (selectedPatient) {
-            // Set an interval for polling
+            fetchLabValues(selectedPatient.id);
             const intervalId = setInterval(() => {
                 fetchLabValues(selectedPatient.id);
-            }, 5000); // Polling every 5 seconds
+            }, 5000); // Adjusted to every 5 seconds, was 500 ms which is very frequent
 
-            // Clear interval on component unmount
             return () => clearInterval(intervalId);
         }
     }, [selectedPatient]);
 
-
     const fetchLabValues = async (patientId) => {
         try {
-            console.log(`Fetching lab values for patient ID: ${selectedPatient.id}`);
-
             const response = await axios.get(`http://localhost:3001/patients/${patientId}/labvalues`);
-            console.log('Lab values fetched:', response.data);
-            console.log('Lab values fetched:', JSON.stringify(response.data, null, 2));
-
-
             setLabValues(response.data);
         } catch (error) {
             console.error("Error fetching patient lab values:", error);
@@ -39,75 +36,33 @@ function PatientLabValues({ selectedPatient }) {
         }
     };
 
-
     return (
         <div className={styles.outerContainer}>
-        <div onClick={() => setLabValuesOpen(!labValuesOpen)} style={{ cursor: 'pointer' }}>
-            <h2 className={styles.tabHeading}>
-                Patient Lab Values
-                {labValuesOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
-            </h2>
-        </div>
+            <div onClick={() => setLabValuesOpen(!labValuesOpen)} style={{ cursor: 'pointer' }}>
+                <h2 className={styles.tabHeading}>
+                    Patient Lab Values
+                    {labValuesOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
+                </h2>
+            </div>
 
-        <div id="labValuesTable" style={{ display: labValuesOpen ? 'block' : 'none' }}>
-            {/* Apply the scrollable table container style */}
-            <div className={`${styles.tableContainer} ${labValuesOpen ? 'active' : ''} scrollable-table-container`}> 
-               <table className={styles.table + ' inverted-table'}>
+            <div id="labValuesTable" style={{ display: labValuesOpen ? 'block' : 'none' }}>
+                <div className={`${styles.tableContainer} ${labValuesOpen ? 'active' : ''} ${styles.scrollableTable}`}>
+                    <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>pH</th>
-                                <th>PaCO2</th>
-                                <th>PaO2</th>
-                                <th>HCO3</th>
-                                <th>CO2</th>
-                                <th>WBC</th>
-                                <th>RBC</th>
-                                <th>Hemoglobin</th>
-                                <th>Hematocrit</th>
-                                <th>Platelets</th>
-                                <th>A1C</th>
-                                <th>Sodium</th>
-                                <th>Potassium</th>
-                                <th>Chloride</th>
-                                <th>Magnesium</th>
-                                <th>Glucose</th>
-                                <th>Calcium</th>
-                                <th>BUN</th>
-                                <th>Creatinine</th>
-                                <th>Albumin</th>
-                                <th>PreAlbumin</th>
-                                <th>BNP</th>
-                                <th>Digoxin Level</th>
+                                <th>Lab Test</th>
+                                {labValues.map((labValue, index) => (
+                                    <th key={index}>{new Date(labValue.timedate).toLocaleDateString()}</th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody>
-                            {labValues.map((labValue, index) => (
+                            {labValues.length > 0 && Object.keys(labValues[0]).filter(key => key !== 'timedate' && key !== 'patient_id').map((test, index) => (
                                 <tr key={index}>
-                                    <td>{new Date(labValue.timedate).toLocaleDateString()}</td>
-                                    <td>{labValue.pH}</td>
-                                    <td>{labValue.PaCO2}</td>
-                                    <td>{labValue.PaO2}</td>
-                                    <td>{labValue.HCO3}</td>
-                                    <td>{labValue.CO2}</td>
-                                    <td>{labValue.WBC}</td>
-                                    <td>{labValue.RBC}</td>
-                                    <td>{labValue.Hemoglobin}</td>
-                                    <td>{labValue.Hematocrit}</td>
-                                    <td>{labValue.Platelets}</td>
-                                    <td>{labValue.Hemoglobin_A1c}</td>
-                                    <td>{labValue.Sodium}</td>
-                                    <td>{labValue.Potassium}</td>
-                                    <td>{labValue.Chloride}</td>
-                                    <td>{labValue.Magnesium}</td>
-                                    <td>{labValue.Glucose}</td>
-                                    <td>{labValue.Calcium}</td>
-                                    <td>{labValue.BUN}</td>
-                                    <td>{labValue.Creatinine}</td>
-                                    <td>{labValue.Albumin}</td>
-                                    <td>{labValue.PreAlbumin}</td>
-                                    <td>{labValue.BNP}</td>
-                                    <td>{labValue.Digoxin_Level}</td>
+                                    <td>{formatTestName(test)}</td>
+                                    {labValues.map((labValue, subIndex) => (
+                                        <td key={subIndex}>{labValue[test]}</td>
+                                    ))}
                                 </tr>
                             ))}
                         </tbody>
@@ -116,7 +71,7 @@ function PatientLabValues({ selectedPatient }) {
             </div>
         </div>
     );
-}
 
+}
 
 export default PatientLabValues;

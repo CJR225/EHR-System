@@ -1,20 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const { models } = require('./database.js');
-const { Patient } = models;
+const { Patient, VitalSigns } = models;
+
+
 
 // Endpoint to get vitals for a patient by ID
 router.get('/vitals/:patientId', async (req, res) => {
   try {
-    const patient = await Patient.findByPk(req.params.patientId);
-    if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
+    const patientId = req.params.patientId;
+    const vitals = await VitalSigns.findAll({
+      where: { patient_id: patientId }
+    });
+
+    if (!vitals.length) {
+      return res.status(404).json({ message: 'No vital signs found for this patient' });
     }
-    res.json(patient);
+    res.json(vitals);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching patient vitals', error });
   }
 });
+
 
 // PUT Endpoint to update patient vitals
 router.put('/vitals/:patientId', async (req, res) => {
@@ -33,29 +40,62 @@ router.put('/vitals/:patientId', async (req, res) => {
   }
 });
 
-// Endpoint to clear patient vitals
-router.delete('/vitals/:patientId', async (req, res) => {
+
+// DELETE Endpoint to delete a patient's vital sign by ID
+router.delete('/:patientId/:vitalId/vitals', async (req, res) => {
+  console.log("Requested patientId:", req.params.patientId);  // Debugging output
+  console.log("Requested vitalId:", req.params.vitalId);      // Debugging output
+
   try {
-    const patient = await Patient.findByPk(req.params.patientId);
-    if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
+    const { patientId, vitalId } = req.params;
+    const vital = await VitalSigns.findByPk(vitalId);
+
+    if (!vital) {
+      return res.status(404).json({ message: 'Vital sign not found' });
     }
 
-    // Set the vitals to null or their default values
-    await patient.update({
-      temperature: null,
-      heart_rate: null,
-      bps: null,
-      bpd: null,
-      blood_oxygen: null,
-      resting_respiratory: null,
-      pain: null
-    });
+    if (vital.patient_id.toString() !== patientId) {
+      return res.status(404).json({ message: 'Vital sign does not belong to the specified patient' });
+    }
 
-    res.status(200).json({ message: 'Patient vitals cleared' });
+    await vital.destroy();
+    res.status(200).json({ message: 'Vital sign deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Error clearing patient vitals', error });
+    console.error('Error deleting vital sign:', error);
+    res.status(500).json({ message: 'Error deleting vital sign', error });
   }
 });
+
+
+router.post('/:patientId/vitals', async (req, res) => {
+  const patientId = req.params.patientId;
+
+  // Verify the patient exists
+  const patient = await Patient.findByPk(patientId);
+  if (!patient) {
+    return res.status(404).json({ message: 'Patient not found' });
+  }
+
+  // Check if the request body is an array of new vitals
+  if (!Array.isArray(req.body)) {
+    return res.status(400).json({ message: 'Expected an array of vital signs' });
+  }
+
+  // Prepare the vital signs data with the patientId included
+  const vitalSignsData = req.body.map(vital => ({ ...vital, patient_id: patientId }));
+
+  try {
+    // Insert each vital sign record individually
+    const results = await Promise.all(
+      vitalSignsData.map(vital => VitalSigns.create(vital))
+    );
+    res.status(201).json(results);
+  } catch (error) {
+    console.error('Error adding vital signs:', error);
+    res.status(500).json({ message: 'Failed to add vital signs', error: error.errors || error });
+  }
+});
+
+
 
 module.exports = router;

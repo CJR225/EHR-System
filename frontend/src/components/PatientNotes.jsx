@@ -54,54 +54,52 @@ function PatientNotes({ selectedPatient }) {
         }
     };
 
-    // Toggle switch handler
     const handleToggle = () => {
         setShowDelete(!showDelete);
     };
 
     return (
         <div className="notes-container">
-    <h2 className="notes-title">Patient Notes</h2>
-    <Switch checked={showDelete} onChange={handleToggle} color="primary" />
-    <div className="notes-grid">
-        {/* New note input card */}
-        <div className="note-card">
-            <form onSubmit={handleAddNote} className="note-content">
-                <textarea
-                    value={newNote}
-                    onChange={(e) => setNewNote(e.target.value)}
-                    placeholder="Enter note here..."
-                    required
-                />
-                <textarea
-                    value={newConsult}
-                    onChange={(e) => setNewConsult(e.target.value)}
-                    placeholder="Enter consultation details here..."
-                    required
-                />
-                <button className={styles.formButton} type="submit">Add Note</button>
-            </form>
-        </div>
-
-        {/* Existing notes */}
-        {notes.map((note, index) => (
-            <div key={index} className="note-card">
-                <div className="note-content">
-                    <strong>Notes:</strong>
-                    <p>{note.notes}</p>
-                    <strong>Consult:</strong>
-                    <p>{note.consult}</p>
+            <h2 className="notes-title">Patient Notes</h2>
+            <Switch checked={showDelete} onChange={handleToggle} color="primary" />
+            <div className="notes-grid">
+                <div className="note-card">
+                    <form onSubmit={handleAddNote} className="note-content">
+                        <textarea
+                            value={newNote}
+                            onChange={(e) => setNewNote(e.target.value)}
+                            placeholder="Enter note here..."
+                            required
+                        />
+                        <textarea
+                            value={newConsult}
+                            onChange={(e) => setNewConsult(e.target.value)}
+                            placeholder="Enter consultation details here..."
+                            required
+                        />
+                        <button className={styles.formButton} type="submit">Add Note</button>
+                    </form>
                 </div>
-                {showDelete && (
-                    <div className="note-footer">
-                        <button onClick={() => handleDeleteNote(note.note_id)} className="delete-btn">Delete</button>
-                    </div>
-                )}
-            </div>
-        ))}
-    </div>
-</div>
 
+                {notes.map((note, index) => (
+                    <div key={index} className="note-card">
+                        <div className="note-content">
+                            <strong>Notes:</strong>
+                            <p>{note.notes}</p>
+                            <strong>Consult:</strong>
+                            <p>{note.consult}</p>
+                            {/* Display the formatted date and time */}
+                            <p className="timestamp">Created: {new Date(note.created_at).toLocaleString()}</p>
+                        </div>
+                        {showDelete && (
+                            <div className="note-footer">
+                                <button onClick={() => handleDeleteNote(note.note_id)} className="delete-btn">Delete</button>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 }
 

@@ -30,6 +30,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(45),
       allowNull: true
     },
+    intake_type: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    output_type: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     oral: {
       type: DataTypes.STRING(45),
       allowNull: true

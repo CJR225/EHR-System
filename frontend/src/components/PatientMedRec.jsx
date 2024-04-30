@@ -2,97 +2,130 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import styles from '../PatientDash.module.css';
+import { useUser } from '../contexts/UserContext.js';
 
 function PatientMedRec({ selectedPatient }) {
-    // State to store medication data, initialized as an empty array
-    const [medications, setMedications] = useState([]);
+    const { user } = useUser();
+    const [medRecs, setMedRecs] = useState([]);
+    const [newMedRec, setNewMedRec] = useState({
+        medicationName: '',
+        dose: '',
+        route: '',
+        frequency: '',
+        lastTaken: ''
+    });
 
-    // useEffect hook to fetch medications data when selectedPatient changes
+    const isInstructor = user.role === 'instructor';
+
     useEffect(() => {
         if (selectedPatient) {
-            fetchMedications();
+            fetchMedRecs();
         }
-    }, [selectedPatient]); // Dependency array includes selectedPatient
+    }, [selectedPatient]);
 
-    // Asynchronous function to fetch medication details for the selected patient
-    const fetchMedications = async () => {
+    const fetchMedRecs = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/patients/${selectedPatient.id}/medications`);
-            setMedications(response.data); // Updating state with fetched data
+            setMedRecs(response.data);
         } catch (error) {
-            console.error("Error fetching patient medications:", error);
-            toast.error("Failed to fetch medications."); // Display error notification
+            console.error("Error fetching patient medrecs:", error);
+            toast.error("Failed to fetch medrecs.");
         }
     };
 
-    // Handler function to delete a specific medication
-    const handleDeleteMedication = async (medicationId) => {
+    const handleNewMedRecChange = (event) => {
+        const { name, value } = event.target;
+        setNewMedRec(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleAddMedRec = async (event) => {
+        event.preventDefault();
+        if (!isInstructor) {
+            toast.error("Only instructors are allowed to add medication records.");
+            return;
+        }
         try {
-            await axios.delete(`http://localhost:3001/patients/${selectedPatient.id}/medicines/${medicationId}`);
-            toast.success("Medication deleted successfully!"); // Success notification
-            // Update medications state by filtering out the deleted medication
-            setMedications(meds => meds.filter(med => med.id !== medicationId));
+            const medRecData = { ...newMedRec, patient_id: selectedPatient.id };
+            await axios.post(`http://localhost:3001/patients/${selectedPatient.id}/medications`, medRecData);
+            toast.success("New medication record added successfully!");
+            setNewMedRec({ medicationName: '', dose: '', route: '', frequency: '', lastTaken: '' });
+            fetchMedRecs();
         } catch (error) {
-            console.error("Failed to delete medication:", error);
-            toast.error("Failed to delete medication."); // Error notification
+            console.error("Error adding new medication record:", error);
+            toast.error("Failed to add new medication record.");
         }
     };
 
-    // Component rendering
-    return (
-        <div style={{
-            margin: "4vh",
-            padding: "20px",
-            backgroundColor: "#f5f5f5",
-            borderRadius: "8px",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-        }}>
-            <h3 style={{
-                borderBottom: "2px solid #418FDE",
-                paddingBottom: "10px",
-                marginBottom: "20px",
-            }}>
-                Medication Reconciliation
-            </h3>
+    const handleDeleteMedRec = async (medRecId) => {
+        if (!isInstructor) {
+            toast.error("Only instructors are allowed to delete medication records.");
+            return;
+        }
+        try {
+            await axios.delete(`http://localhost:3001/patients/${selectedPatient.id}/medications/${medRecId}`);
+            toast.success("Medication record deleted successfully!");
+            fetchMedRecs();
+        } catch (error) {
+            console.error("Error deleting medication record:", error);
+            toast.error("Failed to delete medication record.");
+        }
+    };
 
-            <div style={{ overflowX: "auto" }}>
-                <table style={{
-                    width: "100%",
-                    marginTop: "3vh",
-                    backgroundColor: "white",
-                    borderRadius: "8px",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                }}>
-                    <thead style={{ backgroundColor: "#418FDE", color: "white" }}>
-                        <tr>
-                            <th style={{ padding: "10px", textAlign: "Left" }}>Medication</th>
-                            <th style={{ textAlign: "Left" }}>Dose</th>
-                            <th style={{ textAlign: "Left" }}>Route</th>
-                            <th style={{ textAlign: "Left" }}>Frequency</th>
-                            <th style={{ textAlign: "Left" }}>Last Taken</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {medications.map((med, index) => (
-                            <tr key={index} style={{
-                                borderBottom: "1px solid #ddd",
-                                backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white",
-                            }}>
-                                <td style={{ padding: "10px" }}>{med.name}</td>
-                                <td>{med.medicine_patient.dosage}</td>
-                                <td>{med.medicine_patient.route}</td>
-                                <td>{med.medicine_patient.frequency}</td>
-                                <td>{med.medicine_patient.taken_last
-                                    ? new Date(med.medicine_patient.taken_last).toLocaleString()
-                                    : "N/A"}</td>
-                            </tr>
+    const formatHeader = (key) => {
+        return key.replace(/([A-Z])/g, ' $1').trim().replace(/^./, str => str.toUpperCase());
+    };
+
+    return (
+        <div className={styles.outerContainer}>
+            <h3 className={styles.sectionHeading}>Medication Reconciliation</h3>
+            {isInstructor && (
+                <form onSubmit={handleAddMedRec} className={styles.marForm}>
+                    {Object.keys(newMedRec).map(key => (
+                        <div className={styles.inputWrapper} key={key}>
+                            <label htmlFor={key}>{formatHeader(key)}</label>
+                            <input
+                                type="text"
+                                className={styles.formInput}
+                                name={key}
+                                id={key}
+                                value={newMedRec[key]}
+                                onChange={handleNewMedRecChange}
+                            />
+                        </div>
+                    ))}
+                    <button className={styles.formButton} type="submit">Add Medication Record</button>
+                </form>
+            )}
+            <table className={styles.table}>
+                <thead>
+                    <tr>
+                        {Object.keys(newMedRec).map(key => (
+                            <th key={key}>{formatHeader(key)}</th>
                         ))}
-                    </tbody>
-                </table>
-            </div>
+                        {isInstructor && <th>Action</th>}
+                    </tr>
+                </thead>
+                <tbody>
+                    {medRecs.map((medRec, index) => (
+                        <tr key={index}>
+                            <td>{medRec.medicationName}</td>
+                            <td>{medRec.dose}</td>
+                            <td>{medRec.route}</td>
+                            <td>{medRec.frequency}</td>
+                            <td>{medRec.lastTaken ? new Date(medRec.lastTaken).toLocaleString() : "N/A"}</td>
+                            {isInstructor && (
+                                <td>
+                                    <button onClick={() => handleDeleteMedRec(medRec.id)} className={`${styles.formButton} ${styles.delete}`}>
+                                        Delete
+                                    </button>
+                                </td>
+                            )}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
-    )
+    );
 }
 
-// Exporting the component for use in other parts of the application
 export default PatientMedRec;

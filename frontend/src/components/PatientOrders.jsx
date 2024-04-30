@@ -2,30 +2,61 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import styles from '../PatientDash.module.css';
+import { useUser } from '../contexts/UserContext.js';
 
 function PatientOrders({ selectedPatient }) {
-  // State to store the orders for the selected patient, initialized as an empty array
+  const { user } = useUser();
   const [orders, setOrders] = useState([]);
 
-  // useEffect hook to fetch orders data when selectedPatient changes
   useEffect(() => {
-    if (selectedPatient) {
-      // Making an HTTP GET request to fetch orders
-      axios.get(`http://localhost:3001/patients/${selectedPatient.id}/orders`)
-        .then(response => {
-          setOrders(response.data); // Updating state with fetched orders
-        })
-        .catch(error => {
-          console.error('Failed to fetch orders:', error);
-          toast.error('Failed to fetch orders.'); // Display error notification
-        });
+    const fetchOrders = () => {
+      if (selectedPatient) {
+        axios.get(`http://localhost:3001/patients/${selectedPatient.id}/orders`)
+          .then(response => {
+            setOrders(response.data);
+          })
+          .catch(error => {
+            toast.error(`Failed to fetch orders: ${error.message}`);
+          });
+      }
+    };
+
+    const intervalId = setInterval(fetchOrders, 1000); // Fetch orders every second
+
+    return () => {
+      clearInterval(intervalId); // Clear interval on component unmount or selectedPatient change
+    };
+  }, [selectedPatient]);
+
+  const toggleVisibilityForStudent = async (order, index) => {
+    console.log(order);
+    const newVisibility = !order.visibleToStudents;
+    try {
+      if (!order.orderId) {
+        throw new Error('Order ID is undefined');
+      }
+  
+      const response = await axios.put(`http://localhost:3001/patients/${selectedPatient.id}/orders/${order.orderId}/visibility`, {
+        visibleToStudents: newVisibility
+      });
+  
+      console.log(response.data);
+  
+      setOrders(prevOrders => {
+        const updatedOrders = [...prevOrders];
+        updatedOrders[index] = {
+          ...order,
+          visibleToStudents: newVisibility
+        };
+        return updatedOrders;
+      });
+    } catch (error) {
+      toast.error(`Failed to update order visibility: ${error.message}`);
     }
-  }, [selectedPatient]); // Dependency array includes selectedPatient
+  };
+  
+ 
 
-  // Conditional rendering to show a message if no orders are found
-  if (!orders.length) return <p>No orders found for this patient.</p>;
-
-  // Component rendering
   return (
     <div className={styles.someClassName}>
       <div style={{
@@ -40,7 +71,8 @@ function PatientOrders({ selectedPatient }) {
           paddingBottom: '10px',
           marginBottom: '20px'
         }}>Patient Orders</h3>
-        {orders.map(order => (
+
+        {orders.filter(order => user.role === 'instructor' || order.visibleToStudents).map((order, index) => (
           <div key={order.order_id} style={{
             padding: '10px',
             margin: '10px 0',
@@ -49,8 +81,21 @@ function PatientOrders({ selectedPatient }) {
             backgroundColor: '#fff',
             boxShadow: '0 2px 4px rgba(0,0,0,.1)'
           }}>
-            <h6>Order ID: {order.order_id}</h6>
+
             <p><strong>Description:</strong> {order.description}</p>
+            {user.role === 'instructor' && (
+              <button onClick={() => toggleVisibilityForStudent(order, index)} style={{
+                padding: '5px 10px',
+                fontSize: '14px',
+                backgroundColor: order.visibleToStudents ? '#4CAF50' : '#f44336',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer'
+              }}>
+                {order.visibleToStudents ? 'Hide from Students' : 'Show to Students'}
+              </button>
+            )}
           </div>
         ))}
       </div>
@@ -58,5 +103,4 @@ function PatientOrders({ selectedPatient }) {
   );
 }
 
-// Exporting the component for use in other parts of the application
 export default PatientOrders;

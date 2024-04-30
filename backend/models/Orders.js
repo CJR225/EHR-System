@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Orders', {
     patient_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT, // Updated to BIGINT to match your database schema
       allowNull: false,
       primaryKey: true,
       references: {
@@ -18,6 +18,11 @@ module.exports = function(sequelize, DataTypes) {
     description: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    visible_to_students: {
+      type: DataTypes.BOOLEAN, // Adding the visibility field
+      allowNull: false,
+      defaultValue: false // Defaulting visibility to false
     }
   }, {
     sequelize,

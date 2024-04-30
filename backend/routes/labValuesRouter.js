@@ -17,7 +17,6 @@ router.get('/:patientId/labvalues', async (req, res) => {
   }
 });
 
-
 // POST a new lab value with manual ID handling
 router.post('/:patientId/labvalues', async (req, res) => {
     try {

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import styles from '../PatientDash.module.css'; // Ensure this path is correct
+import styles from '../PatientDash.module.css'; 
+
 
 function PatientIORecords({ selectedPatient, activeTab }) {
     const [ioRecords, setIoRecords] = useState([]);
+    const [cumulativeIntake, setCumulativeIntake] = useState(0);
+    const [cumulativeOutput, setCumulativeOutput] = useState(0);
     const [newRecord, setNewRecord] = useState({ intake: '', output: '' });
 
     useEffect(() => {
@@ -16,10 +19,23 @@ function PatientIORecords({ selectedPatient, activeTab }) {
     const fetchIoRecords = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/patients/${selectedPatient.id}/io`);
-            setIoRecords(response.data);
+            if (response.data) {
+                console.log("Received data:", response.data);  // Log to check the received data
+                setIoRecords(response.data);
+                calculateCumulativeTotals(response.data);
+            }
         } catch (error) {
+            console.error("Error fetching IO records:", error);
             toast.error("Error fetching IO records: " + error.message);
         }
+    };
+
+
+    const calculateCumulativeTotals = (records) => {
+        const totalIntake = records.reduce((acc, record) => acc + parseInt(record.intake || 0), 0);
+        const totalOutput = records.reduce((acc, record) => acc + parseInt(record.output || 0), 0);
+        setCumulativeIntake(totalIntake);
+        setCumulativeOutput(totalOutput);
     };
 
     const handleInputChange = (event) => {
@@ -37,6 +53,7 @@ function PatientIORecords({ selectedPatient, activeTab }) {
         try {
             const response = await axios.post(`http://localhost:3001/patients/${selectedPatient.id}/io`, recordWithTime);
             setIoRecords([...ioRecords, response.data]);
+            calculateCumulativeTotals([...ioRecords, response.data]); // Moved inside try
             setNewRecord({ intake: '', output: '' }); // Reset form fields
             toast.success("New IO record added successfully!");
         } catch (error) {
@@ -44,6 +61,7 @@ function PatientIORecords({ selectedPatient, activeTab }) {
             toast.error("Error adding IO record: " + (error.response ? error.response.data.message : error.message));
         }
     };
+
 
 
 
@@ -55,6 +73,8 @@ function PatientIORecords({ selectedPatient, activeTab }) {
         } catch (error) {
             toast.error("Error deleting IO record: " + error.message);
         }
+        const updatedRecords = ioRecords.filter(record => record.IOandADL_id !== recordId);
+        calculateCumulativeTotals(updatedRecords);
     };
 
     return (
@@ -71,6 +91,15 @@ function PatientIORecords({ selectedPatient, activeTab }) {
                     className={styles.formInput}
                 />
 
+                <label>Intake Type:</label>
+                <input
+                    type="text"
+                    name="intake_type"
+                    value={newRecord.intake_type || ''}
+                    onChange={handleInputChange}
+                    className={styles.formInput}
+                />
+
                 <label>Output:</label>
                 <input
                     type="text"
@@ -80,39 +109,69 @@ function PatientIORecords({ selectedPatient, activeTab }) {
                     className={styles.formInput}
                 />
 
+                <label>Output Type:</label>
+                <input
+                    type="text"
+                    name="output_type"
+                    value={newRecord.output_type || ''}
+                    onChange={handleInputChange}
+                    className={styles.formInput}
+                />
+
                 <button type="submit" className={styles.formButton}>
                     Add Record
                 </button>
             </form>
 
+
             {/* Table for existing IO records */}
             <table className={styles.table}>
+
                 <thead>
                     <tr>
                         <th>Time</th>
                         <th>Intake</th>
+                        <th>Intake Type</th>
                         <th>Output</th>
+                        <th>Output Type</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {ioRecords.map((record) => (
-                        <tr key={record.IOandADL_id}>
-                            <td>{new Date(record.time).toLocaleTimeString()}</td>
-                            <td>{record.intake}</td>
-                            <td>{record.output}</td>
-                            <td>
-                                <button
-                                    onClick={() => handleDeleteRecord(record.IOandADL_id)}
-                                    className={`${styles.formButton} ${styles.delete}`}
-                                >
-                                    Delete
-                                </button>
-                            </td>
-
-                        </tr>
+                    {ioRecords.map((record, index) => (
+                        <React.Fragment key={record.IOandADL_id}>
+                            <tr className={index === ioRecords.length - 1 ? styles.cumulativeTotalRow : ''}>
+                                <td>{new Date(record.time).toLocaleTimeString()}</td>
+                                <td>{record.intake}</td>
+                                <td>{record.intake_type}</td>
+                                <td>{record.output}</td>
+                                <td>{record.output_type}</td>
+                                <td>
+                                    <button
+                                        onClick={() => handleDeleteRecord(record.IOandADL_id)}
+                                        className={`${styles.formButton} ${styles.delete}`}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            {/* Render cumulative totals only for the last record */}
+                            {index === ioRecords.length - 1 && (
+                                <tr className={styles.cumulativeTotalRow}>
+                                    <td>Cumulative Total</td>
+                                    <td>{cumulativeIntake}</td>
+                                    <td></td>
+                                    <td>{cumulativeOutput}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            )}
+                        </React.Fragment>
                     ))}
+
                 </tbody>
+
+
             </table>
         </div>
     );

@@ -26,6 +26,14 @@ module.exports = function(sequelize, DataTypes) {
     family_history: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    social_history: {
+      type: DataTypes.TEXT, // Added field
+      allowNull: true
+    },
+    surgical_history: {
+      type: DataTypes.TEXT, // Added field
+      allowNull: true
     }
   }, {
     sequelize,

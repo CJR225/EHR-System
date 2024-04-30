@@ -699,16 +699,24 @@ h1 {
   overflow-x: auto; /* Enables horizontal scrolling */
   width: 100%; /* Adjust based on your layout needs */
 }
-
 .table {
-  width: 100%;
-  min-width: 2000px; /* Adjust this value based on the actual width needed */
-  border-collapse: collapse;
+  min-width: 600px; /* Adjust this value based on the actual width needed for your table */
+  width: 100%; /* Ensures the table stretches to fill the container */
+  border-collapse: collapse; /* Improves appearance by removing space between borders */
 }
 
-.scrollable-table-container {
-  overflow-x: auto; /* Enables horizontal scrolling */
-  transform: scaleY(-1); /* Flips the container vertically */
+
+
+/* PatientDash.module.css */
+.scrollableTable {
+  max-height: 500px; /* Adjust based on your needs */
+  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-x: auto; /* Enables horizontal scrolling if needed */
+  width: 100%; /* Ensure the container takes full width */
+}
+
+.boldOption {
+  font-weight: bold;
 }
 
 .inverted-table {
@@ -725,11 +733,6 @@ h1 {
   transition: transform 0.3s ease;
 }
 
-
-/* Set a max-height that is higher than your table's height when open */
-.scrollable-table-container.active {
-  max-height: 2000px; /* This should be more than the height of your table */
-}
 
 .notes-container {
   max-width: 100%; /* Ensures the container does not overflow its parent */
@@ -837,13 +840,14 @@ textarea {
 }
 
 
-
-
-
 .delete {
   background-color: red;
 }
 
 .label {
   display: block; /* ensures the label is above the input field */
+}
+
+.cumulativeTotalRow {
+  background-color: red; /* Set the background color to differentiate */
 }
