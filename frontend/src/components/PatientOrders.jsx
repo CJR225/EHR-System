@@ -21,15 +21,18 @@ function PatientOrders({ selectedPatient }) {
       }
     };
 
-    fetchOrders();
-    
+    const intervalId = setInterval(fetchOrders, 1000); // Fetch orders every second
+
+    return () => {
+      clearInterval(intervalId); // Clear interval on component unmount or selectedPatient change
+    };
   }, [selectedPatient]);
 
   const toggleVisibilityForStudent = async (order, index) => {
-    console.log(order);  // Log the entire order object to verify its structure and properties
+    console.log(order);
     const newVisibility = !order.visibleToStudents;
     try {
-      if (!order.orderId) {  // Changed from order_id to orderId
+      if (!order.orderId) {
         throw new Error('Order ID is undefined');
       }
   
@@ -37,9 +40,8 @@ function PatientOrders({ selectedPatient }) {
         visibleToStudents: newVisibility
       });
   
-      console.log(response.data);  // Log the response data
+      console.log(response.data);
   
-      // Update the local state to reflect the new visibility 
       setOrders(prevOrders => {
         const updatedOrders = [...prevOrders];
         updatedOrders[index] = {
@@ -53,9 +55,6 @@ function PatientOrders({ selectedPatient }) {
     }
   };
   
-  
-  
-
   if (!orders.length) return <p>No orders found for this patient.</p>;
 
   return (
@@ -82,9 +81,8 @@ function PatientOrders({ selectedPatient }) {
             backgroundColor: '#fff',
             boxShadow: '0 2px 4px rgba(0,0,0,.1)'
           }}>
-            <h6>Order ID: {order.order_id}</h6>
+
             <p><strong>Description:</strong> {order.description}</p>
-            {/* Conditional rendering based on the user's role */}
             {user.role === 'instructor' && (
               <button onClick={() => toggleVisibilityForStudent(order, index)} style={{
                 padding: '5px 10px',
