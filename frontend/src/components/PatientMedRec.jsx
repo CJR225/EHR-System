@@ -71,6 +71,10 @@ function PatientMedRec({ selectedPatient }) {
         }
     };
 
+    const formatHeader = (key) => {
+        return key.replace(/([A-Z])/g, ' $1').trim().replace(/^./, str => str.toUpperCase());
+    };
+
     return (
         <div className={styles.outerContainer}>
             <h3 className={styles.sectionHeading}>Medication Reconciliation</h3>
@@ -78,7 +82,7 @@ function PatientMedRec({ selectedPatient }) {
                 <form onSubmit={handleAddMedRec} className={styles.marForm}>
                     {Object.keys(newMedRec).map(key => (
                         <div className={styles.inputWrapper} key={key}>
-                            <label htmlFor={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                            <label htmlFor={key}>{formatHeader(key)}</label>
                             <input
                                 type="text"
                                 className={styles.formInput}
@@ -96,7 +100,7 @@ function PatientMedRec({ selectedPatient }) {
                 <thead>
                     <tr>
                         {Object.keys(newMedRec).map(key => (
-                            <th key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</th>
+                            <th key={key}>{formatHeader(key)}</th>
                         ))}
                         {isInstructor && <th>Action</th>}
                     </tr>
