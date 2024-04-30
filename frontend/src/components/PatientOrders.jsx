@@ -22,31 +22,39 @@ function PatientOrders({ selectedPatient }) {
     };
 
     fetchOrders();
-    const intervalId = setInterval(fetchOrders, 500); // Fetch every 5 seconds
-
-    return () => {
-      clearInterval(intervalId); // Clean up on unmount
-    };
+    
   }, [selectedPatient]);
 
   const toggleVisibilityForStudent = async (order, index) => {
+    console.log(order);  // Log the entire order object to verify its structure and properties
     const newVisibility = !order.visibleToStudents;
     try {
-      const response = await axios.put(`http://localhost:3001/patients/${selectedPatient.id}/orders/${order.order_id}/visibility`, {
+      if (!order.orderId) {  // Changed from order_id to orderId
+        throw new Error('Order ID is undefined');
+      }
+  
+      const response = await axios.put(`http://localhost:3001/patients/${selectedPatient.id}/orders/${order.orderId}/visibility`, {
         visibleToStudents: newVisibility
       });
-
+  
+      console.log(response.data);  // Log the response data
+  
       // Update the local state to reflect the new visibility 
-      const updatedOrders = [...orders];
-      updatedOrders[index] = {
-        ...order,
-        visibleToStudents: newVisibility
-      };
-      setOrders(updatedOrders);
+      setOrders(prevOrders => {
+        const updatedOrders = [...prevOrders];
+        updatedOrders[index] = {
+          ...order,
+          visibleToStudents: newVisibility
+        };
+        return updatedOrders;
+      });
     } catch (error) {
       toast.error(`Failed to update order visibility: ${error.message}`);
     }
   };
+  
+  
+  
 
   if (!orders.length) return <p>No orders found for this patient.</p>;
 
