@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": "Root**225",
-    "database": "EHR",
-    "host": "localhost",
-    "dialect": "mysql"
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
+    "dialect": ""
   },
   "test": {
     "username": "root",

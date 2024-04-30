@@ -1,3 +1,7 @@
+//Christopher Rocco
+//Senior Capstone - SER492
+//5-08-24
+
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -163,7 +167,6 @@ function LoginForm() {
 
         <footer>
           <div class="text-center fixed-bottom pb-3" id="loginFooter">
-            Chris Rocco, Matt Nova, Billy Siri &copy; Quinnipiac 2024
             Chris Rocco, Matt Nova, Billy Siri &copy; Quinnipiac 2024
           </div>
         </footer>

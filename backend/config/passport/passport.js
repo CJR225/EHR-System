@@ -1,3 +1,7 @@
+//Christopher Rocco
+//Senior Capstone - SER492
+//5-08-24
+
 const bCrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 

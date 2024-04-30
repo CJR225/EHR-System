@@ -1,3 +1,7 @@
+//Christopher Rocco
+//Senior Capstone - SER492
+//5-08-24
+
 const express = require('express');
 const app = express();
 const passport = require('passport');

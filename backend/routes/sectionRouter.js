@@ -1,3 +1,6 @@
+//Christopher Rocco
+//Senior Capstone - SER492
+//5-08-24
 
 const express = require('express');
 const router = express.Router();
@@ -6,7 +9,6 @@ const { models } = require('./database.js');
 const { Sections, Instructor, Student, Patient } = models;
 const { QueryTypes } = require('sequelize');
 
-// Route: Create a section 
 router.post('/add-section', async (req, res) => {
     const { instructor_id, section_id } = req.body;
 
@@ -18,31 +20,6 @@ router.post('/add-section', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
-/*
-router.get('/section-list', async (req, res) => {
-    try {
-        const sections = await Sections.findAll({
-            include: [
-                {
-                    model: Instructor,
-                    as: 'instructor',  // Ensures this matches the alias in your model association
-                    attributes: ['first_name', 'last_name', 'role'] // Include first_name and last_name
-                },
-                {
-                    model: Student,
-                    as: 'Students',  // Ensures this matches the alias in your model association
-                    attributes: ['user_id', 'username', 'fname', 'lname']
-                }
-            ],
-            attributes: ['section_id', 'instructor_id']
-        });
-        res.status(200).json(sections);
-    } catch (error) {
-        console.error('Error fetching sections:', error);
-        res.status(500).json({ error: 'Internal Server Error', details: error.message });
-    }
-});
-*/
 
 router.get('/section-list', async (req, res) => {
     const query = `
@@ -74,17 +51,6 @@ router.get('/section-list', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
-/*
-router.post('/assign-patient', async (req, res) => {
-    const { sectionId, patientId } = req.body;
-    try {
-      const assigned = await assignPatientToSection(sectionId, patientId); // Logic to assign patient
-      res.status(200).json(assigned);
-    } catch (error) {
-      res.status(500).json({ message: "Error assigning patient", error: error.message });
-    }
-  });
-  */
 
   router.post('/assign-patient', async (req, res) => {
     const { sectionId, patientId } = req.body;
@@ -117,11 +83,6 @@ router.post('/assign-patient', async (req, res) => {
     }
 });
 
-
-
-
-// Fetch patients assigned to a specific section
-// Assuming you're using Express and have set up models correctly
 router.get('/section/:sectionId/patients', async (req, res) => {
     const { sectionId } = req.params;
     try {

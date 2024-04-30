@@ -4,18 +4,18 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../PatientDash.module.css";
-import PatientDemographics from './PatientDemographics';
-import PatientMedRec from './PatientMedRec';
-import PatientHistory from './PatientHistory';
-import PatientOrders from './PatientOrders';
-import PatientMAR from './PatientMAR';
-import PatientWaldo from './PatientWaldo';
+import PatientDemographics from "./PatientDemographics";
+import PatientMedRec from "./PatientMedRec";
+import PatientHistory from "./PatientHistory";
+import PatientOrders from "./PatientOrders";
+import PatientMAR from "./PatientMAR";
+import PatientWaldo from "./PatientWaldo";
 import PatientVitals from "./PatientVitals";
 import PatientIOandADL from "./PatientIOandADL";
 import PatientLabValues from "./PatientLabValues";
 import PatientNotes from "./PatientNotes";
 import PatientADL from "./PatientADL";
-import { useLocation } from "react-router-dom"; 
+import { useLocation } from "react-router-dom";
 //react icons
 import {
   FaHome,
@@ -29,7 +29,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import { TbLogout2 } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 
-
 function PatientDash() {
   // State variables to manage patient data
   const [patients, setPatients] = useState([]); // Holds the list of patients
@@ -41,6 +40,9 @@ function PatientDash() {
   const navigate = useNavigate();
   const location = useLocation(); // Access navigation state
 
+  //Christopher Rocco
+  //Senior Capstone - SER492
+  //5-08-24
   const handleLogout = async () => {
     try {
       // Make a GET request to the logout endpoint
@@ -51,24 +53,27 @@ function PatientDash() {
       console.error("Logout Error:", error);
     }
   };
-  
+
+  //Christopher Rocco
+  //Senior Capstone - SER492
+  //5-08-24
   //This useEffect is when instructor comes from sectiondash and displays the patient info
   useEffect(() => {
     const { patient, sectionId } = location.state || {};
-  
+
     if (patient) {
-      setSelectedPatient(patient); 
-      fetchAllergies(patient.id);  
-  
-      console.log(`Received section ID: ${sectionId}`); 
+      setSelectedPatient(patient);
+      fetchAllergies(patient.id);
+
+      console.log(`Received section ID: ${sectionId}`);
     }
   }, [location]);
-  
 
-  
   const fetchAllergies = async (patientId) => {
     try {
-      const response = await axios.get(`http://localhost:3001/patients/${patientId}/allergies`);
+      const response = await axios.get(
+        `http://localhost:3001/patients/${patientId}/allergies`
+      );
       setAllergies(response.data);
     } catch (error) {
       console.error("There was an error fetching the patients:", error);
@@ -78,40 +83,54 @@ function PatientDash() {
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
- 
+
+  //Christopher Rocco
+  //Senior Capstone - SER492
+  //5-08-24
   //This useEffect is when a student navigates to patientDash
   useEffect(() => {
-  const isStudent = sessionStorage.getItem('role') === 'student';
+    const isStudent = sessionStorage.getItem("role") === "student";
 
-  if (isStudent) {
-    const studentSectionId = sessionStorage.getItem('sectionId');
-    console.log("Fetched section ID from session storage:", studentSectionId);
-    console.log(`[PatientDash] Mounted. Fetched sectionId from sessionStorage: ${studentSectionId}`);
+    if (isStudent) {
+      const studentSectionId = sessionStorage.getItem("sectionId");
+      console.log("Fetched section ID from session storage:", studentSectionId);
+      console.log(
+        `[PatientDash] Mounted. Fetched sectionId from sessionStorage: ${studentSectionId}`
+      );
 
-    if (studentSectionId) {
-      console.log(`[PatientDash] Fetching data for sectionId: ${studentSectionId}`);
-      axios.get(`http://localhost:3001/patients/section/${studentSectionId}/patients`)
-        .then(response => {
-          console.log(`[PatientDash] Data fetched for sectionId ${studentSectionId}:`, response.data);
-          setPatients(response.data);
-          if (response.data.length > 0) {
-            setSelectedPatient(response.data[0]);  // Automatically select the first patient
-          } else {
-            console.log("No patients found for this section.");
-          }
-          console.log("Patients data:", response.data);
-        })
-        .catch(error => {
-          console.error("Failed to fetch assigned patients:", error);
-          console.error(`[PatientDash] Error fetching data for sectionId ${studentSectionId}:`, error);
-        });
-    } else {
-      console.log("No section ID found in session storage.");
+      if (studentSectionId) {
+        console.log(
+          `[PatientDash] Fetching data for sectionId: ${studentSectionId}`
+        );
+        axios
+          .get(
+            `http://localhost:3001/patients/section/${studentSectionId}/patients`
+          )
+          .then((response) => {
+            console.log(
+              `[PatientDash] Data fetched for sectionId ${studentSectionId}:`,
+              response.data
+            );
+            setPatients(response.data);
+            if (response.data.length > 0) {
+              setSelectedPatient(response.data[0]); // Automatically select the first patient
+            } else {
+              console.log("No patients found for this section.");
+            }
+            console.log("Patients data:", response.data);
+          })
+          .catch((error) => {
+            console.error("Failed to fetch assigned patients:", error);
+            console.error(
+              `[PatientDash] Error fetching data for sectionId ${studentSectionId}:`,
+              error
+            );
+          });
+      } else {
+        console.log("No section ID found in session storage.");
+      }
     }
-  }
-}, []);
-
-  
+  }, []);
 
   //Sidebar creation
   const [homeOpen, setHomeOpen] = useState(false);
@@ -196,15 +215,15 @@ function PatientDash() {
       },
       {
         name: "Notes",
-        icon:
-          (
-            <div
-              title="Notes"
-              onClick={() => setActiveTab("Notes")}
-              style={{ cursor: "pointer" }}
-            ><FaPencilAlt />
-            </div>
-          ),
+        icon: (
+          <div
+            title="Notes"
+            onClick={() => setActiveTab("Notes")}
+            style={{ cursor: "pointer" }}
+          >
+            <FaPencilAlt />
+          </div>
+        ),
       },
       {
         name: "Logout",
@@ -277,7 +296,6 @@ function PatientDash() {
       { name: "WALDO" },
       { name: "Vital Signs" },
       { name: "Intake & Output" },
-
     ];
     return (
       <div className="PCSidebarContainer">
@@ -345,12 +363,11 @@ function PatientDash() {
                     fontSize: "12pt",
                     height: "15vh",
                     outline: "5px solid #184a7e",
-                    boxShadow: "0px 15px 10px white"
+                    boxShadow: "0px 15px 10px white",
                   }}
                 >
                   <div style={{ flex: 1 }}>
                     <CgProfile style={{ fontSize: "4vw", marginLeft: "3vw" }} />
-                    
                   </div>
                   {selectedPatient && (
                     <div
@@ -404,34 +421,39 @@ function PatientDash() {
 
                   {activeTab === "Labs" && selectedPatient && (
                     <PatientLabValues selectedPatient={selectedPatient} />
-
                   )}
 
                   {activeTab === "ADL" && selectedPatient && (
-                    <PatientADL selectedPatient={selectedPatient} activeTab={activeTab} />
-
+                    <PatientADL
+                      selectedPatient={selectedPatient}
+                      activeTab={activeTab}
+                    />
                   )}
 
                   {activeTab === "WALDO" && selectedPatient && (
-                    <PatientWaldo selectedPatient={selectedPatient} activeTab={activeTab} />
-
+                    <PatientWaldo
+                      selectedPatient={selectedPatient}
+                      activeTab={activeTab}
+                    />
                   )}
 
                   {activeTab === "Vital Signs" && selectedPatient && (
-                    <PatientVitals selectedPatient={selectedPatient} activeTab={activeTab} />
-
+                    <PatientVitals
+                      selectedPatient={selectedPatient}
+                      activeTab={activeTab}
+                    />
                   )}
 
                   {activeTab === "Intake & Output" && selectedPatient && (
-                    <PatientIOandADL selectedPatient={selectedPatient} activeTab={activeTab} />
+                    <PatientIOandADL
+                      selectedPatient={selectedPatient}
+                      activeTab={activeTab}
+                    />
                   )}
 
                   {activeTab === "Notes" && selectedPatient && (
                     <PatientNotes selectedPatient={selectedPatient} />
                   )}
-
-
-
                 </div>
               </div>
             </div>

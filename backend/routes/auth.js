@@ -1,3 +1,7 @@
+//Christopher Rocco
+//Senior Capstone - SER492
+//5-08-24
+
 const express = require("express");
 const router = express.Router();
 const passport = require('passport');
@@ -36,7 +40,6 @@ router.post('/signup-instructor', (req, res, next) => {
     })(req, res, next);
 });
 
-// Modify the authentication logic to include section_id in the response
 router.post('/signin', (req, res, next) => {
     passport.authenticate('local-signin', (err, user, info) => {
         if (err) {
@@ -49,7 +52,7 @@ router.post('/signin', (req, res, next) => {
             if (err) {
                 return next(err);
             }
-            // Include section_id in the response if user is a student
+            
             if (user.role === 'student') {
                 return res.status(200).json({ message: 'Login successful', role: user.role, sectionId: user.section_id });
             } else {
@@ -62,7 +65,7 @@ router.post('/signin', (req, res, next) => {
 
 
 router.get("/logout", (req, res) => {
-    req.logout(()=>{}); // This line should be present with a callback function if required
+    req.logout(()=>{});
     res.send({ message: "Logout successful" });
   });
   
