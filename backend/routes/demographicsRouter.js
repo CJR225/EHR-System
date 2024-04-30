@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { models } = require('./database.js'); 
+const { models } = require('./database.js');
 const { Patient } = models;
 
 // Route: Get patient demographics by id
@@ -9,7 +9,7 @@ router.get('/:id/demographics', async (req, res) => {
 
   try {
     const patient = await Patient.findByPk(id, {
-      attributes: ['fname', 'lname', 'dob', 'religion', 'gender', 'insurance','gender_at_birth','emergency_contact_name','emergency_contact_number','advanced_directives']
+      attributes: ['fname', 'lname', 'dob', 'height', 'weight', 'religion', 'gender', 'insurance', 'gender_at_birth', 'emergency_contact_name', 'emergency_contact_number', 'advanced_directives']
     });
 
     if (patient) {

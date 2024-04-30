@@ -55,7 +55,7 @@ function PatientOrders({ selectedPatient }) {
     }
   };
   
-  if (!orders.length) return <p>No orders found for this patient.</p>;
+ 
 
   return (
     <div className={styles.someClassName}>

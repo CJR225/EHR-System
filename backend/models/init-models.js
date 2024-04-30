@@ -20,6 +20,8 @@ var _notes_patient = require("./notes_patient");
 var _wounds = require("./wounds");
 var _PatientHistory = require("./PatientHistory");
 var _VitalSigns = require("./VitalSigns");
+var _MedRec = require("./MedRec");
+
 
 
 function initModels(sequelize) {
@@ -46,6 +48,8 @@ function initModels(sequelize) {
   var wounds = _wounds(sequelize, DataTypes);
   var PatientHistory = _PatientHistory(sequelize, DataTypes);
   var VitalSigns = _VitalSigns(sequelize, DataTypes);
+  var MedRec = _MedRec(sequelize, DataTypes);
+
 
   
 
@@ -96,6 +100,8 @@ function initModels(sequelize) {
   Student.belongsTo(Sections, { as: 'section', foreignKey: 'section_id' });
   VitalSigns.belongsTo(Patient, { as: "patient", foreignKey: "patient_id" });
 Patient.hasMany(VitalSigns, { as: "vitalSigns", foreignKey: "patient_id" });
+MedRec.belongsTo(Patient, { as: 'patient', foreignKey: 'patientId' });
+Patient.hasMany(MedRec, { as: 'MedRec', foreignKey: 'patientId' });
 
   
 
@@ -122,6 +128,7 @@ Patient.hasMany(VitalSigns, { as: "vitalSigns", foreignKey: "patient_id" });
     wounds,
     PatientHistory,
     VitalSigns,
+    MedRec
   };
 
 
