@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from '../contexts/UserContext';
 
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { setUser } = useUser();
   const navigate = useNavigate();
 
 
@@ -41,6 +43,7 @@ function LoginForm() {
           navigate("/sectionDash");
         }
       }
+      setUser({ role: response.data.role, });
     } catch (error) {
       console.error("Login Error:", error.response.data);
       setErrorMessage(error.response.data.message);
