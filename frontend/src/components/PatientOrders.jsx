@@ -3,9 +3,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import styles from '../PatientDash.module.css';
 
+
 function PatientOrders({ selectedPatient }) {
   // State to store the orders for the selected patient, initialized as an empty array
   const [orders, setOrders] = useState([]);
+  const [visibleOrders, setVisibleOrders] = useState(new Set()); // New state to track visible orders
 
   // useEffect hook to fetch orders data when selectedPatient changes
   useEffect(() => {
@@ -25,38 +27,44 @@ function PatientOrders({ selectedPatient }) {
   // Conditional rendering to show a message if no orders are found
   if (!orders.length) return <p>No orders found for this patient.</p>;
 
-  // Component rendering
+
+  // Toggle visibility of an order
+  const toggleOrderVisibility = (orderId) => {
+    setVisibleOrders((prevVisibleOrders) => {
+      const newVisibleOrders = new Set(prevVisibleOrders);
+      if (newVisibleOrders.has(orderId)) {
+        newVisibleOrders.delete(orderId);
+      } else {
+        newVisibleOrders.add(orderId);
+      }
+      return newVisibleOrders;
+    });
+  };
+
+  if (!orders.length) return <p>No orders found for this patient.</p>;
+
   return (
     <div className={styles.someClassName}>
-      <div style={{
-        margin: '4vh',
-        padding: '20px',
-        backgroundColor: '#f5f5f5',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
-      }}>
-        <h3 style={{
-          borderBottom: '2px solid #007bff',
-          paddingBottom: '10px',
-          marginBottom: '20px'
-        }}>Patient Orders</h3>
-        {orders.map(order => (
-          <div key={order.order_id} style={{
-            padding: '10px',
-            margin: '10px 0',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-            backgroundColor: '#fff',
-            boxShadow: '0 2px 4px rgba(0,0,0,.1)'
-          }}>
-            <h6>Order ID: {order.order_id}</h6>
+      {/* ... existing JSX ... */}
+      {orders.map((order) => (
+        <div key={order.order_id} style={{
+          padding: '10px',
+          margin: '10px 0',
+          border: '1px solid #ccc',
+          borderRadius: '5px',
+          backgroundColor: '#fff',
+          boxShadow: '0 2px 4px rgba(0,0,0,.1)'
+        }}>
+    
+          
+          {/* Only display order description if it's in the visibleOrders set */}
+          {visibleOrders.has(order.order_id) && (
             <p><strong>Description:</strong> {order.description}</p>
-          </div>
-        ))}
-      </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
 
-// Exporting the component for use in other parts of the application
 export default PatientOrders;

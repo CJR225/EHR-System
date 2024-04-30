@@ -8,8 +8,10 @@ function LoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     try {
       const response = await axios.post("http://localhost:3001/auth/signin", {
@@ -121,6 +123,7 @@ function LoginForm() {
                             />
                           </div>
 
+
                           {errorMessage && (
                             <div
                               className="alert alert-danger mt-2 p-2"
@@ -157,6 +160,7 @@ function LoginForm() {
 
         <footer>
           <div class="text-center fixed-bottom pb-3" id="loginFooter">
+            Chris Rocco, Matt Nova, Billy Siri &copy; Quinnipiac 2024
             Chris Rocco, Matt Nova, Billy Siri &copy; Quinnipiac 2024
           </div>
         </footer>

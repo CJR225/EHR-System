@@ -6,17 +6,16 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true // If you want Sequelize to auto-increment the primary key
+      autoIncrement: true
     },
     patient_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Patient', // Ensure this matches the table name exactly as it is defined in Sequelize
-        key: 'id'         // This should be 'id', matching the primary key in the Patient model
+        model: 'Patient', 
+        key: 'id'        
       }
     },
-    
     notes: {
       type: DataTypes.TEXT,
       allowNull: true
@@ -28,7 +27,9 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'Notes',
-    timestamps: false,
+    timestamps: true, // Enable timestamps
+    updatedAt: false, // Disable the updatedAt timestamp
+    createdAt: 'created_at', // Rename createdAt to created_at if you prefer
     indexes: [
       {
         name: "PRIMARY",

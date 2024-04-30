@@ -1,10 +1,16 @@
 const Sequelize = require('sequelize');
+
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('medicine_patient', {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
+    },
     patient_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
       references: {
         model: 'Patient',
         key: 'id'
@@ -13,7 +19,6 @@ module.exports = function(sequelize, DataTypes) {
     med_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
       references: {
         model: 'Medicine',
         key: 'id'
@@ -46,24 +51,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'medicine_patient',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "med_id" },
-          { name: "patient_id" },
-        ]
-      },
-      {
-        name: "fk_medpat_idx",
-        using: "BTREE",
-        fields: [
-          { name: "patient_id" },
-        ]
-      },
-    ]
+    timestamps: false
   });
 };

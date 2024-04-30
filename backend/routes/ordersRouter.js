@@ -53,4 +53,39 @@ router.put('/:patientId/orders/:orderId', async (req, res) => {
     }
 });
 
+router.delete('/:patientId/orders/:orderId', async (req, res) => {
+    try {
+        const { patientId, orderId } = req.params;
+        const result = await Orders.destroy({
+            where: { patient_id: patientId, order_id: orderId }
+        });
+        if (result > 0) {
+            res.send('Order deleted successfully');
+        } else {
+            res.status(404).send('Order not found');
+        }
+    } catch (error) {
+        console.error('Failed to delete order:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// DELETE endpoint to remove all orders for a specific patient
+router.delete('/:patientId/orders', async (req, res) => {
+    try {
+        const patientId = req.params.patientId;
+        const result = await Orders.destroy({
+            where: { patient_id: patientId }
+        });
+        if (result > 0) {
+            res.send('All orders for the patient have been deleted successfully');
+        } else {
+            res.status(404).send('No orders found for this patient');
+        }
+    } catch (error) {
+        console.error('Failed to delete orders:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 module.exports = router;

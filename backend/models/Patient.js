@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Patient', {
     id: {
@@ -71,6 +72,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     social_history: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    advanced_directives: { // New field for advanced directives
       type: DataTypes.TEXT,
       allowNull: true
     },

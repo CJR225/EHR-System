@@ -61,6 +61,7 @@ const PatientDemographics = ({ selectedPatient }) => {
           <p><strong>Gender at Birth:</strong> {demographics.gender_at_birth}</p>
           <p><strong>Emergency Contact:</strong> {demographics.emergency_contact_name}</p>
           <p><strong>Emergency Contact Phone:</strong> {demographics.emergency_contact_number}</p>
+          <p><strong>Advanced Directives:</strong> {demographics.advanced_directives}</p>
         </div>
       ) : (
         // Display a loading message while the data is being fetched

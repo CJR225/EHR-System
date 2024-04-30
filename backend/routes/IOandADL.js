@@ -3,11 +3,13 @@ const router = express.Router();
 const { IOandADL } = require('./database.js').models;
 
 // Get IO records for a patient by ID
+// Get IO records for a patient by ID
 router.get('/:patientId/io', async (req, res) => {
   try {
     const records = await IOandADL.findAll({
       where: { patient_id: req.params.patientId },
-      order: [['time', 'ASC']]
+      order: [['time', 'ASC']],
+      attributes: ['patient_id', 'IOandADL_id', 'time', 'intake', 'output', 'intake_type', 'output_type', 'oral', 'bathing', 'foley_care', 'reposition', 'elimination', 'meal', 'meal_consumed'] // include intake_type and output_type
     });
     res.status(200).json(records);
   } catch (error) {
@@ -15,16 +17,26 @@ router.get('/:patientId/io', async (req, res) => {
   }
 });
 
+
 // Add a new IO record
 router.post('/:patientId/io', async (req, res) => {
-    try {
-      const newRecord = await IOandADL.create({ ...req.body, patient_id: req.params.patientId });
-      res.status(201).json(newRecord);
-    } catch (error) {
-      console.error("Server error creating new IO record:", error);
-      res.status(500).json({ message: 'Server error creating new IO record', error: error.toString() });
-    }
-  });
+  // Check if time is provided in the request body, if not use current time
+  const time = req.body.time ? new Date(req.body.time) : new Date();
+
+  try {
+    const newRecord = await IOandADL.create({
+      ...req.body,
+      patient_id: req.params.patientId,
+      time: time,  // Ensure time is always set
+    });
+    res.status(201).json(newRecord);
+  } catch (error) {
+    console.error("Server error creating new IO record:", error);
+    res.status(500).json({ message: 'Server error creating new IO record', error: error.toString() });
+  }
+});
+
+
   
   
 

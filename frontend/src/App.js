@@ -1,5 +1,7 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+
+
 
 import NotFound from "./components/notFound";
 import LoginForm from "./components/loginForm";
@@ -9,7 +11,7 @@ import PatientDash from "./components/patientDashboard";
 
 function App() {
   return (
-    <div>
+
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginForm />} />
@@ -20,7 +22,7 @@ function App() {
           <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>
       </BrowserRouter>
-    </div>
+
   );
 }
 

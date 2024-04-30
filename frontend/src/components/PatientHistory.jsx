@@ -35,72 +35,102 @@ function PatientHistory({ selectedPatient }) {
 
   // Main return block rendering the history details of the selected patient
   return (
-        <div
-          style={{
-            margin: "4vh",
-            backgroundColor: "#f5f5f5",
-            padding: "20px",
-            borderRadius: "8px",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h3
-            style={{
-              borderBottom: "2px solid #007bff",
-              paddingBottom: "10px",
-              marginBottom: "20px",
-            }}
-          >
-            Patient History
-          </h3>
+    <div
+      style={{
+        margin: "4vh",
+        backgroundColor: "#f5f5f5",
+        padding: "20px",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+      }}
+    >
+      <h3
+        style={{
+          borderBottom: "2px solid #007bff",
+          paddingBottom: "10px",
+          marginBottom: "20px",
+        }}
+      >
+        Patient History
+      </h3>
 
-          {/* Each section of patient history (presenting problem, past medical history, family history) */}
-          <div
-            style={{
-              marginBottom: "15px",
-              padding: "10px",
-              backgroundColor: "white",
-              borderRadius: "8px",
-              boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
-            }}
-          >
-            <strong>History of Presenting Problem:</strong>
-            <p style={{ marginTop: "5px" }}>
-              {historyInfo.history_of_presenting_problem}
-            </p>
-          </div>
+      {/* History sections: Presenting Problem, Past Medical History, Family History */}
+      <div
+        style={{
+          marginBottom: "15px",
+          padding: "10px",
+          backgroundColor: "white",
+          borderRadius: "8px",
+          boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
+        }}
+      >
+        <strong>History of Presenting Problem:</strong>
+        <p style={{ marginTop: "5px" }}>
+          {historyInfo.history_of_presenting_problem}
+        </p>
+      </div>
 
-          <div
-            style={{
-              marginBottom: "15px",
-              padding: "10px",
-              backgroundColor: "white",
-              borderRadius: "8px",
-              boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
-            }}
-          >
-            <strong>Past Medical History:</strong>
-            <p style={{ marginTop: "5px" }}>
-              {historyInfo.past_medical_history}
-            </p>
-          </div>
+      <div
+        style={{
+          marginBottom: "15px",
+          padding: "10px",
+          backgroundColor: "white",
+          borderRadius: "8px",
+          boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
+        }}
+      >
+        <strong>Past Medical History:</strong>
+        <p style={{ marginTop: "5px" }}>
+          {historyInfo.past_medical_history}
+        </p>
+      </div>
 
-          <div
-            style={{
-              padding: "10px",
-              backgroundColor: "white",
-              borderRadius: "8px",
-              boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
-            }}
-          >
-            <strong>Family History:</strong>
-            <p style={{ marginTop: "5px" }}>
-              {historyInfo.family_history}
-            </p>
-          </div>
-        </div>
-  )
+      <div
+        style={{
+          marginBottom: "15px",
+          padding: "10px",
+          backgroundColor: "white",
+          borderRadius: "8px",
+          boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
+        }}
+      >
+        <strong>Family History:</strong>
+        <p style={{ marginTop: "5px" }}>
+          {historyInfo.family_history}
+        </p>
+      </div>
+
+      {/* New sections: Social History and Surgical History */}
+      <div
+        style={{
+          marginBottom: "15px",
+          padding: "10px",
+          backgroundColor: "white",
+          borderRadius: "8px",
+          boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
+        }}
+      >
+        <strong>Social History:</strong>
+        <p style={{ marginTop: "5px" }}>
+          {historyInfo.social_history}
+        </p>
+      </div>
+
+      <div
+        style={{
+          padding: "10px",
+          backgroundColor: "white",
+          borderRadius: "8px",
+          boxShadow: "inset 0 0 5px rgba(0,0,0,0.1)",
+        }}
+      >
+        <strong>Surgical History:</strong>
+        <p style={{ marginTop: "5px" }}>
+          {historyInfo.surgical_history}
+        </p>
+      </div>
+    </div>
+  );
 }
 
-// Exporting the component for use in other parts of the application
 export default PatientHistory;

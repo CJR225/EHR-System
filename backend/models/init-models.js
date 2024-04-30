@@ -19,6 +19,8 @@ var _medicine_patient = require("./medicine_patient");
 var _notes_patient = require("./notes_patient");
 var _wounds = require("./wounds");
 var _PatientHistory = require("./PatientHistory");
+var _VitalSigns = require("./VitalSigns");
+
 
 function initModels(sequelize) {
 
@@ -43,6 +45,9 @@ function initModels(sequelize) {
   var notes_patient = _notes_patient(sequelize, DataTypes);
   var wounds = _wounds(sequelize, DataTypes);
   var PatientHistory = _PatientHistory(sequelize, DataTypes);
+  var VitalSigns = _VitalSigns(sequelize, DataTypes);
+
+  
 
   Allergies.belongsToMany(Patient, { as: 'patient_id_Patients', through: Patient_Allergy, foreignKey: "allergy_id", otherKey: "patient_id" });
   Immunizations.belongsToMany(Patient, { as: 'patient_id_Patient_Patient_Immunizations', through: Patient_Immunization, foreignKey: "immunzation_id", otherKey: "patient_id" });
@@ -58,8 +63,9 @@ function initModels(sequelize) {
   Immunizations.hasMany(Patient_Immunization, { as: "Patient_Immunizations", foreignKey: "immunzation_id" });
   Sections.belongsTo(Instructor, { as: "instructor", foreignKey: "instructor_id" });
   Instructor.hasMany(Sections, { as: "Sections", foreignKey: "instructor_id" });
-  medicine_patient.belongsTo(Medicine, { as: "med", foreignKey: "med_id" });
-  Medicine.hasMany(medicine_patient, { as: "medicine_patients", foreignKey: "med_id" });
+  medicine_patient.belongsTo(Medicine, { as: "Medicine", foreignKey: "med_id" });
+  Medicine.hasMany(medicine_patient, { as: "MedicinePatients", foreignKey: "med_id" });
+
   notes_patient.belongsTo(Notes, { as: "note", foreignKey: "notes_id" });
   Notes.hasMany(notes_patient, { as: "notes_patients", foreignKey: "notes_id" });
   IOandADL.belongsTo(Patient, { as: "patient", foreignKey: "patient_id" });
@@ -88,6 +94,9 @@ function initModels(sequelize) {
   PatientHistory.belongsTo(Patient, { as: "Patient", foreignKey: "patient_id" });
   Sections.hasMany(Student, { as: 'Students', foreignKey: 'section_id' });
   Student.belongsTo(Sections, { as: 'section', foreignKey: 'section_id' });
+  VitalSigns.belongsTo(Patient, { as: "patient", foreignKey: "patient_id" });
+Patient.hasMany(VitalSigns, { as: "vitalSigns", foreignKey: "patient_id" });
+
   
 
   return {
@@ -112,6 +121,7 @@ function initModels(sequelize) {
     notes_patient,
     wounds,
     PatientHistory,
+    VitalSigns,
   };
 
 

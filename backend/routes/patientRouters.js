@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { models } = require('./database.js'); 
+const { models } = require('./database.js');
 const { medicine_patient } = models;
 const { Patient } = models;
 const { Medicine } = models;
@@ -10,14 +10,80 @@ const { Allergies } = models;
 
 // Define your routes using Patient model
 router.get('/', async (req, res) => {
-    try {
-      console.log(medicine_patient); // Check if it's undefined
-        const patients = await Patient.findAll();
-        res.json(patients);
-    } catch (error) {
-        console.error('Error fetching patients:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
+  try {
+    console.log(medicine_patient); // Check if it's undefined
+    const patients = await Patient.findAll();
+    res.json(patients);
+  } catch (error) {
+    console.error('Error fetching patients:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// Route to create a new patient
+router.post('/', async (req, res) => {
+  try {
+    const {
+      id,
+      section_id,
+      emergency_contact_name,
+      emergency_contact_number,
+      insurance,
+      gender,
+      gender_at_birth,
+      fname,
+      lname,
+      dob,
+      religion,
+      height,
+      weight,
+      primary_diagnosis,
+      pert_history,
+      prev_medhistory,
+      social_history,
+      advanced_directives,
+      temperature,
+      heart_rate,
+      bps,
+      bpd,
+      blood_oxygen,
+      resting_respiratory,
+      pain
+    } = req.body;
+
+    const newPatient = await Patient.create({
+      id,
+      section_id,
+      emergency_contact_name,
+      emergency_contact_number,
+      insurance,
+      gender,
+      gender_at_birth,
+      fname,
+      lname,
+      dob,
+      religion,
+      height,
+      weight,
+      primary_diagnosis,
+      pert_history,
+      prev_medhistory,
+      social_history,
+      advanced_directives,
+      temperature,
+      heart_rate,
+      bps,
+      bpd,
+      blood_oxygen,
+      resting_respiratory,
+      pain
+    });
+
+    res.status(201).json(newPatient);
+  } catch (error) {
+    console.error('Error adding new patient:', error);
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
 });
 
 // Route: Update patient by id
