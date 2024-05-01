@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import styles from '../PatientDash.module.css';
-import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import { IoIosArrowForward } from 'react-icons/io';
 
 function formatTestName(name) {
     return name
@@ -38,12 +38,14 @@ function PatientLabValues({ selectedPatient }) {
 
     return (
         <div className={styles.outerContainer}>
-            <div onClick={() => setLabValuesOpen(!labValuesOpen)} style={{ cursor: 'pointer' }}>
+            <view onClick={() => setLabValuesOpen(!labValuesOpen)} style={{ cursor: 'pointer' }}>
                 <h2 className={styles.tabHeading}>
                     Patient Lab Values
-                    {labValuesOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
+                    <IoIosArrowForward
+                    className={labValuesOpen ? styles.condenseIcon : styles.condenseIconOpen}
+                    ></IoIosArrowForward>
                 </h2>
-            </div>
+            </view>
 
             <div id="labValuesTable" style={{ display: labValuesOpen ? 'block' : 'none' }}>
                 <div className={`${styles.tableContainer} ${labValuesOpen ? 'active' : ''} ${styles.scrollableTable}`}>

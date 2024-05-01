@@ -608,7 +608,7 @@ h1 {
   transition: 0.3s;
 }
 .sidebarLink:hover, .sidebarLink:active {
-  color: rgb(51, 86, 138);
+  color: rgb(152, 200, 235);
   transition: all 0.3;
 }
 
@@ -629,7 +629,7 @@ h1 {
   text-decoration: none;
 }
 .homeLink:hover, .homeLink:active {
-  color: rgb(51, 86, 138);
+  color: rgb(152, 200, 235);
   transition: all 0.3s;
 }
 .homeLink_text{
@@ -655,7 +655,7 @@ h1 {
   text-decoration: none;
 }
 .PCLink:hover, .PCLink:active {
-  color: rgb(51, 86, 138);
+  color: rgb(152, 200, 235);
   transition: all 0.3s;
 }
 .PCLink_text{

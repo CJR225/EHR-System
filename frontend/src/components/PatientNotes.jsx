@@ -59,7 +59,15 @@ function PatientNotes({ selectedPatient }) {
     };
 
     return (
-        <div className="notes-container">
+        <div 
+      style={{
+        margin: "4vh",
+        backgroundColor: "#f5f5f5",
+        padding: "20px",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+      }}
+    >
             <h2 className="notes-title">Patient Notes</h2>
             <Switch checked={showDelete} onChange={handleToggle} color="primary" />
             <div className="notes-grid">
