@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { UserProvider } from './contexts/UserContext'; // Make sure you import UserProvider
+import { UserProvider } from './contexts/UserContext';
 
 import NotFound from "./components/notFound";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 import SectionDash from "./components/sectionDashboard";
 import PatientDash from "./components/patientDashboard";
-import PatientOrders from "./components/PatientOrders"; // Ensure this is correctly imported
+import PatientOrders from "./components/PatientOrders"; 
 
 function App() {
   return (
