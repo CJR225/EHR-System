@@ -69,6 +69,7 @@ function PatientDash() {
     }
   }, [location]);
 
+  //Allergies for display in patient banner
   const fetchAllergies = async (patientId) => {
     try {
       const response = await axios.get(
@@ -132,7 +133,7 @@ function PatientDash() {
     }
   }, []);
 
-  //Sidebar creation
+  //Sidebar creation --> main sidebar with all icons
   const [homeOpen, setHomeOpen] = useState(false);
   const [PCOpen, setPCOpen] = useState(false);
   const Sidebar = ({ children }) => {
@@ -254,6 +255,7 @@ function PatientDash() {
       </div>
     );
   };
+  //This "sidebar" is the first icon with 3 subtabs
   const HomeSidebar = ({ children }) => {
     const menuItem = [
       { name: "Demographics" },
@@ -290,6 +292,7 @@ function PatientDash() {
       </div>
     );
   };
+  //This is the second "sidebar" housing 4 subtabs
   const PCSidebar = ({ children }) => {
     const menuItem = [
       { name: "ADL" },

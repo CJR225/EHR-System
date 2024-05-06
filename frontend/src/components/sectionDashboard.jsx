@@ -2,6 +2,8 @@
 //Senior Capstone - SER492
 //5-08-24
 
+//Each <span></span> withing background div found in frontend correspondes to animated bubble for background
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -15,12 +17,14 @@ const SectionDashboard = () => {
   const [alert, setAlert] = useState({ show: false, message: "" });
   const navigate = useNavigate();
 
+  //Dropdown menu of patients 
   const handleSelectPatient = (sectionId) => (event) => {
     const patientId = event.target.value;
     const patient = patients.find((p) => p.id.toString() === patientId);
     setSelectedPatients((prev) => ({ ...prev, [sectionId]: patient }));
   };
 
+  //Assigns patient to section
   const handleAssignPatient = (sectionId) => {
     const patient = selectedPatients[sectionId];
     if (patient) {
@@ -42,6 +46,8 @@ const SectionDashboard = () => {
         });
     }
   };
+
+  //Goes to assigned section, passes patient and section information
   const handleGoToSection = (sectionId) => {
     const patient = selectedPatients[sectionId];
 
@@ -58,6 +64,8 @@ const SectionDashboard = () => {
     }
   };
 
+
+  //Displays the section information with list of students associated
   useEffect(() => {
     axios
       .get("http://localhost:3001/patients/section-list")
@@ -89,6 +97,7 @@ const SectionDashboard = () => {
       });
   }, []);
 
+  //This is for displaying the patient information on the dropdown
   useEffect(() => {
     axios
       .get("http://localhost:3001/patients")

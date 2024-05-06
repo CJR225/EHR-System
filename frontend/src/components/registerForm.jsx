@@ -2,6 +2,8 @@
 //Senior Capstone - SER492
 //5-08-24
 
+//Each <span></span> withing background div found in frontend correspondes to animated bubble for background
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +19,8 @@ function RegisterForm() {
   const [isValidForm, setIsValidForm] = useState(false);
   const navigate = useNavigate();
 
+
+  //This is for the red alert text when a registration is not properly filled out --> criteria needed to move on
   const schema = {
     username: Joi.string()
       .required()
@@ -42,7 +46,8 @@ function RegisterForm() {
       .label("Section ID")
       .error(() => "Section ID is required"),
   };
-
+  
+//This is for the signup button to be enabled
   const isFormValid = () => {
     const { error } = Joi.validate(
       { username, password, fname, lname, sectionID },

@@ -9,6 +9,8 @@ import SectionDash from "./components/sectionDashboard";
 import PatientDash from "./components/patientDashboard";
 import PatientOrders from "./components/PatientOrders"; 
 
+
+//This file houses all the defined pathing for the frontend, add and remove components to be displayed here for routing
 function App() {
   return (
     <UserProvider> {/* Wrap everything in UserProvider */}

@@ -11,6 +11,7 @@ const path = require("path");
 const config = require("./config/config.json");
 require('dotenv').config()
 
+//This commented code is for usage of mysql workbench database - credentials are put in /config/config.json
 //const Sequelize = require("sequelize");
 /*
 const sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
@@ -32,6 +33,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+//these are the corresponding /backslash routes for data pulling
+//EX. http:/localhost:3001/auth/signup ---> can use for testing in postman given body info 
+//the other pre route is /patients used for everything else
 
 const AuthRouter = require('./routes/auth.js');
 app.use('/auth', AuthRouter);
@@ -78,11 +82,12 @@ app.use('/patients', notesRouter);
 const adlRouter = require('./routes/ADL-Router.js');
 app.use('/patients', adlRouter);
 
+//initModels within /models is important as sequelize-auto has this predefined for easier use
 var initModels = require("./models/init-models.js");
 const { env } = require('process');
 var models = initModels(sequelize);
 const Patient = models.Patient;
-
+//this is where the models for student/instructor are passed into the passport file, can add more roles later on through here if needed for authentication
 require('./config/passport/passport.js')(passport, models.Student, models.Instructor);
 
 console.log(models.sequelize);
@@ -91,7 +96,7 @@ sequelize.sync().then(() => {
 }).catch((err) => {
     console.log(err, "Something went wrong with the Database Update!");
 });
-
+//The server port for this app is 3001 ---> remember for routing for frontend
 app.listen(3001, (err) => {
     if (!err)
         console.log("Site is live");

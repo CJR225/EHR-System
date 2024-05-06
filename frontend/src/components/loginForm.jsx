@@ -2,6 +2,8 @@
 //Senior Capstone - SER492
 //5-08-24
 
+//Each <span></span> withing background div found in frontend correspondes to animated bubble for background
+
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

@@ -6,3 +6,10 @@ Within /backend/server.js - the main server, authentication, routing, and databa
 backend/config/passport.js - houses the local strategies for encryption/decryption for signups and logins, an instructor cannot be signed up through the registration frontend form, this needs to be manually inserted. Routing for this authentication can be found in /backend/routes/auth.js , as a reminder all defined routing subroutes can be found within the server.js for each corresponding usage.
 
 Within /frontend/components are housed the react jsx files for each view, App.js houses the paths for each imported component. The main css file is index.css - houses the styling for login, registration, sectionDash, patientDash.
+
+To run this application locally you will need to start the backend & frontend
+1. Navigate to backend/frontend folder
+2. run npm start for both folders
+List of scripts can be found in package.json
+
+The patientDashboard is very busy and should be brokedown further

@@ -20,7 +20,7 @@ router.post('/add-section', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
-
+//This displays the list of sections and the students within them, this is hard coded for now as sequelize is not picking up on the model definition and providing incorrect join
 router.get('/section-list', async (req, res) => {
     const query = `
         SELECT 
