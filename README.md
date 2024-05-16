@@ -13,5 +13,3 @@ To run this application locally you will need to start the backend & frontend
 List of scripts can be found in package.json
 
 The patientDashboard is very busy and should be brokedown further
-
-![screenshot](ehr1.png)
